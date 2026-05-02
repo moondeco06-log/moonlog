@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="345mm" height="710mm"
+     viewBox="0 0 345 710">
+
+  <rect width="345" height="710" fill="white"/>
+
+  <!-- ===== TITLE ===== -->
+  <text x="10" y="9" font-size="7.5" font-family="sans-serif" font-weight="bold" fill="#111">後ろスカート Back Skirt ／ 2枚裁ち</text>
+  <text x="10" y="16" font-size="5.5" font-family="sans-serif" fill="#555">縫い代：上辺（切り替え線）1cm込み、脇1cm込み、裾3cm込み、後ろ中心1cm込み</text>
+
+  <!-- ===== GRID 50mm=5cm ===== -->
+  <g stroke="#d8d8d8" stroke-width="0.3" fill="none">
+    <line x1="10"  y1="20" x2="10"  y2="700"/>
+    <line x1="60"  y1="20" x2="60"  y2="700"/>
+    <line x1="110" y1="20" x2="110" y2="700"/>
+    <line x1="160" y1="20" x2="160" y2="700"/>
+    <line x1="210" y1="20" x2="210" y2="700"/>
+    <line x1="260" y1="20" x2="260" y2="700"/>
+    <line x1="310" y1="20" x2="310" y2="700"/>
+    <line x1="10" y1="20"  x2="335" y2="20"/>
+    <line x1="10" y1="70"  x2="335" y2="70"/>
+    <line x1="10" y1="120" x2="335" y2="120"/>
+    <line x1="10" y1="170" x2="335" y2="170"/>
+    <line x1="10" y1="220" x2="335" y2="220"/>
+    <line x1="10" y1="270" x2="335" y2="270"/>
+    <line x1="10" y1="320" x2="335" y2="320"/>
+    <line x1="10" y1="370" x2="335" y2="370"/>
+    <line x1="10" y1="420" x2="335" y2="420"/>
+    <line x1="10" y1="470" x2="335" y2="470"/>
+    <line x1="10" y1="520" x2="335" y2="520"/>
+    <line x1="10" y1="570" x2="335" y2="570"/>
+    <line x1="10" y1="620" x2="335" y2="620"/>
+    <line x1="10" y1="670" x2="335" y2="670"/>
+  </g>
+
+  <!-- Grid labels -->
+  <g font-size="5" fill="#bbb" font-family="sans-serif" text-anchor="middle">
+    <text x="60"  y="19">5cm</text>
+    <text x="110" y="19">10</text>
+    <text x="160" y="19">15</text>
+    <text x="210" y="19">20</text>
+    <text x="260" y="19">25</text>
+    <text x="310" y="19">30cm</text>
+  </g>
+  <g font-size="5" fill="#bbb" font-family="sans-serif">
+    <text x="2" y="23">0</text>
+    <text x="2" y="73">5</text>
+    <text x="2" y="123">10</text>
+    <text x="2" y="173">15</text>
+    <text x="2" y="223">20</text>
+    <text x="2" y="273">25</text>
+    <text x="2" y="323">30</text>
+    <text x="2" y="373">35</text>
+    <text x="2" y="423">40</text>
+    <text x="2" y="473">45</text>
+    <text x="2" y="523">50</text>
+    <text x="2" y="573">55</text>
+    <text x="2" y="623">60</text>
+    <text x="2" y="673">65cm</text>
+  </g>
+
+  <!-- ===== CENTER BACK LINE ===== -->
+  <line x1="10" y1="20" x2="10" y2="700"
+        stroke="#FF6600" stroke-width="0.6" stroke-dasharray="4,3"/>
+
+  <!-- ===== PATTERN OUTLINE ===== -->
+  <!--
+    Key coordinates:
+    TopCB    = (10,  20)  ← center back, top (cuts off 1cm SA → stitch at x=20)
+    TopSide  = (220, 20)  ← top at side seam  (UB/4+ease=21cm → x=10+210=220)
+    HipSide  = (262, 220) ← hip at side seam  (H/4+ease=25.25cm → x=10+252=262, y=20+200=220)
+    HemSide  = (330, 690) ← hem at side seam  (32cm from CB → x=10+320=330, y=20+670=690)
+    HemCB    = (10,  690) ← hem at center back
+  -->
+  <path d="M 10,20
+           L 220,20
+           L 262,220
+           L 330,690
+           L 10,690
+           Z"
+        fill="#EDF5FF" fill-opacity="0.6"
+        stroke="black" stroke-width="1.3" stroke-linejoin="round"/>
+
+  <!-- Hip level guide line -->
+  <line x1="10" y1="220" x2="270" y2="220"
+        stroke="#999" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <text x="265" y="218" font-size="5" fill="#999" font-family="sans-serif">HL</text>
+
+  <!-- Hem line (3cm included) -->
+  <line x1="10" y1="690" x2="335" y2="690"
+        stroke="#CC0044" stroke-width="0.6" stroke-dasharray="4,2"/>
+  <!-- Fold line for hem (3cm up) -->
+  <line x1="10" y1="660" x2="330" y2="660"
+        stroke="#CC0044" stroke-width="0.4" stroke-dasharray="2,2"/>
+  <text x="335" y="676" font-size="5" fill="#CC0044" font-family="sans-serif">裾（3cm三つ折り）</text>
+
+  <!-- ===== GRAIN LINE ===== -->
+  <line x1="10" y1="360" x2="10" y2="480" stroke="#333" stroke-width="0.9"/>
+  <polygon points="6.5,477 10,487 13.5,477" fill="#333"/>
+  <text x="14" y="430" font-size="6" font-family="sans-serif" fill="#333">地の目</text>
+
+  <!-- ===== NOTCHES ===== -->
+  <!-- Top center notch -->
+  <line x1="113" y1="16" x2="113" y2="24" stroke="black" stroke-width="1.2"/>
+  <!-- Hip notch -->
+  <line x1="258" y1="216" x2="266" y2="224" stroke="black" stroke-width="1.2"/>
+  <!-- Hem notch -->
+  <line x1="170" y1="686" x2="170" y2="694" stroke="black" stroke-width="1.2"/>
+
+  <!-- ===== KEY POINT DOTS ===== -->
+  <circle cx="10"  cy="20"  r="2" fill="#333"/>
+  <circle cx="220" cy="20"  r="2" fill="#333"/>
+  <circle cx="262" cy="220" r="2" fill="#333"/>
+  <circle cx="330" cy="690" r="2" fill="#333"/>
+
+  <!-- ===== LABELS ===== -->
+  <g font-family="sans-serif" fill="#222">
+    <text x="85" y="190" font-size="10" font-weight="bold">後ろ</text>
+    <text x="12" y="35"  font-size="5">後ろ中心（1cm縫い代込み）</text>
+    <text x="170" y="35" font-size="5.5" text-anchor="middle">切り替え線（上辺）UB/4=21cm</text>
+  </g>
+
+  <!-- ===== DIMENSION LINES ===== -->
+  <!-- Skirt length -->
+  <g stroke="#999" stroke-width="0.4">
+    <line x1="337" y1="20"  x2="337" y2="690"/>
+    <line x1="335" y1="20"  x2="339" y2="20"/>
+    <line x1="335" y1="690" x2="339" y2="690"/>
+  </g>
+  <text x="341" y="358" font-size="5" fill="#777" font-family="sans-serif"
+        transform="rotate(90,341,358)">スカート丈 67cm（裾3cm込み）</text>
+
+  <!-- Top width -->
+  <g stroke="#999" stroke-width="0.4">
+    <line x1="10"  y1="14" x2="220" y2="14"/>
+    <line x1="10"  y1="12" x2="10"  y2="16"/>
+    <line x1="220" y1="12" x2="220" y2="16"/>
+  </g>
+  <text x="115" y="13" font-size="5" fill="#777" font-family="sans-serif" text-anchor="middle">上辺 21cm</text>
+
+  <!-- Hip width -->
+  <g stroke="#999" stroke-width="0.4">
+    <line x1="10"  y1="227" x2="262" y2="227"/>
+    <line x1="10"  y1="225" x2="10"  y2="229"/>
+    <line x1="262" y1="225" x2="262" y2="229"/>
+  </g>
+  <text x="136" y="235" font-size="5" fill="#777" font-family="sans-serif" text-anchor="middle">ヒップ幅 25.2cm</text>
+
+  <!-- Hem width -->
+  <g stroke="#999" stroke-width="0.4">
+    <line x1="10"  y1="697" x2="330" y2="697"/>
+    <line x1="10"  y1="695" x2="10"  y2="699"/>
+    <line x1="330" y1="695" x2="330" y2="699"/>
+  </g>
+  <text x="170" y="705" font-size="5" fill="#777" font-family="sans-serif" text-anchor="middle">裾幅 32cm（総裾幅128cm）</text>
+
+  <!-- ===== NOTES ===== -->
+  <text x="10" y="708" font-size="5.5" fill="#555" font-family="sans-serif">
+    ※A4複数枚に分割印刷して貼り合わせてください　5cmグリッドで実寸を確認してから裁断
+  </text>
+</svg>

@@ -1,0 +1,1897 @@
+# -*- coding: utf-8 -*-
+"""
+星読みレポート Web アプリ
+Flask で起動し、ブラウザからフォーム入力してHTMLまたはPPTXを生成します。
+"""
+
+import os, io, tempfile, warnings, threading
+
+CONTACT_EMAIL = os.environ.get("MOONLOG_EMAIL", "info@moonlog.jp")
+warnings.filterwarnings("ignore")
+
+from flask import Flask, request, render_template_string, send_file, jsonify
+from moonlog_astrology import generate_report, generate_html_report, resolve_location, generate_solar_return_html, generate_lifecycle_html
+
+app = Flask(__name__)
+
+def _preload():
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        fig, ax = plt.subplots(1, 1, figsize=(2, 2))
+        plt.close(fig)
+        from kerykeion import AstrologicalSubject
+        s = AstrologicalSubject("_warm_", 2000, 1, 1, 12, 0,
+                                lng=139.65, lat=35.68, tz_str="Asia/Tokyo")
+        _ = s.sun
+        from pptx import Presentation
+        _ = Presentation()
+        print("  ✅ プリロード完了")
+    except Exception as e:
+        print(f"  ⚠️  プリロード中のエラー: {e}")
+
+threading.Thread(target=_preload, daemon=True).start()
+
+# ============================================================
+# HTML テンプレート
+# ============================================================
+
+HTML = """<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOONLOG — 自分を知るための、静かな航海日誌</title>
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+  <meta name="googlebot" content="noindex, nofollow, noarchive">
+  <meta name="CCBot" content="noindex">
+  <meta name="GPTBot" content="noindex">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Shippori+Mincho:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+/* ─── CSS 変数（明るめ・上品） ─── */
+:root {
+  --base:       #FAF6EE;   /* 温かい生成り（ベース）*/
+  --base-warm:  #F4ECDD;   /* シャンパン（中間）*/
+  --base-lav:   #EEE9F0;   /* 淡い藤色（中間）*/
+  --base-soft:  #F8F1E8;   /* やわらかいクリーム */
+  --white:      #FFFFFF;
+  --border:     #E8DDD0;   /* 柔らかいベージュ枠線 */
+  --border-l:   #F0E6D6;
+  --gold:       #B8985A;   /* マットゴールド */
+  --gold-l:     #D4B987;
+  --gold-d:     #8A6E3A;
+  --lav:        #A89CC8;   /* ダスキーラベンダー */
+  --lav-l:      #C8BEDC;
+  --lav-d:      #6E5F94;
+  --rose:       #C49AA0;   /* くすみピンク */
+  --rose-l:     #DCBABE;
+  --text-d:     #3A3450;   /* 深い茄子紺 */
+  --text-m:     #6B607A;   /* くすみ紫 */
+  --text-l:     #9A8FAB;   /* 薄いラベンダーグレー */
+  --serif:      "Shippori Mincho", "Noto Serif JP", "Cormorant Garamond", serif;
+  --sans:       "Noto Sans JP", sans-serif;
+  --en:         "Cormorant Garamond", serif;
+  /* 旧変数の互換 */
+  --night: var(--base);
+  --navy: var(--base-lav);
+  --navy2: var(--base-warm);
+  --navy3: var(--base-soft);
+  --cream: var(--white);
+  --cream2: var(--base-warm);
+  --cream3: var(--border);
+  --gold-ll: var(--gold-l);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); font-weight: 300; color: var(--text-d); background: var(--base); }
+
+/* ─── ナビゲーション ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3rem;
+  height: 64px;
+  background: rgba(250,246,238,0.85);
+  backdrop-filter: blur(16px) saturate(1.2);
+  border-bottom: 1px solid rgba(184,152,90,0.18);
+}
+.nav-logo {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--gold-d);
+  text-decoration: none;
+  letter-spacing: 0.2em;
+}
+.nav-links { display: flex; gap: 2.4rem; list-style: none; }
+.nav-links a {
+  font-size: 0.78rem;
+  color: var(--text-m);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  transition: color 0.25s;
+}
+.nav-links a:hover { color: var(--gold-d); }
+
+/* ─── ヒーロー（明け方の空：藤色→生成り）─── */
+#hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 9rem 2rem 6rem;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(168,156,200,0.32) 0%, transparent 65%),
+    radial-gradient(ellipse 70% 60% at 80% 30%, rgba(196,154,160,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 10% 70%, rgba(212,185,135,0.16) 0%, transparent 55%),
+    linear-gradient(180deg, #DDD1E0 0%, #ECE2E2 38%, #F5ECDF 70%, #FAF6EE 100%);
+}
+/* 星粒 */
+.starfield {
+  position: absolute; inset: 0; pointer-events: none; overflow: hidden;
+}
+.starfield::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1.2px 1.2px at  8% 12%, rgba(168,156,200,0.55) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 15% 22%, rgba(184,152,90,0.40) 0%, transparent 100%),
+    radial-gradient(1.4px 1.4px at 22% 35%, rgba(168,156,200,0.60) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 31% 18%, rgba(184,152,90,0.35) 0%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 42%  7%, rgba(196,154,160,0.45) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 53% 28%, rgba(168,156,200,0.32) 0%, transparent 100%),
+    radial-gradient(1.4px 1.4px at 63% 12%, rgba(184,152,90,0.50) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 71% 25%, rgba(196,154,160,0.35) 0%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 80% 18%, rgba(168,156,200,0.42) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 88% 8%,  rgba(184,152,90,0.45) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 94% 30%, rgba(168,156,200,0.30) 0%, transparent 100%),
+    radial-gradient(1px   1px   at  5% 28%, rgba(196,154,160,0.28) 0%, transparent 100%),
+    radial-gradient(1.4px 1.4px at 47% 18%, rgba(184,152,90,0.40) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 76%  5%, rgba(168,156,200,0.45) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 35% 32%, rgba(196,154,160,0.25) 0%, transparent 100%);
+}
+.starfield::after {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 12% 8%,  rgba(168,156,200,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 27% 18%, rgba(184,152,90,0.30) 0%, transparent 100%),
+    radial-gradient(1px 1px at 48% 22%, rgba(196,154,160,0.28) 0%, transparent 100%),
+    radial-gradient(1px 1px at 66% 15%, rgba(168,156,200,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 83% 32%, rgba(184,152,90,0.26) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 18%, rgba(168,156,200,0.32) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38% 28%, rgba(196,154,160,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 58% 8%,  rgba(184,152,90,0.28) 0%, transparent 100%);
+}
+
+.hero-eyebrow {
+  font-family: var(--en);
+  font-size: 0.82rem;
+  font-style: italic;
+  letter-spacing: 0.4em;
+  color: var(--gold-d);
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+.hero-title {
+  font-family: "Shippori Mincho", "Noto Serif JP", serif;
+  font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+  font-weight: 300;
+  color: var(--text-d);
+  line-height: 1.5;
+  letter-spacing: 0.06em;
+  margin-bottom: 1.4rem;
+}
+.hero-title em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--lav-d);
+}
+.hero-rule {
+  width: 80px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 1.6rem;
+}
+.hero-sub {
+  font-family: var(--serif);
+  font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+  font-weight: 300;
+  color: var(--text-m);
+  letter-spacing: 0.12em;
+  margin-bottom: 0.9rem;
+  line-height: 2;
+}
+.hero-planets {
+  font-size: 1.3rem;
+  letter-spacing: 0.55em;
+  color: var(--gold);
+  margin-bottom: 3.5rem;
+  opacity: 0.85;
+}
+.cta-btn {
+  display: inline-block;
+  padding: 1.05rem 3.2rem;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid var(--gold);
+  border-radius: 2px;
+  color: var(--gold-d);
+  font-family: var(--serif);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.35s;
+  position: relative;
+  overflow: hidden;
+}
+.cta-btn::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s;
+  z-index: -1;
+}
+.cta-btn:hover::before { transform: scaleX(1); }
+.cta-btn:hover { color: var(--white); border-color: var(--gold-d); }
+
+.cta-sub {
+  display: inline-block;
+  margin-top: 1.4rem;
+  color: var(--text-m);
+  font-family: var(--serif);
+  font-size: 0.82rem;
+  text-decoration: none;
+  letter-spacing: 0.12em;
+  border-bottom: 1px solid rgba(168,156,200,0.5);
+  padding-bottom: 2px;
+  transition: color 0.25s, border-color 0.25s;
+}
+.cta-sub:hover { color: var(--lav-d); border-color: var(--lav-d); }
+
+.scroll-cue {
+  position: absolute; bottom: 2.8rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+  color: var(--text-l);
+  font-family: var(--en);
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  animation: scrollBounce 2.5s ease-in-out infinite;
+}
+.scroll-cue svg { opacity: 0.5; }
+@keyframes scrollBounce {
+  0%,100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(7px); }
+}
+
+/* ─── 共通セクション（明るめ3トーン） ─── */
+.sec-light { background: var(--white);     color: var(--text-d); }
+.sec-mid   { background: var(--base-warm); color: var(--text-d); }
+.sec-dark  { background: var(--base-lav);  color: var(--text-d); }
+
+section { padding: 7rem 2rem; }
+.inner { max-width: 980px; margin: 0 auto; }
+.sec-eyebrow {
+  font-family: var(--en);
+  font-size: 0.75rem;
+  font-style: italic;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.sec-title {
+  font-family: var(--serif);
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 400;
+  text-align: center;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.9rem;
+  color: var(--text-d);
+}
+.sec-dark .sec-title { color: var(--text-d); }
+.sec-rule {
+  width: 48px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 1.6rem;
+}
+.sec-lead {
+  text-align: center;
+  color: var(--text-m);
+  font-size: 0.88rem;
+  max-width: 520px;
+  margin: 0 auto 4rem;
+  line-height: 2.1;
+}
+.sec-dark .sec-lead { color: var(--text-m); }
+
+/* ─── 惑星グリッド ─── */
+.planet-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1px;
+  background: var(--cream3);
+  border: 1px solid var(--cream3);
+}
+.planet-card {
+  background: var(--cream);
+  padding: 1.8rem 1.6rem;
+  transition: background 0.2s;
+}
+.planet-card:hover { background: var(--cream2); }
+.planet-sym {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: 0.7rem;
+  line-height: 1;
+}
+.planet-name {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-d);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+.planet-en {
+  font-family: var(--en);
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 0.7rem;
+  letter-spacing: 0.08em;
+}
+.planet-desc {
+  font-size: 0.8rem;
+  color: var(--text-m);
+  line-height: 1.85;
+}
+
+/* ─── レポート内容 ─── */
+.what-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.6rem;
+}
+.what-item {
+  display: flex; gap: 1.2rem; align-items: flex-start;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1.6rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(58,52,80,0.04);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.what-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(58,52,80,0.08);
+}
+.what-num {
+  font-family: var(--en);
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--gold);
+  line-height: 1;
+  flex-shrink: 0;
+  width: 2.2rem;
+  text-align: center;
+}
+.what-body strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-d);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.04em;
+}
+.what-body span {
+  font-size: 0.82rem;
+  color: var(--text-m);
+  line-height: 1.95;
+}
+
+/* ─── フォームセクション ─── */
+.form-outer {
+  max-width: 520px;
+  margin: 0 auto;
+}
+.form-card {
+  background: var(--white);
+  border: 1px solid var(--cream3);
+  border-radius: 2px;
+  padding: 3rem 2.8rem 2.8rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.05);
+}
+.form-hd {
+  text-align: center;
+  margin-bottom: 2.2rem;
+}
+.form-hd-title {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text-d);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+}
+.form-hd-sub {
+  font-size: 0.78rem;
+  color: var(--text-l);
+  letter-spacing: 0.06em;
+}
+.field-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-m);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.4rem;
+  margin-top: 1.4rem;
+}
+input[type=text],
+input[type=number],
+select {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  background: var(--cream);
+  border: 1px solid var(--cream3);
+  border-radius: 2px;
+  color: var(--text-d);
+  font-family: var(--sans);
+  font-size: 0.92rem;
+  font-weight: 300;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+input:focus, select:focus {
+  border-color: var(--gold);
+  background: var(--white);
+  box-shadow: 0 0 0 3px rgba(184,146,58,0.08);
+}
+input::placeholder { color: var(--text-l); font-size: 0.82rem; }
+select { cursor: pointer; }
+select option { background: var(--white); color: var(--text-d); }
+.row2 { display: flex; gap: 0.7rem; }
+.row3 { display: flex; gap: 0.7rem; }
+.row2 > div, .row3 > div { flex: 1; }
+.hint {
+  font-size: 0.73rem;
+  color: var(--text-l);
+  margin-top: 0.4rem;
+  line-height: 1.65;
+}
+.form-rule {
+  width: 100%; height: 1px;
+  background: var(--cream3);
+  margin: 2rem 0;
+}
+.btn-group { display: flex; flex-direction: column; gap: 0.7rem; }
+.sr-row { display: flex; gap: 0.7rem; align-items: stretch; }
+.sr-year-wrap {
+  display: flex; flex-direction: column; justify-content: center;
+  gap: 0.2rem; min-width: 110px;
+}
+.sr-year-label {
+  font-size: 0.65rem; letter-spacing: 0.1em;
+  color: var(--text-l); font-family: var(--serif);
+}
+.sr-year-select {
+  padding: 0.5rem 0.4rem;
+  border: 1px solid var(--cream3);
+  border-radius: 2px;
+  background: transparent;
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  color: var(--text-d);
+  cursor: pointer;
+}
+.sr-row .btn-gold { flex: 1; }
+.btn {
+  flex: 1;
+  padding: 0.95rem 0.5rem;
+  border-radius: 2px;
+  font-family: var(--serif);
+  font-size: 0.88rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.25s;
+  border: 1px solid;
+}
+.btn-gold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--white);
+}
+.btn-gold:hover { background: var(--gold-l); border-color: var(--gold-l); }
+.btn-outline {
+  background: transparent;
+  border-color: var(--cream3);
+  color: var(--text-m);
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+.btn-indigo {
+  background: #3A3875;
+  border-color: #3A3875;
+  color: #fff;
+  flex: 1;
+}
+.btn-indigo:hover { background: #4A4890; border-color: #4A4890; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn:active:not(:disabled) { transform: scale(0.99); }
+#status {
+  text-align: center;
+  margin-top: 1.2rem;
+  min-height: 1.8rem;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: var(--text-m);
+}
+.status-ok  { color: #4A8A5A; }
+.status-err { color: #A04848; }
+.status-wait { color: var(--gold); }
+.loading-dots::after {
+  content: '';
+  animation: dots 1.5s steps(4, end) infinite;
+}
+@keyframes dots {
+  0%   { content: ''; }
+  25%  { content: '.'; }
+  50%  { content: '..'; }
+  75%  { content: '...'; }
+}
+
+/* ─── フッター ─── */
+footer {
+  background: var(--base-warm);
+  border-top: 1px solid var(--border);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.footer-rule {
+  width: 40px; height: 1px;
+  background: var(--gold);
+  margin: 0 auto 1.4rem;
+}
+.footer-logo {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  color: var(--gold-d);
+  letter-spacing: 0.2em;
+  margin-bottom: 0.6rem;
+}
+.footer-planets {
+  font-size: 0.95rem;
+  color: var(--gold);
+  letter-spacing: 0.5em;
+  margin-bottom: 1.2rem;
+  opacity: 0.7;
+}
+.footer-copy {
+  font-size: 0.72rem;
+  color: var(--text-l);
+  letter-spacing: 0.08em;
+}
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+.footer-links a {
+  font-size: 0.72rem;
+  color: var(--text-l);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+.footer-links a:hover {
+  color: var(--gold-d);
+  border-bottom-color: var(--gold);
+}
+
+/* ─── レポートカード ─── */
+.report-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+.report-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: 0 2px 12px rgba(58,52,80,0.04);
+}
+.report-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 36px rgba(58,52,80,0.10);
+}
+.report-card.free:hover      { border-color: var(--lav); }
+.report-card.natal:hover     { border-color: var(--rose); }
+.report-card.sr:hover        { border-color: var(--gold); }
+.report-card.lifecycle:hover { border-color: var(--lav); }
+
+.promo-ribbon {
+  position:absolute; top:14px; right:-30px;
+  background: linear-gradient(135deg, #D4B987, #B8985A);
+  color:#FFFFFF; font-size:0.62rem; font-weight:700;
+  letter-spacing:0.2em; padding:3px 36px; transform: rotate(35deg);
+  font-family: var(--sans); z-index:5;
+  box-shadow: 0 2px 6px rgba(58,52,80,0.18);
+}
+.price-box {
+  margin: 0 0 1.2rem; padding: 0.9rem 0;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.price-box.price-free { border-top-color: rgba(168,156,200,0.35); border-bottom-color: rgba(168,156,200,0.35); }
+.price-main {
+  font-family: var(--en); font-size: 2rem; font-weight: 500;
+  color: var(--gold-d); letter-spacing: 0.04em; line-height: 1;
+}
+.price-free .price-main { color: var(--lav-d); font-family: var(--serif); font-size: 1.6rem; }
+.price-sub {
+  font-size: 0.7rem; color: var(--text-l);
+  letter-spacing: 0.08em; margin-top: 0.4rem;
+}
+.report-card.free .report-accent { background: linear-gradient(90deg, var(--lav), var(--lav-l)); }
+.free-badge { background:rgba(168,156,200,0.12); color:var(--lav-d); border:1px solid rgba(168,156,200,0.3); }
+.free  .report-cta { color: var(--lav-d); }
+
+.sample-link {
+  display: block; text-align: center;
+  margin-top: 0.6rem; padding: 0.5rem 0;
+  font-size: 0.74rem; letter-spacing: 0.1em;
+  color: var(--text-m);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  transition: color 0.2s, border-color 0.2s;
+}
+.sample-link:hover {
+  color: var(--gold-d);
+  border-bottom-color: var(--gold);
+}
+.sample-link::after { content: " ▸"; opacity: 0.7; }
+.report-accent {
+  height: 3px;
+  width: 100%;
+}
+.natal     .report-accent { background: linear-gradient(90deg, var(--rose), var(--rose-l)); }
+.sr        .report-accent { background: linear-gradient(90deg, var(--gold-d), var(--gold-l)); }
+.lifecycle .report-accent { background: linear-gradient(90deg, var(--lav-d), var(--lav-l)); }
+.report-info { padding: 1.8rem 1.6rem 1.4rem; flex:1; display:flex; flex-direction:column; }
+.report-info h3 {
+  font-family:var(--serif); font-size:1.15rem; font-weight:500;
+  color:var(--text-d); letter-spacing:0.06em; margin-bottom:0.3rem;
+}
+.report-sub {
+  font-family:var(--en); font-style:italic; font-size:0.74rem;
+  color:var(--gold-d); letter-spacing:0.14em; margin-bottom:1rem;
+}
+.report-meta {
+  display: flex; gap:0.8rem; align-items:center; margin-bottom:1.1rem; flex-wrap:wrap;
+}
+.report-badge {
+  display:inline-block; font-size:0.68rem; padding:0.2rem 0.6rem;
+  border-radius:2px; letter-spacing:0.06em;
+}
+.natal-badge     { background:rgba(196,154,160,0.15); color:#9A6B72; border:1px solid rgba(196,154,160,0.35); }
+.sr-badge        { background:rgba(184,152,90,0.12);  color:var(--gold-d); border:1px solid rgba(184,152,90,0.35); }
+.lifecycle-badge { background:rgba(168,156,200,0.12); color:var(--lav-d); border:1px solid rgba(168,156,200,0.35); }
+.report-pages {
+  font-size:0.72rem; color:var(--text-l); letter-spacing:0.06em;
+}
+.report-desc {
+  font-size:0.82rem; color:var(--text-m); line-height:2; margin-bottom:1.1rem;
+}
+.report-includes { list-style:none; padding:0; display:flex; flex-direction:column; gap:0.4rem; flex:1; }
+.report-includes li { font-size:0.78rem; color:var(--text-m); letter-spacing:0.03em; }
+.report-cta {
+  margin-top:1.4rem; padding-top:1.1rem;
+  border-top:1px solid var(--border);
+  font-size:0.78rem; letter-spacing:0.12em;
+  text-align:center;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.natal     .report-cta { color:#9A6B72; }
+.sr        .report-cta { color:var(--gold-d); }
+.lifecycle .report-cta { color:var(--lav-d); }
+.report-card:hover .report-cta { opacity:1; }
+.report-cta::after { content:" →"; }
+
+/* ─── レスポンシブ ─── */
+@media (max-width: 660px) {
+  nav { padding: 0 1.4rem; }
+  .nav-links { display: none; }
+  .form-card { padding: 2rem 1.4rem; }
+  .btn-group { flex-direction: column; }
+  .row3 { flex-wrap: wrap; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ナビゲーション -->
+<nav>
+  <a class="nav-logo" href="#hero">MOONLOG</a>
+  <ul class="nav-links">
+    <li><a href="#about">このサービスについて</a></li>
+    <li><a href="#profile">運営者について</a></li>
+    <li><a href="#planets">7つの星</a></li>
+    <li><a href="#form-section">星読みをはじめる</a></li>
+  </ul>
+</nav>
+
+<!-- ヒーロー -->
+<section id="hero">
+  <div class="starfield"></div>
+
+  <p class="hero-eyebrow">Moon × Log — Birth Chart Reading</p>
+  <h1 class="hero-title">
+    自分を知るための<br>
+    <em>静かな航海日誌</em>
+  </h1>
+  <div class="hero-rule"></div>
+  <p class="hero-sub">
+    生まれた瞬間の天体データを読み解き<br>
+    自分でも気づいていなかった傾向に、静かに光を当てます。<br>
+    占いではなく、気づきのためのフレームワーク。
+  </p>
+  <p class="hero-planets">☉ &nbsp; ☽ &nbsp; ☿ &nbsp; ♀ &nbsp; ♂ &nbsp; ♃ &nbsp; ♄</p>
+  <a href="#form-section" class="cta-btn">無料で星読みをはじめる</a>
+  <a href="#reports" class="cta-sub">▸ レポートについて詳しく</a>
+
+  <div class="scroll-cue">
+    <span>scroll</span>
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+      <path d="M2 5l5 5 5-5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+    </svg>
+  </div>
+</section>
+
+<!-- MOONLOGとは -->
+<section id="moonlog-def" class="sec-dark">
+  <div class="inner" style="max-width:720px;">
+    <p class="sec-eyebrow">What is MOONLOG</p>
+    <h2 class="sec-title">MOONLOGとは</h2>
+    <div class="sec-rule"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-bottom:3rem;">
+      <div style="text-align:center;padding:2rem 1.5rem;background:var(--white);border:1px solid var(--border);border-radius:2px;box-shadow:0 2px 12px rgba(58,52,80,0.04);">
+        <div style="font-family:var(--en);font-size:2.2rem;font-style:italic;color:var(--gold-d);margin-bottom:1rem;letter-spacing:0.1em;">MOON</div>
+        <p style="font-size:0.84rem;color:var(--text-m);line-height:2;letter-spacing:0.04em;">
+          昼間の空にひっそりと存在する、<br>はかなげで静かな月。<br>
+          見えなくても、引力で海の潮を動かす。<br>
+          目に見えない力で、確かに何かを動かすもの。
+        </p>
+      </div>
+      <div style="text-align:center;padding:2rem 1.5rem;background:var(--white);border:1px solid var(--border);border-radius:2px;box-shadow:0 2px 12px rgba(58,52,80,0.04);">
+        <div style="font-family:var(--en);font-size:2.2rem;font-style:italic;color:var(--gold-d);margin-bottom:1rem;letter-spacing:0.1em;">LOG</div>
+        <p style="font-size:0.84rem;color:var(--text-m);line-height:2;letter-spacing:0.04em;">
+          かつて船乗りは、月と星だけを頼りに<br>大海原の航路を定めた。<br>
+          その記録が「航海日誌（ship's log）」。<br>
+          感情ではなく、客観的なデータで自分を記録すること。
+        </p>
+      </div>
+    </div>
+    <div style="text-align:center;border-top:1px solid var(--border);padding-top:2.5rem;">
+      <p style="font-family:var(--serif);font-size:1.05rem;color:var(--gold-d);letter-spacing:0.1em;line-height:2.2;">
+        生まれた瞬間の天体データを読み解き、<br>
+        自分でも気づいていなかった傾向に光を当てる。<br>
+        月が海を動かすように、言葉が自分の内側を静かに動かす。<br>
+        それが、MOONLOGです。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- レポート一覧と料金 -->
+<section id="reports" class="sec-dark" style="padding-bottom:8rem;">
+  <div class="inner">
+    <p class="sec-eyebrow">Reports & Pricing</p>
+    <h2 class="sec-title">レポートの種類と料金</h2>
+    <div class="sec-rule"></div>
+    <p class="sec-lead">まずは無料ライト版から。気に入ったら詳細レポートへ。</p>
+
+    <div class="report-grid">
+
+      <!-- 無料ライト版 -->
+      <div class="report-card free" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
+        <div class="report-accent"></div>
+        <div class="report-info">
+          <h3>無料ライト版</h3>
+          <p class="report-sub">Free Light Reading</p>
+          <div class="report-meta">
+            <span class="report-badge free-badge">☉ ☽ ☿ の3天体</span>
+            <span class="report-pages">A4換算 約8ページ</span>
+          </div>
+          <div class="price-box price-free">
+            <div class="price-main">無料</div>
+            <div class="price-sub">登録不要・すぐに読めます</div>
+          </div>
+          <p class="report-desc">
+            太陽・月・水星——あなたの「核」となる3つの星から、
+            自分らしさの輪郭をやさしく描き出します。
+          </p>
+          <ul class="report-includes">
+            <li>✦ 太陽：人生のテーマ</li>
+            <li>✦ 月：感情と内面</li>
+            <li>✦ 水星：思考とコミュニケーション</li>
+          </ul>
+          <div class="report-cta">無料ではじめる</div>
+        </div>
+      </div>
+
+      <!-- 出生チャート（有料）-->
+      <div class="report-card natal" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
+        <div class="report-accent"></div>
+        <div class="promo-ribbon">オープン記念</div>
+        <div class="report-info">
+          <h3>出生チャート</h3>
+          <p class="report-sub">Birth Chart Reading</p>
+          <div class="report-meta">
+            <span class="report-badge natal-badge">基本 / いつでも</span>
+            <span class="report-pages">A4換算 約20ページ</span>
+          </div>
+          <div class="price-box">
+            <div class="price-main">¥980</div>
+            <div class="price-sub">通常価格 ¥3,980 を予定</div>
+          </div>
+          <p class="report-desc">
+            7惑星・ASC・MC・アスペクトを統合した詳細な自己分析。
+            あなたの資質・得意・傾向を深く読み解く基本のレポート。
+          </p>
+          <ul class="report-includes">
+            <li>✦ 各惑星の詳細プロフィール</li>
+            <li>✦ 強みと成長のヒント</li>
+            <li>✦ 天体間のアスペクト</li>
+            <li>✦ 総合プロフィール</li>
+          </ul>
+          <div class="report-cta">レポートを購入する</div>
+          <a href="/sample/natal" target="_blank" class="sample-link" onclick="event.stopPropagation()">サンプルを見る</a>
+        </div>
+      </div>
+
+      <!-- ソーラーリターン（有料）-->
+      <div class="report-card sr" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
+        <div class="report-accent"></div>
+        <div class="promo-ribbon">オープン記念</div>
+        <div class="report-info">
+          <h3>今年の星読み</h3>
+          <p class="report-sub">Solar Return Reading</p>
+          <div class="report-meta">
+            <span class="report-badge sr-badge">年間 / 誕生日ごとに</span>
+            <span class="report-pages">A4換算 約18ページ</span>
+          </div>
+          <div class="price-box">
+            <div class="price-main">¥980</div>
+            <div class="price-sub">通常価格 ¥3,980 を予定</div>
+          </div>
+          <p class="report-desc">
+            誕生日を起点に、今年1年間のテーマ・課題・チャンスを読み解く年間レポート。
+            転機の年や新しいスタートを切るタイミングに最適です。
+          </p>
+          <ul class="report-includes">
+            <li>✦ 今年のメインテーマ</li>
+            <li>✦ 力が発揮される分野</li>
+            <li>✦ 注意すべきパターン</li>
+            <li>✦ 星からのメッセージ</li>
+          </ul>
+          <div class="report-cta">レポートを購入する</div>
+          <a href="/sample/sr" target="_blank" class="sample-link" onclick="event.stopPropagation()">サンプルを見る</a>
+        </div>
+      </div>
+
+      <!-- ライフサイクル（有料）-->
+      <div class="report-card lifecycle" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
+        <div class="report-accent"></div>
+        <div class="promo-ribbon">オープン記念</div>
+        <div class="report-info">
+          <h3>ライフサイクル</h3>
+          <p class="report-sub">Life Cycle Reading</p>
+          <div class="report-meta">
+            <span class="report-badge lifecycle-badge">長期 / 人生の転機に</span>
+            <span class="report-pages">A4換算 約12ページ</span>
+          </div>
+          <div class="price-box">
+            <div class="price-main">¥980</div>
+            <div class="price-sub">通常価格 ¥3,980 を予定</div>
+          </div>
+          <p class="report-desc">
+            土星・木星などの遅い惑星の動きをもとに、人生全体の流れと転換期を読み解くレポート。
+            「今なぜこうなっているか」が腑に落ちます。
+          </p>
+          <ul class="report-includes">
+            <li>✦ 人生の転機・変容の時期</li>
+            <li>✦ 現在の星の流れ</li>
+            <li>✦ 次のフェーズへの準備</li>
+            <li>✦ 長期的な成長テーマ</li>
+          </ul>
+          <div class="report-cta">レポートを購入する</div>
+          <a href="/sample/lifecycle" target="_blank" class="sample-link" onclick="event.stopPropagation()">サンプルを見る</a>
+        </div>
+      </div>
+
+    </div>
+
+    <p style="text-align:center;margin-top:3rem;font-size:0.78rem;color:var(--text-l);letter-spacing:0.08em;">
+      ※ オープン記念価格は予告なく変更となる場合があります。価格は順次改定予定です。
+    </p>
+  </div>
+</section>
+
+<!-- このサービスについて -->
+<section id="about" class="sec-light">
+  <div class="inner" style="max-width:720px;">
+    <p class="sec-eyebrow">About</p>
+    <h2 class="sec-title">このサービスについて</h2>
+    <div class="sec-rule"></div>
+
+    <div style="margin-bottom:3rem;">
+      <h3 style="font-family:var(--serif);font-size:1.15rem;font-weight:400;color:var(--text-d);letter-spacing:0.06em;margin-bottom:1.2rem;">自分の得意が、わからない。</h3>
+      <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;margin-bottom:1rem;">
+        「何が向いているのかわからない」「好きなことはあるけど、それが仕事になるとは思えない」
+      </p>
+      <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;">
+        真面目に生きてきたのに、なぜかずっとどこかが噛み合わない気がする。<br>
+        努力してきたのに、自分が何者かわからないまま年齢だけが重なっていく。
+      </p>
+    </div>
+
+    <div style="margin-bottom:3rem;">
+      <h3 style="font-family:var(--serif);font-size:1.15rem;font-weight:400;color:var(--text-d);letter-spacing:0.06em;margin-bottom:1.2rem;">星読みは、占いではなくフレームワークです。</h3>
+      <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;margin-bottom:1rem;">
+        生まれた瞬間の天体配置は、その人の「傾向」を読むためのデータです。<br>
+        「当たる・当たらない」ではなく、「こういう資質を持って生まれた人は、こういう環境で力を発揮しやすい」という読み方をします。
+      </p>
+      <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;">
+        社会に出てから身につけてきた「こうあるべき自分」ではなく、<br>
+        <strong>生まれながらに持っている自分の設計図</strong>を、もう一度確認する作業です。
+      </p>
+    </div>
+
+    <div style="background:var(--cream2);padding:2rem;border-left:3px solid var(--gold);margin-bottom:3rem;">
+      <h3 style="font-family:var(--serif);font-size:1rem;font-weight:500;color:var(--text-d);letter-spacing:0.06em;margin-bottom:1rem;">こんな壁を感じていませんでしたか？</h3>
+      <ul style="font-size:0.85rem;color:var(--text-m);line-height:2.4;list-style:none;padding:0;">
+        <li>・ 鑑定料が高くて手が出ない</li>
+        <li>・ 月額課金で気軽に使えない</li>
+        <li>・ 専門用語が多くて読みこなせない</li>
+        <li>・ 鑑定師によって言うことが違う</li>
+      </ul>
+      <p style="font-size:0.85rem;color:var(--text-m);line-height:2;margin-top:1rem;">
+        MOONLOGは、<strong>必要なときに、手頃な価格で、わかりやすく</strong>お届けします。<br>
+        月額課金なし、セミナーなし。あなたのペースでどうぞ。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 運営者について -->
+<section id="profile" class="sec-mid">
+  <div class="inner" style="max-width:720px;">
+    <p class="sec-eyebrow">Profile</p>
+    <h2 class="sec-title">運営者について</h2>
+    <div class="sec-rule"></div>
+
+    <div style="margin-bottom:2.5rem;">
+      <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;margin-bottom:1rem;">
+        はじめまして。MOONLOGをつくった、MIDORI です。<br>
+        IT系の仕事を長く続けてきた、データと数字が好きな人間です。
+      </p>
+    </div>
+
+    <div style="margin-bottom:2.5rem;">
+      <h3 style="font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--text-d);letter-spacing:0.06em;margin-bottom:1.2rem;">わたし自身が、「自分の得意がわからない」人間でした。</h3>
+      <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;margin-bottom:1rem;">
+        49歳のとき、大学に編入しました。<br>
+        50歳を目前に定年を意識し、「これからどう生きるか」を考え始めたのがきっかけです。
+      </p>
+      <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;margin-bottom:1rem;">
+        そして53歳のとき、半年間の休職を経験しました。
+      </p>
+      <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;">
+        仕事を離れ、初めて「何もしない時間」ができたとき、気づいたことがあります。<br>
+        インプットより、アウトプット。知識を集めることより、実際に動くこと。<br>
+        「正解を探す」より、「今ここにある自分を受け取る」こと。
+      </p>
+    </div>
+
+    <div style="margin-bottom:2.5rem;">
+      <h3 style="font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--text-d);letter-spacing:0.06em;margin-bottom:1.2rem;">星読みが、自分を取り戻すきっかけになった。</h3>
+      <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;margin-bottom:1rem;">
+        もともとIT畑でデータや数字が好きだったわたしにとって、<br>
+        「天体配置というデータから、生まれ持った傾向を読む」という星読みのアプローチは、とても腑に落ちるものでした。
+      </p>
+      <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;">
+        「こうあるべき」という外側の基準ではなく、<br>
+        「そもそも自分はどういう人間か」という問いに向き合うための道具として。
+      </p>
+      <p style="font-family:var(--serif);font-size:0.95rem;color:var(--text-d);line-height:2;margin-top:1.2rem;letter-spacing:0.06em;font-weight:500;">
+        自分が生まれてきた意味を知るために。
+      </p>
+    </div>
+
+    <div style="background:var(--cream);padding:1.8rem 2rem;border-radius:2px;border:1px solid var(--cream3);">
+      <p style="font-size:0.85rem;color:var(--text-m);line-height:2.2;text-align:center;">
+        顔出しもしません。セミナーも開きません。WEB上で、完結します。<br>
+        あなたが必要と感じたときに、そっと使ってもらえるサービスを目指しています。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 7惑星 -->
+<section id="planets" class="sec-light">
+  <div class="inner">
+    <p class="sec-eyebrow">The Seven Planets</p>
+    <h2 class="sec-title">7つの星が照らす、あなたの世界</h2>
+    <div class="sec-rule"></div>
+    <p class="sec-lead">
+      西洋占星術では、7つの惑星がそれぞれ人生の異なる側面を象徴します。<br>
+      生まれた瞬間の天体配置から、すべての星のメッセージを読み解きます。
+    </p>
+    <div class="planet-grid">
+      <div class="planet-card">
+        <span class="planet-sym" style="color:#B8923A;">☉</span>
+        <div class="planet-name">太陽</div>
+        <span class="planet-en">Sun</span>
+        <div class="planet-desc">社会的な顔・人生の目的。あなたが輝くとき、どのような存在として世界に現れるかを示します。</div>
+      </div>
+      <div class="planet-card">
+        <span class="planet-sym" style="color:#7878A8;">☽</span>
+        <div class="planet-name">月</div>
+        <span class="planet-en">Moon</span>
+        <div class="planet-desc">感情・内面の反応パターン。安心を感じるとき、あなたの心がどのように動くかを映します。</div>
+      </div>
+      <div class="planet-card">
+        <span class="planet-sym" style="color:#6888B0;">☿</span>
+        <div class="planet-name">水星</div>
+        <span class="planet-en">Mercury</span>
+        <div class="planet-desc">思考・言葉・コミュニケーション。知性がどのように働き、どのように表現するかを示します。</div>
+      </div>
+      <div class="planet-card">
+        <span class="planet-sym" style="color:#B07888;">♀</span>
+        <div class="planet-name">金星</div>
+        <span class="planet-en">Venus</span>
+        <div class="planet-desc">愛情・美意識・喜び。何を美しいと感じ、どのように愛し愛されるかを照らします。</div>
+      </div>
+      <div class="planet-card">
+        <span class="planet-sym" style="color:#B06848;">♂</span>
+        <div class="planet-name">火星</div>
+        <span class="planet-en">Mars</span>
+        <div class="planet-desc">情熱・行動力・欲求エネルギー。何のために動き、どのように挑戦するかを示します。</div>
+      </div>
+      <div class="planet-card">
+        <span class="planet-sym" style="color:#A89050;">♃</span>
+        <div class="planet-name">木星</div>
+        <span class="planet-en">Jupiter</span>
+        <div class="planet-desc">発展・幸運・拡大の方向。人生が自然と豊かになっていく領域とその方法を示します。</div>
+      </div>
+      <div class="planet-card">
+        <span class="planet-sym" style="color:#7870A0;">♄</span>
+        <div class="planet-name">土星</div>
+        <span class="planet-en">Saturn</span>
+        <div class="planet-desc">課題・成長・魂のテーマ。時間をかけて向き合うことで本物の強さが生まれる場所を示します。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- レポート内容 -->
+<section id="what" class="sec-dark">
+  <div class="inner">
+    <p class="sec-eyebrow">About the Report</p>
+    <h2 class="sec-title">レポートでわかること</h2>
+    <div class="sec-rule"></div>
+    <p class="sec-lead">
+      出生データをもとに生成される、あなただけの星読みレポート。<br>
+      ブラウザでいつでも快適にご覧いただけます。
+    </p>
+    <div class="what-grid">
+      <div class="what-item">
+        <div class="what-num">01</div>
+        <div class="what-body">
+          <strong>得意なこと・強み</strong>
+          <span>7つの惑星が示す強みを統合し、あなたが自然に力を発揮できる分野を照らします。</span>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-num">02</div>
+        <div class="what-body">
+          <strong>成長のヒント</strong>
+          <span>課題として現れやすいパターンと、それを乗り越えるための視点を星が語ります。</span>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-num">03</div>
+        <div class="what-body">
+          <strong>各惑星の詳細プロフィール</strong>
+          <span>7つすべての惑星について、その星座とあなたの個性を丁寧に読み解きます。</span>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-num">04</div>
+        <div class="what-body">
+          <strong>総合プロフィール</strong>
+          <span>「あなたという人」を1ページにまとめた統合プロフィール。すべての星を統合します。</span>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-num">05</div>
+        <div class="what-body">
+          <strong>ホロスコープチャート</strong>
+          <span>生まれた瞬間の天体配置を美しいチャートで可視化。あなただけの星空のマップ。</span>
+        </div>
+      </div>
+      <div class="what-item">
+        <div class="what-num">06</div>
+        <div class="what-body">
+          <strong>いつでも読み返せる</strong>
+          <span>生成されたレポートはブラウザの目次から自由に行き来できます。印刷にも対応しています。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 入力フォーム -->
+<section id="form-section" class="sec-mid">
+  <div class="inner">
+    <p class="sec-eyebrow">Free Reading</p>
+    <h2 class="sec-title">星読みをはじめる</h2>
+    <div class="sec-rule"></div>
+    <p class="sec-lead" style="color:var(--text-m);">
+      生年月日・出生時刻・出生地を入力してください。<br>
+      あなただけのレポートを無料で生成します。
+    </p>
+
+    <div class="form-outer">
+      <div class="form-card">
+        <div class="form-hd">
+          <div class="form-hd-title">出生データを入力する</div>
+          <div class="form-hd-sub">すべての項目をご入力ください</div>
+        </div>
+
+        <form id="form" method="post" action="/preview">
+          <label class="field-label">お名前</label>
+          <input type="text" name="name" placeholder="例：山田 花子" value="なつ" required>
+
+          <label class="field-label">生年月日</label>
+          <div class="row3">
+            <div><input type="number" name="year"  placeholder="年（1900〜2025）" min="1900" max="2025" value="1972" required></div>
+            <div><input type="number" name="month" placeholder="月（1〜12）"      min="1" max="12" value="6" required></div>
+            <div><input type="number" name="day"   placeholder="日（1〜31）"      min="1" max="31" value="10" required></div>
+          </div>
+
+          <label class="field-label">出生時刻</label>
+          <div class="row2">
+            <div><input type="number" name="hour"   placeholder="時（0〜23）" min="0" max="23" value="22" required></div>
+            <div><input type="number" name="minute" placeholder="分（0〜59）" min="0" max="59" value="0"  required></div>
+          </div>
+          <p class="hint">※ 出生時刻が不明な場合は 12:00 のままでお進みください</p>
+
+          <label class="field-label">出生地</label>
+          <div class="row2" style="margin-bottom:0;">
+            <div>
+              <select id="pref_select" onchange="updateCities(this.value)">
+                <option value="">都道府県</option>
+                <option value="北海道">北海道</option>
+                <option value="青森県">青森県</option><option value="岩手県">岩手県</option>
+                <option value="宮城県">宮城県</option><option value="秋田県">秋田県</option>
+                <option value="山形県">山形県</option><option value="福島県">福島県</option>
+                <option value="茨城県">茨城県</option><option value="栃木県">栃木県</option>
+                <option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option>
+                <option value="千葉県">千葉県</option><option value="東京都" selected>東京都</option>
+                <option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option>
+                <option value="富山県">富山県</option><option value="石川県">石川県</option>
+                <option value="福井県">福井県</option><option value="山梨県">山梨県</option>
+                <option value="長野県">長野県</option><option value="岐阜県">岐阜県</option>
+                <option value="静岡県">静岡県</option><option value="愛知県">愛知県</option>
+                <option value="三重県">三重県</option><option value="滋賀県">滋賀県</option>
+                <option value="京都府">京都府</option><option value="大阪府">大阪府</option>
+                <option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option>
+                <option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option>
+                <option value="島根県">島根県</option><option value="岡山県">岡山県</option>
+                <option value="広島県">広島県</option><option value="山口県">山口県</option>
+                <option value="徳島県">徳島県</option><option value="香川県">香川県</option>
+                <option value="愛媛県">愛媛県</option><option value="高知県">高知県</option>
+                <option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option>
+                <option value="長崎県">長崎県</option><option value="熊本県">熊本県</option>
+                <option value="大分県">大分県</option><option value="宮崎県">宮崎県</option>
+                <option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option>
+              </select>
+            </div>
+            <div>
+              <select name="city" id="city_select" onchange="updateLatLng(this)">
+                <option value="">市区町村</option>
+              </select>
+            </div>
+          </div>
+          <input type="hidden" name="lat" id="lat_field" value="35.6762">
+          <input type="hidden" name="lng" id="lng_field" value="139.6503">
+          <p class="hint">※ 一覧にない場合は最寄りの市区町村を選択してください</p>
+
+          <div class="form-rule"></div>
+
+          <div class="btn-group">
+            <button class="btn btn-outline" type="submit"
+                    formaction="/preview" formtarget="_blank" id="btn-html">
+              ✦ &nbsp;出生チャートを見る（無料）
+            </button>
+            <div class="sr-row">
+              <div class="sr-year-wrap">
+                <label class="sr-year-label">何年の星読み？</label>
+                <select name="sr_year" id="sr_year" class="sr-year-select"></select>
+              </div>
+              <button class="btn btn-gold" type="submit"
+                      formaction="/solar_return" formtarget="_blank" id="btn-sr">
+                ☀ &nbsp;星読みレポートを見る（SR）
+              </button>
+            </div>
+            <button class="btn btn-indigo" type="submit"
+                    formaction="/lifecycle" formtarget="_blank" id="btn-lc">
+              🌟 &nbsp;人生の転機を見る（ライフサイクル）
+            </button>
+          </div>
+          <p class="hint" style="text-align:center;margin-top:10px">
+            ※ SR（ソーラーリターン）は1年間のテーマを読み解く年間レポートです。
+          </p>
+        </form>
+        <div id="status"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- フッター -->
+<footer>
+  <div class="footer-rule"></div>
+  <div class="footer-planets">☉ &nbsp; ☽ &nbsp; ☿ &nbsp; ♀ &nbsp; ♂ &nbsp; ♃ &nbsp; ♄</div>
+  <div class="footer-logo">MOONLOG</div>
+  <p class="footer-copy" style="margin-bottom:0.4rem;">自分を知るための、静かな航海日誌。</p>
+  <p class="footer-copy" style="margin-bottom:0.6rem;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.7;">
+    本サービスのレポートは、出生時刻の天体配置を計算し、占星術データベースに基づいて自動生成されるものです。プロ占星術師による個別鑑定ではありません。
+  </p>
+  <div class="footer-links">
+    <a href="/legal/tokushoho">特定商取引法に基づく表記</a>
+    <a href="/legal/privacy">プライバシーポリシー</a>
+    <a href="/legal/terms">利用規約</a>
+  </div>
+  <p class="footer-copy">© 2026 MOONLOG. All rights reserved.</p>
+</footer>
+
+<script>
+// ── 都市データ（都道府県 → 市区町村 + 座標）──
+const CITY_DATA = {
+"北海道":[["札幌市",43.0621,141.3544],["函館市",41.7686,140.7289],["旭川市",43.7707,142.3651],["釧路市",42.9849,144.3820],["帯広市",42.9242,143.1966],["北見市",43.8031,143.8933],["小樽市",43.1907,140.9947],["苫小牧市",42.6328,141.6051],["室蘭市",42.3151,140.9735],["千歳市",42.8228,141.6531],["稚内市",45.4161,141.6730],["網走市",44.0183,144.2741],["岩見沢市",43.1961,141.7758],["江別市",43.1036,141.5411]],
+"青森県":[["青森市",40.8222,140.7474],["弘前市",40.6031,140.4639],["八戸市",40.5124,141.4882],["五所川原市",40.8075,140.4467],["十和田市",40.6126,141.2066],["むつ市",41.2931,141.1828],["つがる市",40.9078,140.3797]],
+"岩手県":[["盛岡市",39.7036,141.1527],["花巻市",39.3889,141.1167],["一関市",38.9342,141.1267],["北上市",39.2819,141.1131],["奥州市",39.1443,141.1386],["宮古市",39.6411,141.9547],["釜石市",39.2764,141.8869]],
+"宮城県":[["仙台市",38.2682,140.8694],["石巻市",38.4342,141.3028],["気仙沼市",38.9076,141.5709],["大崎市",38.5764,140.9553],["名取市",38.1714,140.8914],["多賀城市",38.2939,140.9778],["塩竈市",38.3144,141.0219]],
+"秋田県":[["秋田市",39.7186,140.1024],["横手市",39.3067,140.5638],["大館市",40.2737,140.5511],["由利本荘市",39.3864,140.0487],["能代市",40.2161,140.0239],["大仙市",39.4564,140.4789]],
+"山形県":[["山形市",38.2404,140.3633],["米沢市",37.9222,140.1167],["鶴岡市",38.7344,139.8278],["酒田市",38.9136,139.8367],["天童市",38.3622,140.3783],["東根市",38.4303,140.3961],["新庄市",38.7625,140.3044]],
+"福島県":[["福島市",37.7608,140.4748],["郡山市",37.4011,140.3881],["いわき市",37.0508,140.8872],["会津若松市",37.4900,139.9300],["白河市",37.1317,140.2086],["須賀川市",37.2939,140.3767],["南相馬市",37.6428,140.9764]],
+"茨城県":[["水戸市",36.3659,140.4712],["日立市",36.5989,140.6517],["つくば市",36.0836,140.0779],["土浦市",36.0822,140.2044],["古河市",36.1936,139.7072],["取手市",35.9017,140.0653],["牛久市",35.9825,140.1486],["ひたちなか市",36.3961,140.5331]],
+"栃木県":[["宇都宮市",36.5551,139.8827],["足利市",36.3402,139.4503],["小山市",36.3147,139.8031],["日光市",36.7197,139.6978],["栃木市",36.3811,139.7261],["鹿沼市",36.5628,139.7361],["佐野市",36.3158,139.5961]],
+"群馬県":[["前橋市",36.3894,139.0631],["高崎市",36.3219,139.0033],["伊勢崎市",36.3112,139.1972],["太田市",36.2919,139.3758],["桐生市",36.4053,139.3281],["沼田市",36.6461,139.0486],["館林市",36.2411,139.5406]],
+"埼玉県":[["さいたま市",35.8617,139.6456],["川越市",35.9251,139.4858],["所沢市",35.7994,139.4694],["春日部市",35.9752,139.7528],["越谷市",35.8881,139.7908],["川口市",35.8078,139.7244],["熊谷市",36.1472,139.3889],["草加市",35.8225,139.8036]],
+"千葉県":[["千葉市",35.6074,140.1065],["船橋市",35.6946,139.9828],["松戸市",35.7878,139.9031],["柏市",35.8682,139.9758],["市川市",35.7178,139.9314],["浦安市",35.6536,139.9014],["成田市",35.7769,140.3186],["習志野市",35.6878,140.0219],["八千代市",35.7239,140.1033]],
+"東京都":[["千代田区",35.6942,139.7536],["中央区",35.6706,139.7728],["港区",35.6581,139.7514],["新宿区",35.6938,139.7034],["文京区",35.7081,139.7519],["台東区",35.7136,139.7811],["墨田区",35.7106,139.8014],["江東区",35.6720,139.8172],["品川区",35.6094,139.7306],["目黒区",35.6397,139.6983],["大田区",35.5614,139.7175],["世田谷区",35.6465,139.6533],["渋谷区",35.6639,139.6981],["中野区",35.7075,139.6636],["杉並区",35.6997,139.6364],["豊島区",35.7281,139.7189],["北区",35.7528,139.7336],["荒川区",35.7358,139.7828],["板橋区",35.7506,139.7106],["練馬区",35.7358,139.6519],["足立区",35.7751,139.8044],["葛飾区",35.7450,139.8467],["江戸川区",35.7067,139.8681],["八王子市",35.6661,139.3161],["立川市",35.6928,139.4136],["武蔵野市",35.7072,139.5592],["三鷹市",35.6836,139.5606],["青梅市",35.7881,139.2753],["府中市",35.6697,139.4778],["調布市",35.6517,139.5456],["町田市",35.5439,139.4467],["日野市",35.6711,139.3956],["国分寺市",35.6992,139.4647],["西東京市",35.7256,139.5386]],
+"神奈川県":[["横浜市",35.4437,139.6380],["川崎市",35.5209,139.7172],["相模原市",35.5533,139.3583],["藤沢市",35.3385,139.4913],["小田原市",35.2656,139.1547],["厚木市",35.4428,139.3573],["横須賀市",35.2811,139.6717],["平塚市",35.3286,139.3522],["鎌倉市",35.3197,139.5467],["茅ヶ崎市",35.3331,139.4031],["大和市",35.4731,139.4628],["海老名市",35.4481,139.3908]],
+"新潟県":[["新潟市",37.9161,139.0364],["長岡市",37.4467,138.8508],["上越市",37.1472,138.2356],["柏崎市",37.3706,138.5578],["新発田市",37.9536,139.3239],["三条市",37.6356,138.9622],["燕市",37.6711,138.8814],["十日町市",37.1317,138.7539]],
+"富山県":[["富山市",36.6953,137.2113],["高岡市",36.7547,137.0258],["射水市",36.7072,137.0858],["魚津市",36.8311,137.4136],["氷見市",36.8561,136.9872],["砺波市",36.6453,136.9631],["黒部市",36.8653,137.4458]],
+"石川県":[["金沢市",36.5944,136.6256],["小松市",36.4056,136.4447],["白山市",36.5131,136.5644],["七尾市",37.0475,136.9625],["加賀市",36.3031,136.3167],["野々市市",36.5253,136.6083],["羽咋市",36.8981,136.7931]],
+"福井県":[["福井市",36.0652,136.2217],["敦賀市",35.6481,136.0742],["越前市",35.9014,136.1681],["坂井市",36.1633,136.2281],["鯖江市",35.9567,136.1844],["小浜市",35.4967,135.7467]],
+"山梨県":[["甲府市",35.6639,138.5683],["富士吉田市",35.4881,138.7947],["甲斐市",35.6972,138.5261],["笛吹市",35.6492,138.6453],["山梨市",35.6908,138.6886],["甲州市",35.6933,138.7261]],
+"長野県":[["長野市",36.6485,138.1947],["松本市",36.2381,137.9717],["上田市",36.4019,138.2492],["飯田市",35.5147,137.8217],["諏訪市",36.0394,138.1128],["塩尻市",36.1156,137.9536],["佐久市",36.2492,138.4728],["安曇野市",36.3061,137.9003],["茅野市",35.9956,138.1589]],
+"岐阜県":[["岐阜市",35.4231,136.7608],["大垣市",35.3619,136.6172],["各務原市",35.4006,136.8481],["高山市",36.1461,137.2522],["多治見市",35.3656,137.1317],["関市",35.4983,136.9208],["美濃加茂市",35.4397,137.0072],["土岐市",35.3533,137.1836]],
+"静岡県":[["静岡市",34.9769,138.3831],["浜松市",34.7108,137.7261],["沼津市",35.0956,138.8631],["富士市",35.1611,138.6769],["磐田市",34.7183,137.8514],["焼津市",34.8681,138.3228],["藤枝市",34.8681,138.2572],["掛川市",34.7692,138.0133],["御殿場市",35.3083,138.9339]],
+"愛知県":[["名古屋市",35.1815,136.9066],["豊橋市",34.7697,137.3914],["岡崎市",34.9481,137.1744],["豊田市",35.0836,137.1564],["一宮市",35.3036,136.8008],["春日井市",35.2478,136.9728],["安城市",34.9592,137.0806],["刈谷市",34.9883,137.0017],["西尾市",34.8669,137.0592],["小牧市",35.2953,136.9119]],
+"三重県":[["津市",34.7303,136.5086],["四日市市",34.9644,136.6244],["伊勢市",34.4872,136.7258],["松阪市",34.5769,136.5272],["鈴鹿市",34.8819,136.5836],["名張市",34.6281,136.1086],["伊賀市",34.7669,136.1314]],
+"滋賀県":[["大津市",35.0044,135.8686],["草津市",35.0147,135.9608],["彦根市",35.2753,136.2514],["長浜市",35.3836,136.2703],["近江八幡市",35.1278,136.0983],["守山市",35.0617,135.9942],["栗東市",35.0131,135.9947]],
+"京都府":[["京都市",35.0116,135.7681],["宇治市",34.8942,135.7994],["長岡京市",34.9278,135.6906],["亀岡市",35.0094,135.5756],["舞鶴市",35.4728,135.3933],["福知山市",35.2981,135.1214],["城陽市",34.8886,135.7778]],
+"大阪府":[["大阪市",34.6937,135.5023],["堺市",34.5733,135.4830],["東大阪市",34.6794,135.6019],["枚方市",34.8133,135.6536],["豊中市",34.7831,135.4706],["吹田市",34.7606,135.5153],["高槻市",34.8494,135.6172],["茨木市",34.8167,135.5644],["八尾市",34.6264,135.6003],["寝屋川市",34.7683,135.6353]],
+"兵庫県":[["神戸市",34.6901,135.1956],["姫路市",34.8153,134.6861],["尼崎市",34.7336,135.4069],["西宮市",34.7386,135.3431],["宝塚市",34.7986,135.3592],["明石市",34.6453,134.9972],["加古川市",34.7572,134.8372],["三田市",34.8908,135.2244],["伊丹市",34.7783,135.4011]],
+"奈良県":[["奈良市",34.6851,135.8050],["橿原市",34.5081,135.7956],["生駒市",34.6958,135.6958],["大和高田市",34.5236,135.7394],["大和郡山市",34.6469,135.7833],["天理市",34.5961,135.8381],["桜井市",34.5181,135.8447]],
+"和歌山県":[["和歌山市",34.2261,135.1675],["田辺市",33.7333,135.3725],["橋本市",34.3197,135.5972],["有田市",34.0703,135.1367],["海南市",34.1681,135.2172],["御坊市",33.8919,135.1594]],
+"鳥取県":[["鳥取市",35.5011,134.2353],["米子市",35.4281,133.3308],["倉吉市",35.4297,133.8253],["境港市",35.5428,133.2281]],
+"島根県":[["松江市",35.4681,133.0508],["出雲市",35.3672,132.7550],["浜田市",34.8994,132.0817],["益田市",34.6742,131.8444],["安来市",35.4339,133.2586]],
+"岡山県":[["岡山市",34.6617,133.9344],["倉敷市",34.5906,133.7736],["津山市",35.0681,133.9997],["総社市",34.6775,133.7456],["笠岡市",34.5003,133.5078],["玉野市",34.4883,133.9472],["備前市",34.7256,134.1806]],
+"広島県":[["広島市",34.3853,132.4553],["呉市",34.2492,132.5658],["福山市",34.4858,133.3625],["東広島市",34.4269,132.7433],["尾道市",34.4083,133.2089],["三原市",34.3978,133.0814],["廿日市市",34.3461,132.3339]],
+"山口県":[["下関市",33.9519,130.9428],["山口市",34.1861,131.4706],["宇部市",33.9522,131.2472],["周南市",34.0553,131.8061],["防府市",34.0517,131.5622],["岩国市",34.1661,132.2239],["萩市",34.4083,131.3997]],
+"徳島県":[["徳島市",34.0658,134.5594],["阿南市",33.9208,134.6617],["鳴門市",34.1767,134.6094],["吉野川市",34.0703,134.3708],["阿波市",34.0978,134.1719]],
+"香川県":[["高松市",34.3403,134.0433],["丸亀市",34.2883,133.7969],["観音寺市",34.1267,133.6606],["坂出市",34.3189,133.8608],["さぬき市",34.3256,134.1783],["三豊市",34.1903,133.7206]],
+"愛媛県":[["松山市",33.8392,132.7658],["今治市",34.0661,132.9981],["新居浜市",33.9608,133.2836],["西条市",33.9225,133.1814],["宇和島市",33.2253,132.5597],["大洲市",33.5031,132.5431]],
+"高知県":[["高知市",33.5597,133.5311],["南国市",33.5736,133.6461],["四万十市",32.9936,132.9347],["安芸市",33.5022,133.9075],["須崎市",33.3983,133.2814]],
+"福岡県":[["福岡市",33.5904,130.4017],["北九州市",33.8834,130.8751],["久留米市",33.3189,130.5089],["飯塚市",33.6461,130.6906],["春日市",33.5339,130.4708],["大野城市",33.5361,130.4786],["筑紫野市",33.5244,130.5144],["太宰府市",33.5153,130.5242],["糸島市",33.5567,130.2006]],
+"佐賀県":[["佐賀市",33.2636,130.3008],["唐津市",33.4486,129.9703],["鳥栖市",33.3786,130.5036],["伊万里市",33.2664,129.8797],["武雄市",33.1928,130.0156]],
+"長崎県":[["長崎市",32.7503,129.8778],["佐世保市",33.1739,129.7153],["諫早市",32.8428,130.0592],["大村市",32.9183,129.9578],["島原市",32.7878,130.3697]],
+"熊本県":[["熊本市",32.8032,130.7079],["八代市",32.5069,130.6006],["天草市",32.4597,130.1981],["玉名市",32.9281,130.5558],["荒尾市",32.9981,130.4286],["山鹿市",33.0147,130.6914]],
+"大分県":[["大分市",33.2382,131.6128],["別府市",33.2844,131.4906],["中津市",33.5983,131.1886],["日田市",33.3219,130.9414],["佐伯市",32.9597,131.9006],["宇佐市",33.5272,131.3503]],
+"宮崎県":[["宮崎市",31.9077,131.4202],["都城市",31.7208,131.0647],["延岡市",32.5817,131.6617],["日向市",32.4239,131.6256],["日南市",31.5986,131.3731]],
+"鹿児島県":[["鹿児島市",31.5969,130.5571],["霧島市",31.7408,130.7644],["薩摩川内市",31.8092,130.3022],["鹿屋市",31.3794,130.8519],["指宿市",31.2514,130.6375],["出水市",32.0872,130.3594]],
+"沖縄県":[["那覇市",26.2124,127.6809],["沖縄市",26.3344,127.8044],["宜野湾市",26.2817,127.7781],["浦添市",26.2461,127.7197],["うるま市",26.3753,127.8578],["名護市",26.5917,127.9778],["石垣市",24.3368,124.1564],["宮古島市",24.8056,125.2814]]
+};
+
+function updateCities(pref) {
+  const citySelect = document.getElementById('city_select');
+  citySelect.innerHTML = '<option value="">市区町村を選択</option>';
+  if (!pref || !CITY_DATA[pref]) return;
+  CITY_DATA[pref].forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c[0];
+    opt.dataset.lat = c[1];
+    opt.dataset.lng = c[2];
+    opt.textContent = c[0];
+    citySelect.appendChild(opt);
+  });
+  citySelect.selectedIndex = 1;
+  updateLatLng(citySelect);
+}
+
+function updateLatLng(sel) {
+  const opt = sel.options[sel.selectedIndex];
+  if (opt && opt.dataset.lat) {
+    document.getElementById('lat_field').value = opt.dataset.lat;
+    document.getElementById('lng_field').value = opt.dataset.lng;
+  }
+}
+
+// 初期値：新潟県・新潟市
+window.addEventListener('DOMContentLoaded', () => {
+  const prefSel = document.getElementById('pref_select');
+  prefSel.value = '新潟県';
+  updateCities('新潟県');
+
+  // SR年セレクターを動的生成（今年-1 〜 今年+3）
+  const srYearSel = document.getElementById('sr_year');
+  const currentYear = new Date().getFullYear();
+  for (let y = currentYear - 1; y <= currentYear + 3; y++) {
+    const opt = document.createElement('option');
+    opt.value = y;
+    opt.textContent = y + '年';
+    if (y === currentYear) opt.selected = true;
+    srYearSel.appendChild(opt);
+  }
+});
+
+document.getElementById('btn-pptx').addEventListener('click', async () => {
+  const form   = document.getElementById('form');
+  const btn    = document.getElementById('btn-pptx');
+  const status = document.getElementById('status');
+
+  if (!form.reportValidity()) return;
+
+  btn.disabled = true;
+  status.className = 'status-wait';
+  status.innerHTML = '星の配置を計算しています<span class="loading-dots"></span><br><small style="opacity:0.6">（通常10〜30秒ほどかかります）</small>';
+
+  const data = Object.fromEntries(new FormData(form));
+
+  try {
+    const res = await fetch('/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'エラーが発生しました');
+    }
+    const blob = await res.blob();
+    const name = data.name || '星読みレポート';
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url; a.download = `${name}_星読みレポート.pptx`; a.click();
+    URL.revokeObjectURL(url);
+    status.className = 'status-ok';
+    status.textContent = 'PPTXが生成されました。ダウンロードをご確認ください。';
+  } catch (err) {
+    status.className = 'status-err';
+    status.textContent = err.message;
+  } finally {
+    btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>"""
+
+# ============================================================
+# ルーティング
+# ============================================================
+
+@app.route("/robots.txt")
+def robots_txt():
+    from flask import Response
+    content = """# MOONLOG robots.txt
+# AI crawlers and scrapers are not permitted
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Googlebot
+Disallow: /generate
+Disallow: /preview
+Disallow: /solar_return
+Disallow: /lifecycle
+Disallow: /my_reading
+Disallow: /hayate_reading
+Disallow: /fuuki_reading
+
+User-agent: *
+Disallow: /generate
+Disallow: /preview
+Disallow: /solar_return
+Disallow: /lifecycle
+Disallow: /my_reading
+Disallow: /hayate_reading
+Disallow: /fuuki_reading
+"""
+    return Response(content, mimetype="text/plain")
+
+
+@app.route("/")
+def index():
+    return render_template_string(HTML)
+
+
+@app.route("/preview", methods=["POST"])
+def preview():
+    from flask import Response
+    data = request.form
+    try:
+        name   = str(data.get("name", "")).strip() or "あなた"
+        year   = int(data["year"])
+        month  = int(data["month"])
+        day    = int(data["day"])
+        hour   = int(data.get("hour", 12))
+        minute = int(data.get("minute", 0))
+        city   = str(data.get("city", "新潟市")).strip()
+        lat    = float(data.get("lat") or 37.9161)
+        lng    = float(data.get("lng") or 139.0364)
+        tz     = "Asia/Tokyo"
+    except (KeyError, ValueError) as e:
+        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+
+    try:
+        html = generate_html_report(
+            name, year, month, day, hour, minute, city,
+            lat=lat, lng=lng, tz_str=tz
+        )
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>エラーが発生しました: {e}</p>", 500
+
+    return Response(html, mimetype="text/html; charset=utf-8")
+
+
+@app.route("/generate", methods=["POST"])
+def generate():
+    from flask import Response
+    data = request.get_json()
+    try:
+        name   = str(data.get("name", "")).strip() or "あなた"
+        year   = int(data["year"])
+        month  = int(data["month"])
+        day    = int(data["day"])
+        hour   = int(data.get("hour", 12))
+        minute = int(data.get("minute", 0))
+        city   = str(data.get("city", "新潟市")).strip()
+        lat    = float(data.get("lat") or 37.9161)
+        lng    = float(data.get("lng") or 139.0364)
+        tz     = "Asia/Tokyo"
+    except (KeyError, ValueError) as e:
+        return jsonify({"error": f"入力値が正しくありません: {e}"}), 400
+
+    try:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            output_path = generate_report(
+                name, year, month, day, hour, minute, city,
+                lat=lat, lng=lng, tz_str=tz, output_dir=tmpdir
+            )
+            with open(output_path, "rb") as f:
+                pptx_bytes = f.read()
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return jsonify({"error": str(e)}), 500
+
+    return Response(
+        pptx_bytes,
+        mimetype="application/vnd.openxmlformats-officedocument.presentationml.presentation",
+        headers={"Content-Disposition": f"attachment; filename=\"report.pptx\"; filename*=UTF-8''{__import__('urllib.parse',fromlist=['quote']).quote(name + '_星読みレポート.pptx')}"}
+    )
+
+
+@app.route("/solar_return", methods=["POST"])
+def solar_return():
+    from flask import Response
+    data = request.form
+    try:
+        name     = str(data.get("name", "")).strip() or "あなた"
+        year     = int(data["year"])
+        month    = int(data["month"])
+        day      = int(data["day"])
+        hour     = int(data.get("hour", 12))
+        minute   = int(data.get("minute", 0))
+        city     = str(data.get("city", "新潟市")).strip()
+        lat      = float(data.get("lat") or 37.9161)
+        lng      = float(data.get("lng") or 139.0364)
+        tz       = "Asia/Tokyo"
+        sr_year_raw = data.get("sr_year", "")
+        sr_year  = int(sr_year_raw) if sr_year_raw.strip().isdigit() else None
+    except (KeyError, ValueError) as e:
+        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+
+    try:
+        html = generate_solar_return_html(
+            name, year, month, day, hour, minute, city,
+            lat=lat, lng=lng, tz_str=tz,
+            target_year=sr_year
+        )
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>ソーラーリターン計算エラー: {e}</p>", 500
+
+    return Response(html, mimetype="text/html; charset=utf-8")
+
+
+@app.route("/lifecycle", methods=["POST"])
+def lifecycle():
+    from flask import Response
+    data = request.form
+    try:
+        name  = str(data.get("name","")).strip() or "あなた"
+        year  = int(data["year"])
+        month = int(data["month"])
+        day   = int(data["day"])
+        city  = str(data.get("city","")).strip()
+        lat   = float(data.get("lat") or 35.6762)
+        lng   = float(data.get("lng") or 139.6503)
+    except (KeyError, ValueError) as e:
+        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+    try:
+        html = generate_lifecycle_html(name, year, month, day, city, lat=lat, lng=lng)
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>ライフサイクル計算エラー: {e}</p>", 500
+    return Response(html, mimetype="text/html; charset=utf-8")
+
+
+# ============================================================
+# サンプルレポート（チラ見せ用）
+# ============================================================
+# 固定のダミーデータでレポートを生成し、購入前のプレビューを提供
+SAMPLE_DATA = {
+    "name":  "星野 空",
+    "year":  1985, "month": 4, "day": 15,
+    "hour":  14,  "minute": 30,
+    "city":  "東京",
+    "lat":   35.6762, "lng": 139.6503,
+}
+
+@app.route("/sample/natal")
+def sample_natal():
+    from flask import Response
+    s = SAMPLE_DATA
+    try:
+        html = generate_html_report(s["name"], s["year"], s["month"], s["day"],
+                                     s["hour"], s["minute"], s["city"],
+                                     lat=s["lat"], lng=s["lng"])
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>サンプル生成エラー: {e}</p>", 500
+    return Response(html, mimetype="text/html; charset=utf-8")
+
+@app.route("/sample/sr")
+def sample_sr():
+    from flask import Response
+    s = SAMPLE_DATA
+    try:
+        html = generate_solar_return_html(s["name"], s["year"], s["month"], s["day"],
+                                           s["hour"], s["minute"], s["city"],
+                                           lat=s["lat"], lng=s["lng"],
+                                           tz_str="Asia/Tokyo", target_year=2026)
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>サンプル生成エラー: {e}</p>", 500
+    return Response(html, mimetype="text/html; charset=utf-8")
+
+@app.route("/sample/lifecycle")
+def sample_lifecycle():
+    from flask import Response
+    s = SAMPLE_DATA
+    try:
+        html = generate_lifecycle_html(s["name"], s["year"], s["month"], s["day"],
+                                        s["city"], lat=s["lat"], lng=s["lng"])
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>サンプル生成エラー: {e}</p>", 500
+    return Response(html, mimetype="text/html; charset=utf-8")
+
+
+# ============================================================
+# 個人鑑定レポート
+# ============================================================
+
+@app.route("/my_reading")
+def my_reading():
+    filepath = "/Users/mitsuinatsuki/Documents/星読み/natsuki_chart_reading.html"
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            return f.read()
+    except Exception as e:
+        return f"<p>読み込みエラー: {e}</p>", 500
+
+@app.route("/hayate_reading")
+def hayate_reading():
+    filepath = "/Users/mitsuinatsuki/Documents/星読み/hayate_chart_reading.html"
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            return f.read()
+    except Exception as e:
+        return f"<p>読み込みエラー: {e}</p>", 500
+
+@app.route("/fuuki_reading")
+def fuuki_reading():
+    filepath = "/Users/mitsuinatsuki/Documents/星読み/fuuki_chart_reading.html"
+    try:
+        with open(filepath, "r", encoding="utf-8") as f:
+            return f.read()
+    except Exception as e:
+        return f"<p>読み込みエラー: {e}</p>", 500
+
+# ============================================================
+# 法的ページ（特商法・プライバシーポリシー・利用規約）
+# ============================================================
+
+_LEGAL_CSS = """
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap');
+  :root {
+    --base:#FAF6EE; --text-d:#3A3450; --text-m:#6B607A; --text-l:#9B91A8;
+    --gold:#B8985A; --gold-d:#8C6E2F; --border:#E8DDD0;
+    --serif:'Shippori Mincho',serif; --sans:'Noto Sans JP',sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--base); color: var(--text-d); font-family: var(--sans); line-height: 1.9; }
+  .legal-header {
+    background: white; border-bottom: 1px solid var(--border);
+    padding: 1.2rem 2rem; display: flex; align-items: center; gap: 1rem;
+  }
+  .legal-header a { font-family: var(--serif); font-size: 0.85rem; color: var(--gold-d);
+    letter-spacing: 0.18em; text-decoration: none; }
+  .legal-header a:hover { text-decoration: underline; }
+  .legal-header span { color: var(--text-l); font-size: 0.78rem; }
+  .legal-wrap { max-width: 760px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+  .legal-wrap h1 {
+    font-family: var(--serif); font-size: 1.35rem; font-weight: 500;
+    color: var(--text-d); letter-spacing: 0.12em;
+    padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+    margin-bottom: 2.5rem;
+  }
+  .legal-wrap h2 {
+    font-family: var(--serif); font-size: 0.95rem; font-weight: 600;
+    color: var(--gold-d); letter-spacing: 0.1em;
+    margin: 2.2rem 0 0.8rem;
+  }
+  .legal-wrap p, .legal-wrap li {
+    font-size: 0.875rem; color: var(--text-m); line-height: 1.95;
+    margin-bottom: 0.6rem;
+  }
+  .legal-wrap ul { padding-left: 1.4rem; }
+  .legal-table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+  .legal-table th, .legal-table td {
+    border: 1px solid var(--border); padding: 0.7rem 1rem;
+    font-size: 0.85rem; text-align: left; vertical-align: top;
+  }
+  .legal-table th {
+    background: #F4EFE6; color: var(--text-d);
+    font-weight: 500; width: 30%; white-space: nowrap;
+  }
+  .legal-table td { color: var(--text-m); }
+  .legal-updated { font-size: 0.75rem; color: var(--text-l); margin-top: 3rem; }
+  footer.legal-footer {
+    text-align: center; padding: 2.5rem; border-top: 1px solid var(--border);
+    font-size: 0.72rem; color: var(--text-l); letter-spacing: 0.08em;
+  }
+</style>
+"""
+
+_LEGAL_HEADER = """
+<header class="legal-header">
+  <a href="/">MOONLOG</a>
+  <span>&rsaquo;</span>
+  <span>{title}</span>
+</header>
+"""
+
+_LEGAL_FOOTER = """
+<footer class="legal-footer">
+  <a href="/legal/tokushoho" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">特定商取引法</a>
+  <a href="/legal/privacy" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">プライバシーポリシー</a>
+  <a href="/legal/terms" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">利用規約</a>
+  <p style="margin-top:1rem;">© 2026 MOONLOG. All rights reserved.</p>
+</footer>
+"""
+
+@app.route("/legal/tokushoho")
+def legal_tokushoho():
+    html = f"""<!DOCTYPE html><html lang="ja"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>特定商取引法に基づく表記 | MOONLOG</title>
+{_LEGAL_CSS}
+</head><body>
+{_LEGAL_HEADER.format(title="特定商取引法に基づく表記")}
+<div class="legal-wrap">
+  <h1>特定商取引法に基づく表記</h1>
+  <table class="legal-table">
+    <tr><th>販売事業者</th><td>三井夏紀</td></tr>
+    <tr><th>所在地</th><td>東京都（詳細住所は請求があった場合に遅滞なく開示いたします）</td></tr>
+    <tr><th>電話番号</th><td>請求があった場合に遅滞なく開示いたします</td></tr>
+    <tr><th>メールアドレス</th><td>{CONTACT_EMAIL}</td></tr>
+    <tr><th>販売URL</th><td>https://moonlog.jp</td></tr>
+    <tr><th>販売価格</th><td>各レポートページに表示の価格（税込）<br>ホロスコープ鑑定レポート ¥980 / 今年の星読みレポート ¥980 / ライフサイクルレポート ¥980</td></tr>
+    <tr><th>販売価格以外の費用</th><td>なし（インターネット接続料・通信料はお客様のご負担となります）</td></tr>
+    <tr><th>支払方法</th><td>クレジットカード（Visa / Mastercard / American Express / JCB）</td></tr>
+    <tr><th>支払時期</th><td>購入手続き完了時にお支払いが確定します</td></tr>
+    <tr><th>商品の引き渡し時期</th><td>決済完了後、即時にレポートを画面表示およびご登録メールアドレスにPDFをお届けします</td></tr>
+    <tr><th>返品・キャンセル</th><td>デジタルコンテンツの性質上、購入完了後の返金・キャンセルはお受けできません。ご不明な点はご購入前にお問い合わせください</td></tr>
+    <tr><th>動作環境</th><td>最新版の主要ブラウザ（Chrome / Safari / Firefox / Edge）推奨</td></tr>
+  </table>
+  <p class="legal-updated">最終更新日：2026年4月30日</p>
+</div>
+{_LEGAL_FOOTER}
+</body></html>"""
+    return html
+
+@app.route("/legal/privacy")
+def legal_privacy():
+    html = f"""<!DOCTYPE html><html lang="ja"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>プライバシーポリシー | MOONLOG</title>
+{_LEGAL_CSS}
+</head><body>
+{_LEGAL_HEADER.format(title="プライバシーポリシー")}
+<div class="legal-wrap">
+  <h1>プライバシーポリシー</h1>
+  <p>MOONLOG（以下「当サービス」）は、ご利用者の個人情報の保護を重要事項と考え、以下のとおりプライバシーポリシーを定めます。</p>
+
+  <h2>1. 収集する情報</h2>
+  <p>当サービスでは、レポート生成のために以下の情報を取得します。</p>
+  <ul>
+    <li>お名前（ニックネーム可）</li>
+    <li>生年月日・出生時刻・出生地</li>
+    <li>メールアドレス（有料レポートのお届けに使用）</li>
+    <li>決済情報（Stripe社のシステムを経由して処理し、当サービスはカード番号を保持しません）</li>
+  </ul>
+
+  <h2>2. 利用目的</h2>
+  <ul>
+    <li>ホロスコープ・レポートの生成および提供</li>
+    <li>購入レポートのメール送信</li>
+    <li>サービス改善・統計分析（個人を特定しない形式）</li>
+    <li>お問い合わせへの回答</li>
+  </ul>
+
+  <h2>3. 第三者への提供</h2>
+  <p>当サービスは、以下の場合を除き、取得した個人情報を第三者に提供しません。</p>
+  <ul>
+    <li>法令に基づく場合</li>
+    <li>決済処理のためStripe, Inc.へ必要情報を提供する場合</li>
+  </ul>
+
+  <h2>4. 安全管理</h2>
+  <p>個人情報への不正アクセス・紛失・破損・改ざんを防ぐため、適切なセキュリティ対策を講じます。</p>
+
+  <h2>5. Cookieの利用</h2>
+  <p>当サービスはセッション管理のためCookieを使用することがあります。ブラウザの設定によりCookieを無効化できますが、一部機能が制限される場合があります。</p>
+
+  <h2>6. 情報の開示・訂正・削除</h2>
+  <p>ご自身の個人情報の開示・訂正・削除をご希望の場合は、下記連絡先までお問い合わせください。</p>
+
+  <h2>7. お問い合わせ</h2>
+  <p>{CONTACT_EMAIL}</p>
+
+  <p class="legal-updated">最終更新日：2026年4月30日</p>
+</div>
+{_LEGAL_FOOTER}
+</body></html>"""
+    return html
+
+@app.route("/legal/terms")
+def legal_terms():
+    html = f"""<!DOCTYPE html><html lang="ja"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>利用規約 | MOONLOG</title>
+{_LEGAL_CSS}
+</head><body>
+{_LEGAL_HEADER.format(title="利用規約")}
+<div class="legal-wrap">
+  <h1>利用規約</h1>
+  <p>本利用規約（以下「本規約」）は、MOONLOG（以下「当サービス」）の利用条件を定めるものです。ご利用の前に必ずお読みください。</p>
+
+  <h2>第1条（適用）</h2>
+  <p>本規約は、当サービスを利用するすべてのお客様に適用されます。サービスを利用した時点で本規約に同意したものとみなします。</p>
+
+  <h2>第2条（サービスの内容）</h2>
+  <p>当サービスは、出生情報をもとにホロスコープデータを計算し、占星術の解釈テキストを自動生成・提供するデジタルコンテンツサービスです。占星術師による個別の対面・対話鑑定は含まれません。</p>
+
+  <h2>第3条（免責事項）</h2>
+  <ul>
+    <li>本レポートは占星術データに基づく参考情報であり、将来を確約・保証するものではありません</li>
+    <li>医療・法律・投資等の専門的判断の代替としてご利用いただくことはできません</li>
+    <li>出生時刻・場所の誤入力による結果の相違について、当サービスは責任を負いません</li>
+    <li>天災・通信障害等の不可抗力によるサービス停止・データ消失について免責とします</li>
+  </ul>
+
+  <h2>第4条（禁止事項）</h2>
+  <ul>
+    <li>生成されたレポートの無断転載・複製・販売</li>
+    <li>当サービスへの不正アクセス・過度な負荷をかける行為</li>
+    <li>他者を誹謗中傷する目的での利用</li>
+    <li>法令または公序良俗に反する行為</li>
+  </ul>
+
+  <h2>第5条（知的財産権）</h2>
+  <p>当サービスのデザイン・テキスト・ロゴ等の知的財産権は当サービス運営者に帰属します。生成されたレポートは購入者個人の利用に限り使用できます。</p>
+
+  <h2>第6条（料金・返金）</h2>
+  <p>有料レポートの価格は各ページに表示の金額（税込）とします。デジタルコンテンツの性質上、購入後の返金・キャンセルはお受けできません。</p>
+
+  <h2>第7条（規約の変更）</h2>
+  <p>当サービスは必要に応じて本規約を変更できるものとします。変更後のご利用をもって変更内容に同意したとみなします。</p>
+
+  <h2>第8条（準拠法・管轄）</h2>
+  <p>本規約は日本法に準拠し、東京地方裁判所を第一審の専属的合意管轄裁判所とします。</p>
+
+  <p class="legal-updated">最終更新日：2026年4月30日</p>
+</div>
+{_LEGAL_FOOTER}
+</body></html>"""
+    return html
+
+# ============================================================
+# 起動
+# ============================================================
+
+if __name__ == "__main__":
+    print("\n" + "="*50)
+    print("  ✨ 星読みレポート Web アプリ起動 ✨")
+    print("="*50)
+    print("\n  ブラウザで以下のURLを開いてください:")
+    print("  👉  http://localhost:8080")
+    print("\n  ファイルを保存するとサーバーが自動再起動します。")
+    print("  ブラウザで Cmd+R を押すだけで最新版が表示されます。\n")
+    app.run(debug=True, port=8080, host="127.0.0.1", use_reloader=True)

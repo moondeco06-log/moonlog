@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>野生動物保護管理事務所 | Wildlife Management Office</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+/* ─── Variables ─── */
+:root {
+  --bg:       #0B1812;
+  --bg2:      #111F18;
+  --bg3:      #172B1E;
+  --forest:   #1E3D2A;
+  --green:    #2D5C3D;
+  --green-l:  #4A7C5E;
+  --green-ll: #6FA883;
+  --leaf:     #9DC4AB;
+  --leaf-l:   #C4DEC9;
+  --cream:    #F2EDE3;
+  --cream2:   #E8E0D4;
+  --cream3:   #D8CFC0;
+  --warm:     #A87830;
+  --warm-l:   #C89848;
+  --warm-ll:  #E0B870;
+  --text-d:   #1A2E22;
+  --text-m:   #3A5042;
+  --text-l:   #6A8070;
+  --white:    #FFFFFF;
+  --serif:    "Noto Serif JP", serif;
+  --sans:     "Noto Sans JP", sans-serif;
+  --en:       "Inter", "Noto Sans JP", sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--sans); font-weight: 300; color: var(--text-d); background: var(--bg); }
+
+/* ─── Header / Nav ─── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 3.5rem;
+  height: 70px;
+  background: rgba(11,24,18,0.78);
+  backdrop-filter: blur(24px) saturate(1.6);
+  border-bottom: 1px solid rgba(74,124,94,0.14);
+}
+.logo {
+  display: flex; align-items: center; gap: 0.9rem;
+  text-decoration: none;
+}
+.logo-mark {
+  width: 36px; height: 36px;
+  border: 1.5px solid rgba(111,168,131,0.55);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--en); font-size: 0.75rem; font-weight: 600;
+  color: var(--green-ll);
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  position: relative;
+}
+.logo-mark::before {
+  content: '';
+  position: absolute; inset: 3px;
+  border-radius: 50%;
+  border: 0.5px solid rgba(111,168,131,0.25);
+}
+.logo-text { display: flex; flex-direction: column; gap: 0.1rem; }
+.logo-ja {
+  font-family: var(--serif); font-size: 0.82rem; font-weight: 400;
+  color: var(--leaf-l); letter-spacing: 0.08em; line-height: 1;
+}
+.logo-en {
+  font-family: var(--en); font-size: 0.62rem; font-weight: 400;
+  color: rgba(157,196,171,0.5); letter-spacing: 0.15em; line-height: 1;
+}
+.nav-center { display: flex; align-items: center; gap: 2.6rem; }
+.nav-center a {
+  font-size: 0.78rem; font-weight: 400;
+  color: rgba(242,237,227,0.52);
+  text-decoration: none; letter-spacing: 0.06em;
+  transition: color 0.25s;
+  position: relative;
+}
+.nav-center a::after {
+  content: '';
+  position: absolute; left: 0; bottom: -4px;
+  width: 0; height: 1px;
+  background: var(--green-ll);
+  transition: width 0.28s;
+}
+.nav-center a:hover { color: var(--leaf-l); }
+.nav-center a:hover::after { width: 100%; }
+.nav-right { display: flex; align-items: center; gap: 1.2rem; }
+.lang-toggle {
+  display: flex; align-items: center; gap: 0;
+  border: 1px solid rgba(74,124,94,0.35);
+  border-radius: 100px; overflow: hidden;
+  font-family: var(--en); font-size: 0.72rem;
+}
+.lang-toggle span {
+  padding: 0.3rem 0.7rem;
+  color: rgba(242,237,227,0.45);
+  cursor: pointer; transition: all 0.2s;
+  letter-spacing: 0.06em;
+}
+.lang-toggle span.active {
+  background: rgba(74,124,94,0.22);
+  color: var(--green-ll);
+}
+.btn-contact {
+  display: inline-flex; align-items: center;
+  padding: 0.5rem 1.3rem;
+  background: rgba(168,120,48,0.14);
+  border: 1px solid rgba(168,120,48,0.45);
+  border-radius: 100px;
+  color: var(--warm-ll); font-family: var(--sans);
+  font-size: 0.76rem; letter-spacing: 0.08em;
+  text-decoration: none; transition: all 0.28s;
+}
+.btn-contact:hover { background: rgba(168,120,48,0.26); border-color: rgba(200,152,72,0.7); }
+
+/* ─── Hero ─── */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 55fr 45fr;
+  align-items: center;
+  padding: 7rem 3.5rem 4rem;
+  position: relative; overflow: hidden;
+  gap: 3rem;
+  background: var(--bg);
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+}
+.bg-orb-1 {
+  position: absolute;
+  width: 70vw; height: 70vw;
+  top: -30%; left: -15%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(30,61,42,0.60) 0%, transparent 65%);
+  filter: blur(60px);
+  animation: orbDrift1 18s ease-in-out infinite;
+}
+.bg-orb-2 {
+  position: absolute;
+  width: 50vw; height: 50vw;
+  top: 20%; right: -10%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(45,92,61,0.35) 0%, transparent 65%);
+  filter: blur(80px);
+  animation: orbDrift2 22s ease-in-out infinite;
+}
+.bg-orb-3 {
+  position: absolute;
+  width: 40vw; height: 40vw;
+  bottom: -10%; left: 30%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168,120,48,0.10) 0%, transparent 65%);
+  filter: blur(80px);
+  animation: orbDrift3 26s ease-in-out infinite;
+}
+.bg-grid {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(74,124,94,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,124,94,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+@keyframes orbDrift1 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(4%,5%)} }
+@keyframes orbDrift2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-3%,4%)} }
+@keyframes orbDrift3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(2%,-3%)} }
+
+/* Hero Content */
+.hero-content {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: flex-start;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.4rem 1.1rem;
+  background: rgba(74,124,94,0.12);
+  border: 1px solid rgba(74,124,94,0.38);
+  border-radius: 100px;
+  font-family: var(--en); font-size: 0.72rem; font-weight: 500;
+  color: var(--green-ll); letter-spacing: 0.18em;
+  margin-bottom: 2.2rem;
+  animation: slideUp 0.9s ease both;
+}
+.hero-badge::before {
+  content: '';
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green-ll);
+  flex-shrink: 0;
+  animation: blink 2.5s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.hero-title {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 3.8vw, 3.2rem);
+  font-weight: 400; color: var(--cream);
+  line-height: 1.5; letter-spacing: 0.03em;
+  margin-bottom: 1.6rem;
+  animation: slideUp 0.9s 0.1s ease both;
+}
+.hero-title .accent {
+  color: var(--green-ll);
+}
+.hero-title .accent-warm {
+  color: var(--warm-ll);
+}
+.hero-rule {
+  width: 44px; height: 2px;
+  background: linear-gradient(90deg, var(--green-l), transparent);
+  margin-bottom: 1.6rem;
+  animation: slideUp 0.9s 0.2s ease both;
+}
+.hero-sub {
+  font-family: var(--sans); font-size: 0.88rem; font-weight: 300;
+  color: rgba(242,237,227,0.58);
+  letter-spacing: 0.06em; line-height: 2;
+  max-width: 440px;
+  margin-bottom: 2.8rem;
+  animation: slideUp 0.9s 0.3s ease both;
+}
+.hero-stats {
+  display: flex; align-items: stretch; gap: 0;
+  margin-bottom: 3rem;
+  border: 1px solid rgba(74,124,94,0.22);
+  border-radius: 6px; overflow: hidden;
+  animation: slideUp 0.9s 0.4s ease both;
+}
+.hero-stat {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 1rem 1.6rem;
+  gap: 0.3rem;
+  background: rgba(30,61,42,0.30);
+  border-right: 1px solid rgba(74,124,94,0.18);
+  transition: background 0.25s;
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat:hover { background: rgba(30,61,42,0.55); }
+.stat-num {
+  font-family: var(--en); font-size: 1.5rem; font-weight: 500;
+  color: var(--leaf); line-height: 1;
+}
+.stat-label {
+  font-size: 0.66rem; font-weight: 400;
+  color: rgba(242,237,227,0.42);
+  letter-spacing: 0.12em; white-space: nowrap;
+}
+.hero-ctas {
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+  animation: slideUp 0.9s 0.5s ease both;
+}
+.cta-main {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.95rem 2.2rem;
+  background: var(--green);
+  border: 1px solid var(--green-l);
+  border-radius: 4px; color: var(--cream);
+  font-family: var(--sans); font-size: 0.88rem;
+  font-weight: 400; letter-spacing: 0.1em;
+  text-decoration: none; transition: all 0.3s;
+}
+.cta-main:hover {
+  background: var(--green-l);
+  border-color: var(--green-ll);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(45,92,61,0.45);
+}
+.cta-main svg { transition: transform 0.25s; }
+.cta-main:hover svg { transform: translateX(3px); }
+.cta-sub {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.95rem 1.8rem;
+  background: transparent;
+  border: 1px solid rgba(242,237,227,0.16);
+  border-radius: 4px; color: rgba(242,237,227,0.62);
+  font-family: var(--sans); font-size: 0.88rem;
+  letter-spacing: 0.06em; text-decoration: none; transition: all 0.3s;
+}
+.cta-sub:hover { border-color: rgba(242,237,227,0.40); color: var(--cream); }
+.scroll-indicator {
+  position: absolute; bottom: 2.5rem; left: 3.5rem;
+  display: flex; align-items: center; gap: 0.8rem;
+  z-index: 1;
+}
+.scroll-line {
+  width: 1px; height: 40px;
+  background: linear-gradient(180deg, transparent, rgba(111,168,131,0.5));
+  animation: scrollPulse 2.5s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%,100%{opacity:0.4; transform:scaleY(1)} 50%{opacity:1; transform:scaleY(1.1)}
+}
+.scroll-label {
+  font-family: var(--en); font-size: 0.62rem; font-weight: 400;
+  color: rgba(242,237,227,0.28); letter-spacing: 0.25em;
+  writing-mode: vertical-rl;
+}
+
+/* Hero Visual */
+.hero-visual {
+  position: relative; z-index: 1;
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn 1.2s 0.3s ease both;
+}
+.field-map-wrap {
+  position: relative;
+  width: min(480px, 44vw);
+  aspect-ratio: 1;
+}
+.field-map {
+  width: 100%; height: 100%;
+  filter: drop-shadow(0 0 32px rgba(30,61,42,0.5));
+}
+.species-chip {
+  position: absolute;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.44rem 1rem;
+  background: rgba(11,24,18,0.88);
+  border: 1px solid rgba(74,124,94,0.38);
+  border-radius: 100px;
+  font-family: var(--sans); font-size: 0.74rem;
+  color: var(--leaf);
+  backdrop-filter: blur(12px);
+  white-space: nowrap;
+}
+.species-chip .sp-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--green-ll); flex-shrink: 0;
+}
+.sc-1 { top: 8%; left: -8%; animation: chipFloat 4.5s ease-in-out infinite; }
+.sc-2 { top: 40%; right: -10%; animation: chipFloat 4.5s 1.8s ease-in-out infinite; }
+.sc-3 { bottom: 14%; left: -5%; animation: chipFloat 4.5s 0.9s ease-in-out infinite; }
+.sc-4 { bottom: 38%; right: -6%; animation: chipFloat 4.5s 2.7s ease-in-out infinite; }
+@keyframes chipFloat {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-7px); }
+}
+
+/* ─── Trust Bar ─── */
+.trust-bar {
+  background: rgba(17,31,24,0.95);
+  border-top: 1px solid rgba(74,124,94,0.16);
+  border-bottom: 1px solid rgba(74,124,94,0.16);
+  padding: 0;
+}
+.trust-inner {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1200px; margin: 0 auto;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 1.2rem;
+  padding: 2rem 2.2rem;
+  border-right: 1px solid rgba(74,124,94,0.12);
+  transition: background 0.25s;
+}
+.trust-item:last-child { border-right: none; }
+.trust-item:hover { background: rgba(30,61,42,0.25); }
+.trust-icon {
+  width: 42px; height: 42px; flex-shrink: 0;
+  border: 1px solid rgba(74,124,94,0.35);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--green-ll);
+}
+.trust-body { display: flex; flex-direction: column; gap: 0.25rem; }
+.trust-title {
+  font-family: var(--serif); font-size: 0.88rem; font-weight: 400;
+  color: var(--leaf-l); letter-spacing: 0.06em;
+}
+.trust-desc {
+  font-size: 0.72rem; font-weight: 300;
+  color: rgba(242,237,227,0.40); letter-spacing: 0.05em; line-height: 1.6;
+}
+
+/* ─── Services Section ─── */
+#services {
+  padding: 6rem 3.5rem;
+  background: var(--cream);
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+.section-eyebrow {
+  font-family: var(--en); font-size: 0.72rem; font-weight: 500;
+  color: var(--green-l); letter-spacing: 0.3em;
+  margin-bottom: 0.9rem;
+}
+.section-title {
+  font-family: var(--serif); font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+  font-weight: 400; color: var(--text-d);
+  letter-spacing: 0.05em; margin-bottom: 0.8rem;
+}
+.section-rule {
+  width: 36px; height: 2px;
+  background: linear-gradient(90deg, var(--green), transparent);
+  margin: 0 auto 1.2rem;
+}
+.section-lead {
+  font-size: 0.84rem; color: var(--text-l);
+  max-width: 480px; margin: 0 auto;
+  line-height: 2; letter-spacing: 0.04em;
+}
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  max-width: 1200px; margin: 0 auto;
+}
+.service-card {
+  background: var(--white);
+  border: 1px solid var(--cream3);
+  border-radius: 8px;
+  padding: 2rem 1.6rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.service-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green), var(--green-ll));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s;
+}
+.service-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.10); }
+.service-card:hover::before { transform: scaleX(1); }
+.service-icon {
+  width: 52px; height: 52px;
+  background: rgba(45,92,61,0.08);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1.2rem;
+  color: var(--green);
+}
+.service-jp {
+  font-family: var(--serif); font-size: 1.1rem; font-weight: 400;
+  color: var(--text-d); letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+}
+.service-en {
+  font-family: var(--en); font-size: 0.7rem; font-weight: 400;
+  color: var(--green-l); letter-spacing: 0.14em;
+  margin-bottom: 0.9rem;
+}
+.service-desc {
+  font-size: 0.78rem; color: var(--text-m);
+  line-height: 1.9; letter-spacing: 0.04em;
+}
+.service-link {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  margin-top: 1.2rem;
+  font-size: 0.74rem; font-weight: 500;
+  color: var(--green); letter-spacing: 0.08em;
+  text-decoration: none; transition: gap 0.2s;
+}
+.service-link:hover { gap: 0.6rem; }
+
+/* ─── About Strip ─── */
+.about-strip {
+  background: var(--bg3);
+  padding: 5rem 3.5rem;
+  position: relative; overflow: hidden;
+}
+.about-strip::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(74,124,94,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,124,94,0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+.about-inner {
+  position: relative; z-index: 1;
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: center;
+}
+.about-content .section-eyebrow { text-align: left; margin-bottom: 1rem; }
+.about-content .section-title { text-align: left; color: var(--cream); }
+.about-content .section-rule { margin: 0 0 1.6rem; }
+.about-text {
+  font-size: 0.86rem; font-weight: 300;
+  color: rgba(242,237,227,0.62);
+  line-height: 2.2; letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+}
+.about-numbers {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.about-num-item { display: flex; flex-direction: column; gap: 0.3rem; }
+.about-num-val {
+  font-family: var(--en); font-size: 2rem; font-weight: 300;
+  color: var(--leaf); line-height: 1;
+}
+.about-num-unit { font-size: 0.75rem; color: var(--green-ll); }
+.about-num-label {
+  font-size: 0.72rem; color: rgba(242,237,227,0.40);
+  letter-spacing: 0.1em;
+}
+.about-visual {
+  display: flex; flex-direction: column; gap: 1rem;
+}
+.office-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+}
+.office-card {
+  background: rgba(30,61,42,0.40);
+  border: 1px solid rgba(74,124,94,0.20);
+  border-radius: 6px;
+  padding: 1.2rem 1.4rem;
+  transition: background 0.25s;
+}
+.office-card:hover { background: rgba(30,61,42,0.65); }
+.office-region {
+  font-family: var(--en); font-size: 0.65rem; font-weight: 500;
+  color: var(--green-ll); letter-spacing: 0.2em;
+  margin-bottom: 0.4rem;
+}
+.office-name {
+  font-family: var(--serif); font-size: 0.88rem;
+  color: var(--leaf-l); letter-spacing: 0.06em;
+}
+
+/* ─── Footer ─── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid rgba(74,124,94,0.12);
+  padding: 4rem 3.5rem 2.5rem;
+}
+.footer-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 3rem;
+}
+.footer-logo { margin-bottom: 1rem; }
+.footer-tagline {
+  font-size: 0.78rem; color: rgba(242,237,227,0.35);
+  line-height: 1.9; letter-spacing: 0.06em;
+}
+.footer-col-title {
+  font-family: var(--serif); font-size: 0.8rem;
+  color: var(--leaf); letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+.footer-links a {
+  font-size: 0.76rem; color: rgba(242,237,227,0.38);
+  text-decoration: none; letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--green-ll); }
+.footer-bottom {
+  max-width: 1200px; margin: 3rem auto 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(74,124,94,0.10);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.footer-copy {
+  font-family: var(--en); font-size: 0.72rem;
+  color: rgba(242,237,227,0.20); letter-spacing: 0.08em;
+}
+
+/* ─── Animations ─── */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1100px) {
+  .services-grid { grid-template-columns: repeat(2, 1fr); }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+  .trust-inner { grid-template-columns: repeat(2, 1fr); }
+  .trust-item:nth-child(2) { border-right: none; }
+}
+@media (max-width: 900px) {
+  #hero { grid-template-columns: 1fr; padding: 8rem 2rem 4rem; }
+  .hero-visual { display: none; }
+  .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+}
+@media (max-width: 660px) {
+  header { padding: 0 1.4rem; }
+  .nav-center { display: none; }
+  #hero { padding: 7rem 1.4rem 3rem; }
+  #services { padding: 4rem 1.4rem; }
+  .services-grid { grid-template-columns: 1fr; }
+  .trust-inner { grid-template-columns: 1fr; }
+  .trust-item { border-right: none; }
+  .footer-inner { grid-template-columns: 1fr; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ─── Header ─── -->
+<header>
+  <a class="logo" href="#">
+    <div class="logo-mark">WMO</div>
+    <div class="logo-text">
+      <span class="logo-ja">野生動物保護管理事務所</span>
+      <span class="logo-en">Wildlife Management Office</span>
+    </div>
+  </a>
+
+  <nav class="nav-center">
+    <a href="#">業務案内</a>
+    <a href="#">実績紹介</a>
+    <a href="#">会社案内</a>
+    <a href="#">採用情報</a>
+  </nav>
+
+  <div class="nav-right">
+    <div class="lang-toggle">
+      <span class="active">JP</span>
+      <span>EN</span>
+    </div>
+    <a href="#" class="btn-contact">お問合せ</a>
+  </div>
+</header>
+
+<!-- ─── Hero ─── -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="bg-orb-1"></div>
+    <div class="bg-orb-2"></div>
+    <div class="bg-orb-3"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <!-- Left: Content -->
+  <div class="hero-content">
+    <div class="hero-badge">Wildlife Management</div>
+
+    <h1 class="hero-title">
+      地域から政策へ。<br>
+      科学で支える、<br>
+      <span class="accent">人と野生動物</span>の<span class="accent-warm">共生</span>。
+    </h1>
+
+    <div class="hero-rule"></div>
+
+    <p class="hero-sub">
+      獣害対策から国の施策立案まで。<br>
+      フィールド調査と科学的知見を核に、<br>
+      地域と行政をつなぐ専門家集団です。
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="stat-num">4</span>
+        <span class="stat-label">調査対象種</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-num">4</span>
+        <span class="stat-label">全国拠点</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-num">100<small style="font-size:0.7em">名</small></span>
+        <span class="stat-label">規模の専門家</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-num">30<small style="font-size:0.7em">年</small></span>
+        <span class="stat-label">以上の実績</span>
+      </div>
+    </div>
+
+    <div class="hero-ctas">
+      <a href="#" class="cta-main">
+        業務案内を見る
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#" class="cta-sub">
+        お問合せ
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- Right: Field map visual -->
+  <div class="hero-visual">
+    <div class="field-map-wrap">
+      <svg class="field-map" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="mapbg" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#1E3D2A"/>
+            <stop offset="60%" stop-color="#142219"/>
+            <stop offset="100%" stop-color="#0B1812"/>
+          </radialGradient>
+          <clipPath id="mapcircle">
+            <circle cx="250" cy="250" r="242"/>
+          </clipPath>
+          <filter id="softshadow">
+            <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="rgba(74,124,94,0.3)"/>
+          </filter>
+        </defs>
+
+        <!-- Background -->
+        <circle cx="250" cy="250" r="245" fill="url(#mapbg)" stroke="rgba(74,124,94,0.30)" stroke-width="1"/>
+        <circle cx="250" cy="250" r="240" fill="none" stroke="rgba(74,124,94,0.10)" stroke-width="0.5"/>
+
+        <!-- Grid (clipped) -->
+        <g clip-path="url(#mapcircle)" stroke="rgba(74,124,94,0.10)" stroke-width="0.5" fill="none">
+          <line x1="50"  y1="0" x2="50"  y2="500"/>
+          <line x1="100" y1="0" x2="100" y2="500"/>
+          <line x1="150" y1="0" x2="150" y2="500"/>
+          <line x1="200" y1="0" x2="200" y2="500"/>
+          <line x1="250" y1="0" x2="250" y2="500"/>
+          <line x1="300" y1="0" x2="300" y2="500"/>
+          <line x1="350" y1="0" x2="350" y2="500"/>
+          <line x1="400" y1="0" x2="400" y2="500"/>
+          <line x1="450" y1="0" x2="450" y2="500"/>
+          <line x1="0" y1="50"  x2="500" y2="50"/>
+          <line x1="0" y1="100" x2="500" y2="100"/>
+          <line x1="0" y1="150" x2="500" y2="150"/>
+          <line x1="0" y1="200" x2="500" y2="200"/>
+          <line x1="0" y1="250" x2="500" y2="250"/>
+          <line x1="0" y1="300" x2="500" y2="300"/>
+          <line x1="0" y1="350" x2="500" y2="350"/>
+          <line x1="0" y1="400" x2="500" y2="400"/>
+          <line x1="0" y1="450" x2="500" y2="450"/>
+        </g>
+
+        <!-- Topographic contour lines -->
+        <g clip-path="url(#mapcircle)" fill="none" stroke-linecap="round">
+          <path d="M 120,380 Q 160,320 220,300 Q 270,282 320,290 Q 370,300 390,340 Q 405,370 380,400 Q 340,430 280,425 Q 200,418 160,400 Q 130,392 120,380 Z" stroke="rgba(74,124,94,0.22)" stroke-width="1"/>
+          <path d="M 145,340 Q 185,280 245,265 Q 295,250 340,260 Q 375,270 388,305 Q 395,330 370,360 Q 330,395 270,390 Q 195,383 158,360 Q 140,350 145,340 Z" stroke="rgba(74,124,94,0.18)" stroke-width="1"/>
+          <path d="M 170,305 Q 205,255 260,242 Q 308,230 348,242 Q 376,252 382,280 Q 385,305 360,330 Q 322,360 260,355 Q 195,350 172,325 Q 165,314 170,305 Z" stroke="rgba(74,124,94,0.22)" stroke-width="1"/>
+          <path d="M 195,275 Q 225,235 272,224 Q 315,214 348,228 Q 368,238 368,262 Q 366,285 342,308 Q 308,332 255,328 Q 198,322 190,298 Q 186,285 195,275 Z" stroke="rgba(74,124,94,0.18)" stroke-width="1"/>
+          <path d="M 80,180 Q 130,130 200,115 Q 255,102 310,115 Q 360,128 385,165 Q 405,195 390,230 Q 368,265 320,280" stroke="rgba(74,124,94,0.14)" stroke-width="0.8"/>
+          <path d="M 60,220 Q 90,160 170,140 Q 230,124 295,138 Q 350,150 375,190 Q 392,218 380,252" stroke="rgba(74,124,94,0.10)" stroke-width="0.8"/>
+        </g>
+
+        <!-- Survey rings -->
+        <circle cx="250" cy="250" r="190" fill="none" stroke="rgba(74,124,94,0.14)" stroke-width="0.8" stroke-dasharray="4 6"/>
+        <circle cx="250" cy="250" r="140" fill="none" stroke="rgba(74,124,94,0.12)" stroke-width="0.8" stroke-dasharray="3 7"/>
+        <circle cx="250" cy="250" r="90"  fill="none" stroke="rgba(74,124,94,0.16)" stroke-width="0.8" stroke-dasharray="2 8"/>
+
+        <!-- Compass crosshairs (subtle) -->
+        <g stroke="rgba(74,124,94,0.12)" stroke-width="0.5">
+          <line x1="250" y1="10" x2="250" y2="490"/>
+          <line x1="10" y1="250" x2="490" y2="250"/>
+        </g>
+
+        <!-- Compass labels -->
+        <text x="250" y="26" text-anchor="middle" fill="rgba(111,168,131,0.35)" font-family="Inter,sans-serif" font-size="9" letter-spacing="2">N</text>
+        <text x="250" y="482" text-anchor="middle" fill="rgba(111,168,131,0.25)" font-family="Inter,sans-serif" font-size="9" letter-spacing="2">S</text>
+        <text x="478" y="254" text-anchor="middle" fill="rgba(111,168,131,0.25)" font-family="Inter,sans-serif" font-size="9" letter-spacing="2">E</text>
+        <text x="20" y="254" text-anchor="middle" fill="rgba(111,168,131,0.25)" font-family="Inter,sans-serif" font-size="9" letter-spacing="2">W</text>
+
+        <!-- Survey point markers -->
+        <g stroke="rgba(157,196,171,0.55)" stroke-width="0.8" fill="none">
+          <!-- Marker 1 (crosshair) -->
+          <circle cx="155" cy="175" r="5"/>
+          <line x1="149" y1="175" x2="161" y2="175"/>
+          <line x1="155" y1="169" x2="155" y2="181"/>
+          <!-- Marker 2 -->
+          <circle cx="340" cy="155" r="5"/>
+          <line x1="334" y1="155" x2="346" y2="155"/>
+          <line x1="340" y1="149" x2="340" y2="161"/>
+          <!-- Marker 3 -->
+          <circle cx="390" cy="310" r="4"/>
+          <line x1="385" y1="310" x2="395" y2="310"/>
+          <line x1="390" y1="305" x2="390" y2="315"/>
+          <!-- Marker 4 -->
+          <circle cx="118" cy="320" r="4"/>
+          <line x1="113" y1="320" x2="123" y2="320"/>
+          <line x1="118" y1="315" x2="118" y2="325"/>
+        </g>
+        <!-- Scatter dots (observation points) -->
+        <g fill="rgba(111,168,131,0.40)">
+          <circle cx="195" cy="200" r="2.5"/>
+          <circle cx="310" cy="185" r="2"/>
+          <circle cx="362" cy="240" r="2.5"/>
+          <circle cx="175" cy="355" r="2"/>
+          <circle cx="290" cy="385" r="2.5"/>
+          <circle cx="410" cy="185" r="2"/>
+          <circle cx="135" cy="260" r="2"/>
+          <circle cx="218" cy="405" r="2"/>
+          <circle cx="360" cy="398" r="2.5"/>
+          <circle cx="430" cy="360" r="2"/>
+          <circle cx="90" cy="165" r="2"/>
+          <circle cx="442" cy="265" r="2"/>
+        </g>
+
+        <!-- Deer silhouette (center, facing right) -->
+        <g opacity="0.75">
+          <!-- Body -->
+          <ellipse cx="252" cy="300" rx="62" ry="30" fill="rgba(45,92,61,0.45)" stroke="rgba(74,124,94,0.70)" stroke-width="1"/>
+          <!-- Neck connecting body to head -->
+          <path d="M 295,286 Q 302,272 306,264 Q 300,256 294,260 Q 284,268 282,284 Z" fill="rgba(45,92,61,0.45)" stroke="rgba(74,124,94,0.70)" stroke-width="1" stroke-linejoin="round"/>
+          <!-- Head -->
+          <ellipse cx="314" cy="258" rx="19" ry="16" fill="rgba(45,92,61,0.45)" stroke="rgba(74,124,94,0.70)" stroke-width="1"/>
+          <!-- Nose/snout -->
+          <ellipse cx="332" cy="262" rx="8" ry="5" fill="rgba(45,92,61,0.35)" stroke="rgba(74,124,94,0.55)" stroke-width="1"/>
+          <!-- Eye -->
+          <circle cx="320" cy="254" r="2.5" fill="rgba(157,196,171,0.60)"/>
+          <!-- Ear -->
+          <path d="M 308,245 Q 303,232 308,228 Q 314,226 316,238" fill="rgba(45,92,61,0.35)" stroke="rgba(74,124,94,0.60)" stroke-width="1"/>
+          <!-- Front legs -->
+          <line x1="278" y1="328" x2="272" y2="370" stroke="rgba(74,124,94,0.75)" stroke-width="4" stroke-linecap="round"/>
+          <line x1="292" y1="329" x2="291" y2="372" stroke="rgba(74,124,94,0.75)" stroke-width="4" stroke-linecap="round"/>
+          <!-- Back legs -->
+          <line x1="224" y1="326" x2="218" y2="370" stroke="rgba(74,124,94,0.75)" stroke-width="4" stroke-linecap="round"/>
+          <line x1="238" y1="327" x2="238" y2="372" stroke="rgba(74,124,94,0.75)" stroke-width="4" stroke-linecap="round"/>
+          <!-- Tail -->
+          <ellipse cx="190" cy="295" rx="9" ry="6" fill="rgba(157,196,171,0.35)" stroke="rgba(74,124,94,0.55)" stroke-width="1"/>
+          <!-- Antlers (left branch) -->
+          <path d="M 308,244 L 304,222 M 304,222 L 298,208 M 304,222 L 293,215" stroke="rgba(74,124,94,0.80)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <!-- Antlers (right branch) -->
+          <path d="M 308,244 L 318,224 M 318,224 L 325,210 M 318,224 L 326,218" stroke="rgba(74,124,94,0.80)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          <!-- Antler tip dots -->
+          <circle cx="298" cy="208" r="2" fill="rgba(111,168,131,0.7)"/>
+          <circle cx="293" cy="215" r="1.5" fill="rgba(111,168,131,0.6)"/>
+          <circle cx="325" cy="210" r="2" fill="rgba(111,168,131,0.7)"/>
+          <circle cx="326" cy="218" r="1.5" fill="rgba(111,168,131,0.6)"/>
+        </g>
+
+        <!-- Forest floor / terrain line at bottom -->
+        <path d="M 10,410 Q 80,385 140,395 Q 200,405 255,390 Q 310,375 370,385 Q 420,393 490,375" fill="none" stroke="rgba(45,92,61,0.30)" stroke-width="1.5" clip-path="url(#mapcircle)"/>
+        <!-- Tree silhouettes (simplified) -->
+        <g clip-path="url(#mapcircle)" fill="rgba(30,61,42,0.50)" opacity="0.6">
+          <polygon points="100,395 112,365 124,395"/>
+          <polygon points="108,395 122,358 136,395"/>
+          <polygon points="390,388 404,355 418,388"/>
+          <polygon points="398,388 414,352 430,388"/>
+          <polygon points="420,390 432,362 444,390"/>
+        </g>
+      </svg>
+
+      <!-- Floating species chips -->
+      <div class="species-chip sc-1">
+        <span class="sp-dot"></span>
+        シカ調査
+      </div>
+      <div class="species-chip sc-2">
+        <span class="sp-dot" style="background:var(--warm-l)"></span>
+        クマ対策
+      </div>
+      <div class="species-chip sc-3">
+        <span class="sp-dot" style="background:var(--leaf-l)"></span>
+        サル被害
+      </div>
+      <div class="species-chip sc-4">
+        <span class="sp-dot" style="background:#a0c4a8"></span>
+        外来種管理
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span class="scroll-label">SCROLL</span>
+  </div>
+</section>
+
+<!-- ─── Trust Bar ─── -->
+<section class="trust-bar">
+  <div class="trust-inner">
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M10 6v4l2.5 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M5 3l-2 2M15 3l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="trust-body">
+        <div class="trust-title">フィールド調査</div>
+        <div class="trust-desc">全国での現地調査・<br>行動追跡・個体管理</div>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="3" y="4" width="14" height="12" rx="1.5" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M7 9h6M7 12h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M7 4V2M13 4V2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="trust-body">
+        <div class="trust-title">政策立案支援</div>
+        <div class="trust-desc">国・都道府県の<br>施策提言・法令対応</div>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M10 2l2 5h5l-4 3 1.5 5L10 12l-4.5 3L7 10 3 7h5L10 2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <div class="trust-body">
+        <div class="trust-title">学術研究</div>
+        <div class="trust-desc">学術論文・機関誌<br>FIELD NOTE 年4回発行</div>
+      </div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M3 16c2-3 5-4 7-4s5 1 7 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <circle cx="10" cy="8" r="3" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M14 8c0-2.2.9-4 2-4M6 8c0-2.2-.9-4-2-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="trust-body">
+        <div class="trust-title">地域・行政連携</div>
+        <div class="trust-desc">自治体と連携協定締結<br>地域課題に伴走</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Services ─── -->
+<section id="services">
+  <div class="section-header">
+    <div class="section-eyebrow">OUR EXPERTISE</div>
+    <h2 class="section-title">調査・管理の対象種</h2>
+    <div class="section-rule"></div>
+    <p class="section-lead">
+      シカ・クマ・サル・外来種。それぞれの生態と地域課題に応じた<br>
+      専門的なアプローチで、最適な解決策を提案します。
+    </p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <ellipse cx="14" cy="18" rx="8" ry="5" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="20" cy="14" r="3" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M19,12 L17,6 M17,6 L15,3 M17,6 L14,4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M19,12 L22,7 M22,7 L24,4 M22,7 L24,5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="service-jp">シカ（鹿）</div>
+      <div class="service-en">DEER</div>
+      <p class="service-desc">農林業被害・植生破壊への対応。生息密度調査から個体数管理計画の立案まで、一貫したシカ管理を支援します。</p>
+      <a href="#" class="service-link">
+        詳しく見る
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <ellipse cx="14" cy="17" rx="9" ry="7" stroke="currentColor" stroke-width="1.4"/>
+          <ellipse cx="14" cy="12" rx="5" ry="4" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M9,10 Q7,5 9,3 Q11,2 11,5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M19,10 Q21,5 19,3 Q17,2 17,5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="service-jp">クマ（熊）</div>
+      <div class="service-en">BEAR</div>
+      <p class="service-desc">人身被害防止・出没対応。ICTを活用した行動把握と、地域住民・行政と連携した出没対策プランを構築します。</p>
+      <a href="#" class="service-link">
+        詳しく見る
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="12" r="5" stroke="currentColor" stroke-width="1.4"/>
+          <ellipse cx="14" cy="21" rx="7" ry="4" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="8" cy="10" r="2" stroke="currentColor" stroke-width="1.2"/>
+          <circle cx="20" cy="10" r="2" stroke="currentColor" stroke-width="1.2"/>
+          <path d="M14,17 Q10,22 6,21 M14,17 Q18,22 22,21" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="service-jp">サル（猿）</div>
+      <div class="service-en">MONKEY</div>
+      <p class="service-desc">群れの行動圏調査・農業被害対策。追い払い指導から長期的な個体群管理まで、集落ぐるみの対策を推進します。</p>
+      <a href="#" class="service-link">
+        詳しく見る
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M5,22 Q8,14 14,12 Q20,10 23,22" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+          <path d="M10,22 Q11,16 14,14 Q17,12 18,22" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="2 2"/>
+          <circle cx="14" cy="9" r="3" stroke="currentColor" stroke-width="1.4"/>
+          <path d="M8,9 L5,6 M20,9 L23,6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="service-jp">外来種</div>
+      <div class="service-en">INVASIVE SPECIES</div>
+      <p class="service-desc">クリハラリスをはじめとする外来種の分布調査・防除計画。在来生態系の保全に向けた総合的な管理戦略を提案します。</p>
+      <a href="#" class="service-link">
+        詳しく見る
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── About Strip ─── -->
+<section class="about-strip">
+  <div class="about-inner">
+    <div class="about-content">
+      <div class="section-eyebrow">ABOUT WMO</div>
+      <h2 class="section-title">地域から国へ。<br>科学でつなぐ専門集団。</h2>
+      <div class="section-rule"></div>
+      <p class="about-text">
+        野生動物保護管理事務所（WMO）は、全国各地のフィールドに根ざした
+        調査・研究を通じて、獣害対策と生態系保全の両立を目指しています。
+        市区町村の現場対応から、国・都道府県レベルの施策立案まで、
+        科学的エビデンスに基づいた専門的サポートを提供します。
+      </p>
+      <div class="about-numbers">
+        <div class="about-num-item">
+          <div>
+            <span class="about-num-val">4</span>
+            <span class="about-num-unit">拠点</span>
+          </div>
+          <div class="about-num-label">全国ネットワーク</div>
+        </div>
+        <div class="about-num-item">
+          <div>
+            <span class="about-num-val">100</span>
+            <span class="about-num-unit">名</span>
+          </div>
+          <div class="about-num-label">専門スタッフ</div>
+        </div>
+        <div class="about-num-item">
+          <div>
+            <span class="about-num-val">30+</span>
+            <span class="about-num-unit">年</span>
+          </div>
+          <div class="about-num-label">のフィールド実績</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="office-grid">
+        <div class="office-card">
+          <div class="office-region">KANTO</div>
+          <div class="office-name">関東事務所</div>
+        </div>
+        <div class="office-card">
+          <div class="office-region">KANSAI</div>
+          <div class="office-name">関西事務所</div>
+        </div>
+        <div class="office-card">
+          <div class="office-region">HIROSHIMA</div>
+          <div class="office-name">広島事務所</div>
+        </div>
+        <div class="office-card">
+          <div class="office-region">FUKUSHIMA</div>
+          <div class="office-name">福島事務所</div>
+        </div>
+      </div>
+      <div style="margin-top:1.2rem; padding:1.4rem 1.6rem; background:rgba(30,61,42,0.35); border:1px solid rgba(74,124,94,0.20); border-radius:6px;">
+        <div style="font-family:var(--en); font-size:0.68rem; color:var(--green-ll); letter-spacing:0.2em; margin-bottom:0.5rem;">FIELD NOTE</div>
+        <div style="font-family:var(--serif); font-size:0.86rem; color:var(--leaf-l); margin-bottom:0.3rem;">機関誌『FIELD NOTE』</div>
+        <div style="font-size:0.74rem; color:rgba(242,237,227,0.40); letter-spacing:0.05em; line-height:1.7;">
+          年4回発行。研究員が現場の発見や調査結果を<br>わかりやすくお伝えします。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Footer ─── -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">
+        <a class="logo" href="#" style="margin-bottom:0.8rem; display:inline-flex;">
+          <div class="logo-mark">WMO</div>
+          <div class="logo-text">
+            <span class="logo-ja">野生動物保護管理事務所</span>
+            <span class="logo-en">Wildlife Management Office</span>
+          </div>
+        </a>
+      </div>
+      <p class="footer-tagline">
+        地域の獣害対策から国の施策立案まで。<br>
+        科学と現場をつなぐ、野生動物管理の専門集団。
+      </p>
+    </div>
+    <div>
+      <div class="footer-col-title">業務案内</div>
+      <ul class="footer-links">
+        <li><a href="#">シカ調査・管理</a></li>
+        <li><a href="#">クマ対策</a></li>
+        <li><a href="#">サル被害対策</a></li>
+        <li><a href="#">外来種管理</a></li>
+        <li><a href="#">政策立案支援</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">会社情報</div>
+      <ul class="footer-links">
+        <li><a href="#">会社概要</a></li>
+        <li><a href="#">実績紹介</a></li>
+        <li><a href="#">研究活動</a></li>
+        <li><a href="#">FIELD NOTE</a></li>
+        <li><a href="#">フォトブログ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">採用・お問合せ</div>
+      <ul class="footer-links">
+        <li><a href="#">採用情報</a></li>
+        <li><a href="#">先輩の声</a></li>
+        <li><a href="#">お問合せ</a></li>
+        <li><a href="#">アクセス</a></li>
+        <li><a href="#">プライバシーポリシー</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">&copy; Wildlife Management Office Inc. All rights reserved.</span>
+    <div style="display:flex; gap:1.5rem;">
+      <a href="#" style="font-size:0.72rem; color:rgba(242,237,227,0.22); text-decoration:none; letter-spacing:0.06em;">プライバシーポリシー</a>
+      <a href="#" style="font-size:0.72rem; color:rgba(242,237,227,0.22); text-decoration:none; letter-spacing:0.06em;">サイトマップ</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="320mm" height="780mm"
+     viewBox="0 0 320 780">
+
+  <title>ジャケット ショールカラー見返し</title>
+  <rect width="320" height="780" fill="white"/>
+
+  <!-- ========================================
+       パーツA：前見返し × 2枚
+       左側エリア  x=10〜110
+       ======================================== -->
+
+  <!-- パーツA タイトル枠 -->
+  <rect x="5" y="5" width="108" height="48" fill="#f5f5f5" stroke="#bbb" stroke-width="0.8" rx="3"/>
+  <text x="9" y="19" font-size="10" font-weight="bold" font-family="sans-serif">パーツA：前見返し</text>
+  <text x="9" y="33" font-size="9" font-family="sans-serif">× 2枚（左右対称）</text>
+  <text x="9" y="46" font-size="8" font-family="sans-serif" fill="#666">縫い代 10mm込み</text>
+
+  <!-- 前見返し本体（台形：上9cm、下3cm、丈67cm） -->
+  <path d="
+    M 10,60
+    L 100,60
+    Q 90,210 75,310
+    Q 60,410 55,430
+    Q 45,590 35,730
+    L 10,730
+    Z
+  " fill="none" stroke="black" stroke-width="1.5"/>
+
+  <!-- 折り返し線（CF辺） -->
+  <line x1="10" y1="60" x2="10" y2="730"
+        stroke="#555" stroke-width="1" stroke-dasharray="8,4"/>
+
+  <!-- 折り返し線ラベル -->
+  <text x="16" y="420" font-size="8" font-family="sans-serif" fill="#555"
+        transform="rotate(-90,16,420)">折り返し線（前中心に縫い付け）</text>
+
+  <!-- 地の目 -->
+  <line x1="55" y1="100" x2="55" y2="690"
+        stroke="black" stroke-width="0.8" stroke-dasharray="10,5"/>
+  <polygon points="55,96 51,110 59,110" fill="black"/>
+  <polygon points="55,694 51,680 59,680" fill="black"/>
+  <text x="62" y="412" font-size="9" font-family="sans-serif">地の目</text>
+
+  <!-- 寸法線：肩幅（上辺 9cm） -->
+  <line x1="10" y1="55" x2="100" y2="55" stroke="#999" stroke-width="0.5"/>
+  <line x1="10" y1="53" x2="10" y2="57" stroke="#999" stroke-width="0.5"/>
+  <line x1="100" y1="53" x2="100" y2="57" stroke="#999" stroke-width="0.5"/>
+  <text x="34" y="53" font-size="8" fill="#777">← 9cm →</text>
+
+  <!-- 寸法線：裾幅（下辺 3cm） -->
+  <line x1="10" y1="738" x2="35" y2="738" stroke="#999" stroke-width="0.5"/>
+  <line x1="10" y1="736" x2="10" y2="740" stroke="#999" stroke-width="0.5"/>
+  <line x1="35" y1="736" x2="35" y2="740" stroke="#999" stroke-width="0.5"/>
+  <text x="10" y="750" font-size="8" fill="#777">3cm</text>
+
+  <!-- 寸法線：丈（67cm） -->
+  <line x1="3" y1="60" x2="3" y2="730" stroke="#999" stroke-width="0.5"/>
+  <line x1="1" y1="60" x2="5" y2="60" stroke="#999" stroke-width="0.5"/>
+  <line x1="1" y1="730" x2="5" y2="730" stroke="#999" stroke-width="0.5"/>
+  <text x="9" y="410" font-size="8" fill="#777"
+        transform="rotate(-90,9,410)">見返し丈 約67cm</text>
+
+  <!-- ========================================
+       パーツB：後ろカラー × 2枚
+       右側エリア  x=130〜210  y=60〜120
+       ======================================== -->
+
+  <!-- パーツB タイトル枠 -->
+  <rect x="122" y="5" width="110" height="48" fill="#f5f5f5" stroke="#bbb" stroke-width="0.8" rx="3"/>
+  <text x="126" y="19" font-size="10" font-weight="bold" font-family="sans-serif">パーツB：後ろカラー</text>
+  <text x="126" y="33" font-size="9" font-family="sans-serif">× 2枚（CB接ぎ）</text>
+  <text x="126" y="46" font-size="8" font-family="sans-serif" fill="#666">縫い代 10mm込み</text>
+
+  <!-- 後ろカラー本体（幅7.5cm、高さ6cm、ネックカーブあり） -->
+  <path d="
+    M 130,65
+    Q 167,60 205,66
+    L 205,126
+    Q 167,130 130,126
+    Z
+  " fill="none" stroke="black" stroke-width="1.5"/>
+
+  <!-- CBノッチ（左辺）: 輪郭線(x=130)を挟む水平ノッチ -->
+  <line x1="125" y1="96" x2="137" y2="96" stroke="black" stroke-width="2"/>
+  <text x="138" y="99" font-size="8" fill="#333">CB</text>
+
+  <!-- 肩ノッチ（右辺） -->
+  <line x1="203" y1="80" x2="209" y2="92" stroke="black" stroke-width="2"/>
+  <text x="211" y="90" font-size="8" fill="#333">肩</text>
+
+  <!-- 地の目（縦） -->
+  <line x1="167" y1="68" x2="167" y2="122"
+        stroke="black" stroke-width="0.8" stroke-dasharray="8,4"/>
+  <polygon points="167,64 163,76 171,76" fill="black"/>
+  <polygon points="167,126 163,114 171,114" fill="black"/>
+
+  <!-- 寸法線：横幅（7.5cm） -->
+  <line x1="130" y1="58" x2="205" y2="58" stroke="#999" stroke-width="0.5"/>
+  <line x1="130" y1="56" x2="130" y2="60" stroke="#999" stroke-width="0.5"/>
+  <line x1="205" y1="56" x2="205" y2="60" stroke="#999" stroke-width="0.5"/>
+  <text x="147" y="56" font-size="8" fill="#777">← 7.5cm →</text>
+
+  <!-- 寸法線：縦幅（6cm） -->
+  <line x1="122" y1="65" x2="122" y2="126" stroke="#999" stroke-width="0.5"/>
+  <line x1="120" y1="65" x2="124" y2="65" stroke="#999" stroke-width="0.5"/>
+  <line x1="120" y1="126" x2="124" y2="126" stroke="#999" stroke-width="0.5"/>
+  <text x="115" y="99" font-size="8" fill="#777"
+        transform="rotate(-90,115,99)">カラー幅 6cm</text>
+
+  <!-- パーツB 補足説明 -->
+  <text x="126" y="148" font-size="9" font-family="sans-serif" fill="#333">CBで2枚を縫い合わせ後、</text>
+  <text x="126" y="161" font-size="9" font-family="sans-serif" fill="#333">後ろネックラインに縫い付ける</text>
+  <text x="126" y="174" font-size="8" font-family="sans-serif" fill="#888">上辺（ネック側）にカーブあり</text>
+
+  <!-- ========================================
+       完成イメージ図
+       ======================================== -->
+  <text x="126" y="205" font-size="11" font-weight="bold" font-family="sans-serif">【完成イメージ】</text>
+
+  <!-- ジャケット前面略図 -->
+  <rect x="130" y="215" width="110" height="155" fill="none" stroke="#aaa" stroke-width="1"/>
+
+  <!-- ラペル左 -->
+  <path d="M 185,215 Q 150,232 138,285 L 130,285 L 130,215 Z"
+        fill="#d8d8d8" stroke="#888" stroke-width="0.8"/>
+  <!-- ラペル右 -->
+  <path d="M 185,215 Q 220,232 232,285 L 240,285 L 240,215 Z"
+        fill="#d8d8d8" stroke="#888" stroke-width="0.8"/>
+  <!-- 後ろカラー -->
+  <path d="M 163,215 Q 185,206 207,215 Q 207,224 185,222 Q 163,224 163,215 Z"
+        fill="#b8b8b8" stroke="#777" stroke-width="0.8"/>
+
+  <text x="130" y="384" font-size="8" fill="#555">濃灰：パーツB（後ろカラー）</text>
+  <text x="130" y="397" font-size="8" fill="#555">淡灰：パーツA（前見返し→ラペル）</text>
+  <text x="130" y="410" font-size="8" fill="#555">折り返すとショールカラーになる</text>
+
+  <!-- ========================================
+       縫い合わせ手順
+       ======================================== -->
+  <rect x="5" y="758" width="310" height="18" fill="#f0f0f0" stroke="#ccc" stroke-width="0.8" rx="2"/>
+  <text x="9" y="770" font-size="8" font-family="sans-serif" fill="#333">
+    縫い順：①CB接ぎ → ②肩で前見返しと接続 → ③前中心＋後ろネックに縫い付け → ④折り返してラペル完成
+  </text>
+
+</svg>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="310mm" height="810mm"
+     viewBox="0 0 310 810">
+
+  <title>ジャケット 後ろ身頃</title>
+  <rect width="310" height="810" fill="white"/>
+
+  <!-- ===== メイン輪郭 ===== -->
+  <!-- BNP(10,35) → 首カーブ → SNP(80,10) → 肩線 → SP(200,30)
+       → 袖ぐり → UA(252,248) → 脇線 → 裾(278,760) → 後ろ中心裾(10,760) → 閉じる -->
+  <path d="
+    M 10,35
+    Q 42,12 80,10
+    L 200,30
+    Q 220,58 246,150
+    Q 252,198 252,248
+    L 248,448
+    Q 256,520 263,592
+    L 278,760
+    L 10,760
+    Z
+  " fill="none" stroke="black" stroke-width="1.5"/>
+
+  <!-- 袖ぐりノッチ（袖付け合印）：曲線上 approx (245,148) を挟んで垂直方向にノッチ -->
+  <line x1="238" y1="148" x2="255" y2="148" stroke="black" stroke-width="2"/>
+
+  <!-- 地の目線（縦） -->
+  <line x1="140" y1="80" x2="140" y2="710"
+        stroke="black" stroke-width="0.8" stroke-dasharray="12,5"/>
+  <polygon points="140,75 136,90 144,90" fill="black"/>
+  <polygon points="140,715 136,700 144,700" fill="black"/>
+  <text x="148" y="400" font-size="10" font-family="sans-serif">地の目</text>
+
+  <!-- ===== ラベル ===== -->
+  <text x="30" y="360" font-size="16" font-weight="bold" font-family="sans-serif">後ろ身頃</text>
+  <text x="30" y="385" font-size="12" font-family="sans-serif">× 2枚（左右対称）</text>
+  <text x="30" y="405" font-size="10" font-family="sans-serif">縫い代 10mm込み</text>
+  <text x="30" y="420" font-size="10" font-family="sans-serif">裾のみ 15mm込み</text>
+  <text x="30" y="438" font-size="10" font-family="sans-serif">素材：ポンチニット</text>
+
+  <!-- ===== 寸法線 ===== -->
+  <!-- 後ろ丈 -->
+  <line x1="6" y1="30" x2="6" y2="760" stroke="#999" stroke-width="0.5"/>
+  <line x1="4" y1="30"  x2="8" y2="30"  stroke="#999" stroke-width="0.5"/>
+  <line x1="4" y1="760" x2="8" y2="760" stroke="#999" stroke-width="0.5"/>
+  <text x="10" y="410" font-size="8" font-family="sans-serif" fill="#777"
+        transform="rotate(-90,10,410)">後ろ丈 約73cm（SA込）</text>
+
+  <!-- 肩幅（半分） -->
+  <line x1="80" y1="7" x2="200" y2="7" stroke="#999" stroke-width="0.5"/>
+  <line x1="80" y1="5"  x2="80" y2="9"  stroke="#999" stroke-width="0.5"/>
+  <line x1="200" y1="5" x2="200" y2="9" stroke="#999" stroke-width="0.5"/>
+  <text x="120" y="16" font-size="8" font-family="sans-serif" fill="#777">←肩12cm→</text>
+
+  <!-- バスト幅（半分） -->
+  <line x1="10" y1="252" x2="252" y2="252" stroke="#bbb" stroke-width="0.5" stroke-dasharray="4,3"/>
+  <text x="100" y="265" font-size="8" font-family="sans-serif" fill="#bbb">バスト半身 24cm</text>
+
+  <!-- 裾幅 -->
+  <line x1="10" y1="774" x2="278" y2="774" stroke="#bbb" stroke-width="0.5" stroke-dasharray="4,3"/>
+  <text x="100" y="786" font-size="8" font-family="sans-serif" fill="#bbb">裾半身 約27cm</text>
+
+  <!-- ===== 点ラベル ===== -->
+  <!-- BNP(10,35): label placed to the right and slightly below to avoid path overlap -->
+  <text x="14" y="44" font-size="7" fill="#aaa">BNP</text>
+  <!-- SNP(80,10): label placed below the point -->
+  <text x="70" y="20" font-size="7" fill="#aaa">SNP</text>
+  <!-- SP(200,30): label placed below to avoid overlapping shoulder line -->
+  <text x="196" y="40" font-size="7" fill="#aaa">SP</text>
+  <!-- UA(252,248): label placed to the right -->
+  <text x="255" y="252" font-size="7" fill="#aaa">UA</text>
+
+  <!-- 袖ぐりノッチラベル -->
+  <text x="258" y="151" font-size="7" fill="#aaa">AH</text>
+
+  <!-- ===== 注意書き ===== -->
+  <text x="10" y="800" font-size="8" font-family="sans-serif" fill="#666">
+    ※後ろ中心（左辺）は縫い代込み。わ取り不可。左右2枚裁断。
+  </text>
+
+</svg>

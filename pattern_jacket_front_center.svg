@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="260mm" height="810mm"
+     viewBox="0 0 260 810">
+
+  <title>ジャケット 前中心パネル</title>
+  <rect width="260" height="810" fill="white"/>
+
+  <!-- ===== メイン輪郭 ===== -->
+  <!-- 前中心(CF)=左辺、プリンセスシーム=右辺
+       FNP(10,112) → 首カーブ → SNP(80,10) → 肩線 → SP(195,30)
+       → 袖ぐり（SPからPSノッチまで） → PS線 → 裾CF(10,760)
+  -->
+  <path d="
+    M 10,112
+    Q 28,32 80,10
+    L 195,30
+    Q 215,56 205,102
+    Q 192,132 133,157
+    Q 120,205 112,250
+    L 107,448
+    Q 109,520 112,592
+    L 117,760
+    L 10,760
+    Z
+  " fill="none" stroke="black" stroke-width="1.5"/>
+
+  <!-- PSノッチ（プリンセスシーム合印）
+       曲線 Q 192,132 133,157 の終端付近 (133,157) を挟むノッチ
+       法線方向に沿って配置 -->
+  <line x1="125" y1="151" x2="141" y2="163" stroke="black" stroke-width="2"/>
+
+  <!-- 地の目線（縦） -->
+  <line x1="60" y1="150" x2="60" y2="710"
+        stroke="black" stroke-width="0.8" stroke-dasharray="12,5"/>
+  <polygon points="60,145 56,160 64,160" fill="black"/>
+  <polygon points="60,715 56,700 64,700" fill="black"/>
+  <text x="65" y="440" font-size="10" font-family="sans-serif">地の目</text>
+
+  <!-- ===== ラベル ===== -->
+  <text x="15" y="310" font-size="15" font-weight="bold" font-family="sans-serif">前中心パネル</text>
+  <text x="15" y="332" font-size="12" font-family="sans-serif">× 2枚（左右対称）</text>
+  <text x="15" y="352" font-size="10" font-family="sans-serif">縫い代 10mm込み</text>
+  <text x="15" y="368" font-size="10" font-family="sans-serif">裾のみ 15mm込み</text>
+
+  <!-- 前中心ラベル（左辺）: rotate around x=12 so text stays within viewBox -->
+  <text x="12" y="450" font-size="9" font-family="sans-serif" fill="#555"
+        transform="rotate(-90,12,450)">← 前中心（CF）縫い線</text>
+
+  <!-- PSラベル（右辺）: placed beside the princess seam path, slightly right of the curve -->
+  <text x="122" y="490" font-size="9" font-family="sans-serif" fill="#555"
+        transform="rotate(10,122,490)">プリンセスシーム →</text>
+
+  <!-- ===== 寸法線 ===== -->
+  <!-- バスト幅（CF〜PS） -->
+  <line x1="10" y1="253" x2="112" y2="253" stroke="#bbb" stroke-width="0.5" stroke-dasharray="4,3"/>
+  <text x="30" y="265" font-size="8" font-family="sans-serif" fill="#bbb">CF〜PS 約10cm</text>
+
+  <!-- 前丈: move dimension line to x=6 and rotate text around x=11 to avoid clipping -->
+  <line x1="6" y1="112" x2="6" y2="760" stroke="#999" stroke-width="0.5"/>
+  <line x1="4" y1="112" x2="8" y2="112" stroke="#999" stroke-width="0.5"/>
+  <line x1="4" y1="760" x2="8" y2="760" stroke="#999" stroke-width="0.5"/>
+  <text x="11" y="450" font-size="8" font-family="sans-serif" fill="#777"
+        transform="rotate(-90,11,450)">前丈 約65cm（FNP〜裾）</text>
+
+  <!-- ===== 点ラベル ===== -->
+  <!-- FNP(10,112): label to the right, below the point to avoid path -->
+  <text x="14" y="122" font-size="7" fill="#aaa">FNP</text>
+  <!-- SNP(80,10): label below the point -->
+  <text x="70" y="20" font-size="7" fill="#aaa">SNP</text>
+  <!-- SP(195,30): label below to avoid shoulder line overlap -->
+  <text x="182" y="41" font-size="7" fill="#aaa">SP</text>
+  <!-- PS-B(112,250): label to the right -->
+  <text x="115" y="255" font-size="7" fill="#aaa">PS-B</text>
+
+  <!-- ===== ショールカラー案内 ===== -->
+  <rect x="10" y="670" width="240" height="50" fill="#f5f5f5" stroke="#ccc" stroke-width="0.5"/>
+  <text x="15" y="685" font-size="9" font-family="sans-serif" fill="#444">【ショールカラー見返し】</text>
+  <text x="15" y="700" font-size="8" font-family="sans-serif" fill="#666">このパーツの前辺から9cm幅で見返しを作成。</text>
+  <text x="15" y="713" font-size="8" font-family="sans-serif" fill="#666">別紙「ショールカラー型紙」を参照してください。</text>
+
+  <!-- ===== 注意書き ===== -->
+  <text x="10" y="800" font-size="8" font-family="sans-serif" fill="#666">
+    ※左辺=前中心（縫い代込）。右辺=プリンセスシーム（縫い代込）。
+  </text>
+
+</svg>

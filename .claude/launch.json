@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tara-astrology",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["/Users/mitsuinatsuki/Documents/code_yousai/app.py"],
+      "port": 8080
+    }
+  ]
+}
