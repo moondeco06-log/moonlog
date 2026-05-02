@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+venv/
+.env
+
+# Claude settings
+.claude/
+
+# Project files unrelated to the web app
+*.svg
+*.pdf
+*.pptx
+*.csv
+*.JPG
+*.jpg
+*.jpeg
+*.png
+cache/
+cutting_layout.svg
+fabric_purchases.csv
+wmo_top_design*.html
+printing_guide.pdf
+start.command
+pattern_*
