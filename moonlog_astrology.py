@@ -5956,8 +5956,8 @@ def generate_lifecycle_html(name, year, month, day, city, lat=None, lng=None):
         toc_rows += (
             f'<a href="#{esc(ev["id"])}" class="toc-row{" toc-current" if is_cur else ""}">'
             f'<span class="toc-icon">{esc(ev["icon"])}</span>'
-            f'<span class="toc-label">{ev_type_label}{esc(ev["title"])}</span>'
-            f'<span class="toc-age">{esc(age_str)}</span>'
+            f'<span class="toc-label">{esc(age_str)}</span>'
+            f'<span class="toc-age">{ev_type_label}{esc(ev["title"])}</span>'
             f'<span class="toc-arrow">›</span>'
             f'</a>'
         )
