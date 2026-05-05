@@ -57,12 +57,12 @@ HTML = """<!DOCTYPE html>
 /* ─── CSS 変数（C案：和モダン・インディゴ） ─── */
 :root {
   --base:       #F5F2EC;   /* 生成り（ベース）*/
-  --base-warm:  #EDEAE2;   /* やや濃い生成り（中間）*/
-  --base-lav:   #E8EBF2;   /* 淡いインディゴがかった白（中間）*/
-  --base-soft:  #F8F6F1;   /* やわらかいオフホワイト */
+  --base-warm:  #EEE8DC;   /* 温かみのあるクリーム（中間）*/
+  --base-lav:   #EDE7DB;   /* 温かいアイボリー（中間・旧blue-gray→warm）*/
+  --base-soft:  #F8F5F0;   /* やわらかいオフホワイト */
   --white:      #FFFFFF;
-  --border:     #D8D4CA;   /* 落ち着いたグレーベージュ枠線 */
-  --border-l:   #E8E4DC;
+  --border:     #D8D0C4;   /* 温かみのあるベージュ枠線 */
+  --border-l:   #E8E2D8;
   --gold:       #2C3E6B;   /* メインアクセント：インディゴブルー */
   --gold-l:     #4A5E8F;   /* 明るめインディゴ */
   --gold-d:     #1A2847;   /* 濃いインディゴ */
