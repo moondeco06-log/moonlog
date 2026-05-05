@@ -5,8 +5,11 @@ Flask で起動し、ブラウザからフォーム入力してHTMLまたはPPTX
 """
 
 import os, io, tempfile, warnings, threading
+from dotenv import load_dotenv
+load_dotenv()
 
 CONTACT_EMAIL = os.environ.get("MOONLOG_EMAIL", "info@moonlog.jp")
+OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 warnings.filterwarnings("ignore")
 
 from flask import Flask, request, render_template_string, send_file, jsonify
@@ -51,26 +54,26 @@ HTML = """<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Shippori+Mincho:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
-/* ─── CSS 変数（明るめ・上品） ─── */
+/* ─── CSS 変数（C案：和モダン・インディゴ） ─── */
 :root {
-  --base:       #FAF6EE;   /* 温かい生成り（ベース）*/
-  --base-warm:  #F4ECDD;   /* シャンパン（中間）*/
-  --base-lav:   #EEE9F0;   /* 淡い藤色（中間）*/
-  --base-soft:  #F8F1E8;   /* やわらかいクリーム */
+  --base:       #F5F2EC;   /* 生成り（ベース）*/
+  --base-warm:  #EDEAE2;   /* やや濃い生成り（中間）*/
+  --base-lav:   #E8EBF2;   /* 淡いインディゴがかった白（中間）*/
+  --base-soft:  #F8F6F1;   /* やわらかいオフホワイト */
   --white:      #FFFFFF;
-  --border:     #E8DDD0;   /* 柔らかいベージュ枠線 */
-  --border-l:   #F0E6D6;
-  --gold:       #B8985A;   /* マットゴールド */
-  --gold-l:     #D4B987;
-  --gold-d:     #8A6E3A;
-  --lav:        #A89CC8;   /* ダスキーラベンダー */
-  --lav-l:      #C8BEDC;
-  --lav-d:      #6E5F94;
-  --rose:       #C49AA0;   /* くすみピンク */
-  --rose-l:     #DCBABE;
-  --text-d:     #3A3450;   /* 深い茄子紺 */
-  --text-m:     #6B607A;   /* くすみ紫 */
-  --text-l:     #9A8FAB;   /* 薄いラベンダーグレー */
+  --border:     #D8D4CA;   /* 落ち着いたグレーベージュ枠線 */
+  --border-l:   #E8E4DC;
+  --gold:       #2C3E6B;   /* メインアクセント：インディゴブルー */
+  --gold-l:     #4A5E8F;   /* 明るめインディゴ */
+  --gold-d:     #1A2847;   /* 濃いインディゴ */
+  --lav:        #7B90C4;   /* サブアクセント：ミディアムブルー */
+  --lav-l:      #A4B5D8;   /* 薄いブルー */
+  --lav-d:      #2C3E6B;   /* 濃いブルー（goldと同色） */
+  --rose:       #8A9BB8;   /* くすみブルーグレー */
+  --rose-l:     #B0BDD0;
+  --text-d:     #2A2A2A;   /* ほぼ黒（メインテキスト）*/
+  --text-m:     #555555;   /* ミディアムグレー */
+  --text-l:     #888888;   /* 薄いグレー */
   --serif:      "Shippori Mincho", "Noto Serif JP", "Cormorant Garamond", serif;
   --sans:       "Noto Sans JP", sans-serif;
   --en:         "Cormorant Garamond", serif;
@@ -126,10 +129,8 @@ nav {
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 90% 70% at 50% 0%, rgba(168,156,200,0.32) 0%, transparent 65%),
-    radial-gradient(ellipse 70% 60% at 80% 30%, rgba(196,154,160,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 10% 70%, rgba(212,185,135,0.16) 0%, transparent 55%),
-    linear-gradient(180deg, #DDD1E0 0%, #ECE2E2 38%, #F5ECDF 70%, #FAF6EE 100%);
+    linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(232,235,242,0.5) 70%, #E8EBF2 100%),
+    url('/static/images/hero_top_light.png') center center / cover no-repeat;
 }
 /* 星粒 */
 .starfield {
@@ -139,34 +140,34 @@ nav {
   content: "";
   position: absolute; inset: 0;
   background-image:
-    radial-gradient(1.2px 1.2px at  8% 12%, rgba(168,156,200,0.55) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 15% 22%, rgba(184,152,90,0.40) 0%, transparent 100%),
-    radial-gradient(1.4px 1.4px at 22% 35%, rgba(168,156,200,0.60) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 31% 18%, rgba(184,152,90,0.35) 0%, transparent 100%),
-    radial-gradient(1.2px 1.2px at 42%  7%, rgba(196,154,160,0.45) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 53% 28%, rgba(168,156,200,0.32) 0%, transparent 100%),
-    radial-gradient(1.4px 1.4px at 63% 12%, rgba(184,152,90,0.50) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 71% 25%, rgba(196,154,160,0.35) 0%, transparent 100%),
-    radial-gradient(1.2px 1.2px at 80% 18%, rgba(168,156,200,0.42) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 88% 8%,  rgba(184,152,90,0.45) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 94% 30%, rgba(168,156,200,0.30) 0%, transparent 100%),
-    radial-gradient(1px   1px   at  5% 28%, rgba(196,154,160,0.28) 0%, transparent 100%),
-    radial-gradient(1.4px 1.4px at 47% 18%, rgba(184,152,90,0.40) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 76%  5%, rgba(168,156,200,0.45) 0%, transparent 100%),
-    radial-gradient(1px   1px   at 35% 32%, rgba(196,154,160,0.25) 0%, transparent 100%);
+    radial-gradient(1.2px 1.2px at  8% 12%, rgba(44,62,107,0.40) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 15% 22%, rgba(74,94,143,0.30) 0%, transparent 100%),
+    radial-gradient(1.4px 1.4px at 22% 35%, rgba(44,62,107,0.45) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 31% 18%, rgba(74,94,143,0.28) 0%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 42%  7%, rgba(44,62,107,0.35) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 53% 28%, rgba(74,94,143,0.25) 0%, transparent 100%),
+    radial-gradient(1.4px 1.4px at 63% 12%, rgba(44,62,107,0.38) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 71% 25%, rgba(74,94,143,0.28) 0%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 80% 18%, rgba(44,62,107,0.32) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 88% 8%,  rgba(74,94,143,0.35) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 94% 30%, rgba(44,62,107,0.25) 0%, transparent 100%),
+    radial-gradient(1px   1px   at  5% 28%, rgba(74,94,143,0.22) 0%, transparent 100%),
+    radial-gradient(1.4px 1.4px at 47% 18%, rgba(44,62,107,0.32) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 76%  5%, rgba(74,94,143,0.35) 0%, transparent 100%),
+    radial-gradient(1px   1px   at 35% 32%, rgba(44,62,107,0.20) 0%, transparent 100%);
 }
 .starfield::after {
   content: "";
   position: absolute; inset: 0;
   background-image:
-    radial-gradient(1px 1px at 12% 8%,  rgba(168,156,200,0.25) 0%, transparent 100%),
-    radial-gradient(1px 1px at 27% 18%, rgba(184,152,90,0.30) 0%, transparent 100%),
-    radial-gradient(1px 1px at 48% 22%, rgba(196,154,160,0.28) 0%, transparent 100%),
-    radial-gradient(1px 1px at 66% 15%, rgba(168,156,200,0.22) 0%, transparent 100%),
-    radial-gradient(1px 1px at 83% 32%, rgba(184,152,90,0.26) 0%, transparent 100%),
-    radial-gradient(1px 1px at 91% 18%, rgba(168,156,200,0.32) 0%, transparent 100%),
-    radial-gradient(1px 1px at 38% 28%, rgba(196,154,160,0.20) 0%, transparent 100%),
-    radial-gradient(1px 1px at 58% 8%,  rgba(184,152,90,0.28) 0%, transparent 100%);
+    radial-gradient(1px 1px at 12% 8%,  rgba(44,62,107,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 27% 18%, rgba(74,94,143,0.22) 0%, transparent 100%),
+    radial-gradient(1px 1px at 48% 22%, rgba(44,62,107,0.18) 0%, transparent 100%),
+    radial-gradient(1px 1px at 66% 15%, rgba(74,94,143,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 83% 32%, rgba(44,62,107,0.20) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 18%, rgba(74,94,143,0.25) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38% 28%, rgba(44,62,107,0.15) 0%, transparent 100%),
+    radial-gradient(1px 1px at 58% 8%,  rgba(74,94,143,0.22) 0%, transparent 100%);
 }
 
 .hero-eyebrow {

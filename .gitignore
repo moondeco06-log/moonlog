@@ -21,6 +21,13 @@ venv/
 *.jpg
 *.jpeg
 *.png
+
+# ただしstaticフォルダの画像は除外しない
+!static/
+!static/**
+!static/images/
+!static/images/*.png
+!static/images/*.jpg
 cache/
 cutting_layout.svg
 fabric_purchases.csv
