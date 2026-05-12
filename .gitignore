@@ -1,37 +1,38 @@
-# macOS
-.DS_Store
+# 機密
+.env
+.env.local
+
+# 内部ツール・作業ファイル
+instagram_posts/
+drafts/preview/
+review_pdfs/
+content_review_findings.md
+server_setup_manual.md
+test_data.md
+today_transit.command
+*.log
 
 # Python
 __pycache__/
 *.pyc
-*.pyo
-*.egg-info/
-venv/
-.env
+.venv/
 
-# Claude settings
-.claude/
+# OS
+.DS_Store
 
-# Project files unrelated to the web app
-*.svg
-*.pdf
-*.pptx
-*.csv
-*.JPG
-*.jpg
-*.jpeg
-*.png
+# IDE
+.vscode/
+.idea/
 
-# ただしstaticフォルダの画像は除外しない
-!static/
-!static/**
-!static/images/
-!static/images/*.png
-!static/images/*.jpg
+# 裁縫プロジェクト関連
+IMG_*.JPG
+IMG_*.jpg
 cache/
 cutting_layout.svg
 fabric_purchases.csv
-wmo_top_design*.html
-printing_guide.pdf
-start.command
-pattern_*
+pattern_*.svg
+pattern_*.pdf
+
+# 内部スクリプト
+igpost.py
+scripts/

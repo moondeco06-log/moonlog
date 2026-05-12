@@ -14,6 +14,7 @@ warnings.filterwarnings("ignore")
 
 from flask import Flask, request, render_template_string, send_file, jsonify
 from moonlog_astrology import generate_report, generate_html_report, resolve_location, generate_solar_return_html, generate_lifecycle_html
+from moonlog_field_report import generate_field_report_html
 
 app = Flask(__name__)
 
@@ -356,7 +357,79 @@ section { padding: 7rem 2rem; }
   line-height: 1.85;
 }
 
-/* ─── レポート内容 ─── */
+/* ─── レポート内容（4商品別の詳細） ─── */
+.report-detail {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2rem 2.2rem;
+  margin-bottom: 1.4rem;
+  box-shadow: 0 2px 12px rgba(58,52,80,0.04);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.report-detail:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(58,52,80,0.07);
+}
+.report-detail-free {
+  background: var(--base-soft);
+  border-style: dashed;
+}
+.report-detail-head {
+  display: flex; align-items: center; gap: 1.2rem;
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.4rem;
+  border-bottom: 1px solid var(--border-l);
+}
+.report-detail-icon {
+  font-size: 2rem; line-height: 1;
+}
+.report-detail-title {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--text-d);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.3rem;
+}
+.report-detail-sub {
+  font-size: 0.78rem;
+  color: var(--gold-d);
+  letter-spacing: 0.08em;
+}
+.report-detail-lead {
+  font-size: 0.85rem;
+  color: var(--text-m);
+  line-height: 2;
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.04em;
+}
+.report-detail-list {
+  list-style: none; padding: 0; margin: 0;
+}
+.report-detail-list li {
+  font-size: 0.82rem;
+  color: var(--text-m);
+  line-height: 2.1;
+  padding: 0.3rem 0;
+  border-bottom: 1px dashed var(--border-l);
+}
+.report-detail-list li:last-child { border-bottom: none; }
+.report-detail-list strong {
+  color: var(--text-d);
+  font-weight: 500;
+  margin-right: 0.4rem;
+}
+.report-detail-note {
+  margin-top: 1.2rem;
+  padding: 0.8rem 1rem;
+  background: var(--base-warm);
+  border-left: 2px solid var(--gold);
+  font-size: 0.78rem;
+  color: var(--text-m);
+  line-height: 1.9;
+}
+/* ─── レポート内容（旧グリッド・互換用） ─── */
 .what-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
@@ -531,6 +604,65 @@ select option { background: var(--white); color: var(--text-d); }
 .btn-indigo:hover { background: #4A4890; border-color: #4A4890; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn:active:not(:disabled) { transform: scale(0.99); }
+/* ─── フォーム内 無料/有料ラベル区切り ─── */
+.form-plan-divider {
+  display: flex; align-items: center; gap: 0.9rem;
+  margin: 1.6rem 0 1rem;
+}
+.form-plan-divider::before,
+.form-plan-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--border-l);
+}
+.form-plan-divider span {
+  font-family: var(--en); font-style: italic; font-size: 0.7rem;
+  letter-spacing: 0.28em; color: var(--text-l); white-space: nowrap;
+}
+.form-plan-divider.paid span {
+  color: var(--gold-d); font-style: normal; font-size: 0.78rem;
+  letter-spacing: 0.15em; font-family: var(--serif);
+}
+/* ─── ボタン内の価格バッジ ─── */
+.btn-price {
+  display: inline-block;
+  padding: 2px 10px;
+  margin-left: 8px;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 12px;
+  font-family: var(--en);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+}
+.btn-outline .btn-price.free {
+  background: rgba(123,144,196,0.15);
+  border-color: var(--lav-l);
+  color: var(--lav-d);
+}
+/* ─── ボタン下の補足テキスト ─── */
+.btn-note {
+  font-size: 0.7rem;
+  color: var(--text-l);
+  text-align: center;
+  margin: -0.2rem 0 0.4rem;
+  letter-spacing: 0.04em;
+}
+.btn-note a {
+  color: var(--gold-d);
+  text-decoration: underline;
+  text-decoration-color: rgba(184,152,90,0.4);
+}
+.btn-note a:hover { text-decoration-color: var(--gold-d); }
+/* ─── 出生チャート（有料）ボタン ─── */
+.btn-natal {
+  background: var(--rose);
+  border-color: var(--rose);
+  color: #fff;
+}
+.btn-natal:hover:not(:disabled) {
+  background: var(--rose-l);
+  border-color: var(--rose-l);
+}
 #status {
   text-align: center;
   margin-top: 1.2rem;
@@ -739,7 +871,8 @@ footer {
   <ul class="nav-links">
     <li><a href="#about">このサービスについて</a></li>
     <li><a href="#profile">運営者について</a></li>
-    <li><a href="#planets">7つの星</a></li>
+    <li><a href="/glossary">用語解説</a></li>
+    <li><a href="/faq">よくある質問</a></li>
     <li><a href="#form-section">星読みをはじめる</a></li>
   </ul>
 </nav>
@@ -755,9 +888,8 @@ footer {
   </h1>
   <div class="hero-rule"></div>
   <p class="hero-sub">
-    生まれた瞬間の天体データを読み解き<br>
-    自分でも気づいていなかった傾向に、静かに光を当てます。<br>
-    占いではなく、気づきのためのフレームワーク。
+    迷ってもいいし、見失ってもいい。<br>
+    そんなときに、自分という地図を確かめるためのツールです。
   </p>
   <p class="hero-planets">☉ &nbsp; ☽ &nbsp; ☿ &nbsp; ♀ &nbsp; ♂ &nbsp; ♃ &nbsp; ♄</p>
   <a href="#form-section" class="cta-btn">無料で星読みをはじめる</a>
@@ -772,7 +904,7 @@ footer {
 </section>
 
 <!-- MOONLOGとは -->
-<section id="moonlog-def" class="sec-dark">
+<section id="moonlog-def" class="sec-light">
   <div class="inner" style="max-width:720px;">
     <p class="sec-eyebrow">What is MOONLOG</p>
     <h2 class="sec-title">MOONLOGとは</h2>
@@ -812,7 +944,7 @@ footer {
     <p class="sec-eyebrow">Reports & Pricing</p>
     <h2 class="sec-title">レポートの種類と料金</h2>
     <div class="sec-rule"></div>
-    <p class="sec-lead">まずは無料ライト版から。気に入ったら詳細レポートへ。</p>
+    <p class="sec-lead">何者か、どう生きるか、今年は何が来るか。<br>3つの視点から、自分という地図を読む。</p>
 
     <div class="report-grid">
 
@@ -831,8 +963,7 @@ footer {
             <div class="price-sub">登録不要・すぐに読めます</div>
           </div>
           <p class="report-desc">
-            太陽・月・水星——あなたの「核」となる3つの星から、
-            自分らしさの輪郭をやさしく描き出します。
+            まず、あなたの太陽星座から。生まれ持った気質のさわりを読んで、星読みの世界をのぞいてみてください。
           </p>
           <ul class="report-includes">
             <li>✦ 太陽：人生のテーマ</li>
@@ -843,13 +974,14 @@ footer {
         </div>
       </div>
 
+      {% if show_paid %}
       <!-- 出生チャート（有料）-->
       <div class="report-card natal" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
         <div class="report-accent"></div>
         <div class="promo-ribbon">オープン記念</div>
         <div class="report-info">
           <h3>出生チャート</h3>
-          <p class="report-sub">Birth Chart Reading</p>
+          <p class="report-sub">あなたが何者かを知る</p>
           <div class="report-meta">
             <span class="report-badge natal-badge">基本 / いつでも</span>
             <span class="report-pages">A4換算 約20ページ</span>
@@ -859,8 +991,7 @@ footer {
             <div class="price-sub">通常価格 ¥3,980 を予定</div>
           </div>
           <p class="report-desc">
-            7惑星・ASC・MC・アスペクトを統合した詳細な自己分析。
-            あなたの資質・得意・傾向を深く読み解く基本のレポート。
+            自分が何者なのか——普段当たり前にやっていること、繰り返し起こるパターン。その「なぜ」が、生まれた瞬間の星の配置から見えてきます。欠点ではなく、生まれ持ったあなたの形を知る。
           </p>
           <ul class="report-includes">
             <li>✦ 各惑星の詳細プロフィール</li>
@@ -878,8 +1009,8 @@ footer {
         <div class="report-accent"></div>
         <div class="promo-ribbon">オープン記念</div>
         <div class="report-info">
-          <h3>今年の星読み</h3>
-          <p class="report-sub">Solar Return Reading</p>
+          <h3>2026年 星読み</h3>
+          <p class="report-sub">今年のあなたを知る</p>
           <div class="report-meta">
             <span class="report-badge sr-badge">年間 / 誕生日ごとに</span>
             <span class="report-pages">A4換算 約18ページ</span>
@@ -889,8 +1020,7 @@ footer {
             <div class="price-sub">通常価格 ¥3,980 を予定</div>
           </div>
           <p class="report-desc">
-            誕生日を起点に、今年1年間のテーマ・課題・チャンスを読み解く年間レポート。
-            転機の年や新しいスタートを切るタイミングに最適です。
+            毎年変わる星の配置。2026年のあなたのテーマ、チャレンジに向く時期、休むべき時期——1年の流れを知れば、毎日の選択がぐっと楽になります。
           </p>
           <ul class="report-includes">
             <li>✦ 今年のメインテーマ</li>
@@ -903,35 +1033,59 @@ footer {
         </div>
       </div>
 
-      <!-- ライフサイクル（有料）-->
+      <!-- ライフサイクル（一時非表示・2026-05-11） 7月以降に大改修して復活予定
+      <div class="report-card lifecycle" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
+        ... 元のライフサイクルカードのHTMLはこのコメント内に保管 ...
+      </div>
+      -->
+
+      <!-- 3分野レポート（仕事・お金・恋愛） -->
       <div class="report-card lifecycle" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
         <div class="report-accent"></div>
         <div class="promo-ribbon">オープン記念</div>
         <div class="report-info">
-          <h3>ライフサイクル</h3>
-          <p class="report-sub">Life Cycle Reading</p>
+          <h3>仕事・お金・恋愛</h3>
+          <p class="report-sub">あなたの3つの分野レポート</p>
           <div class="report-meta">
-            <span class="report-badge lifecycle-badge">長期 / 人生の転機に</span>
-            <span class="report-pages">A4換算 約12ページ</span>
+            <span class="report-badge lifecycle-badge">分野別 / 関心ごとに</span>
+            <span class="report-pages">A4換算 約15ページ</span>
           </div>
           <div class="price-box">
             <div class="price-main">¥980</div>
             <div class="price-sub">通常価格 ¥3,980 を予定</div>
           </div>
           <p class="report-desc">
-            土星・木星などの遅い惑星の動きをもとに、人生全体の流れと転換期を読み解くレポート。
-            「今なぜこうなっているか」が腑に落ちます。
+            仕事には仕事を司る星、お金にはお金を司る星、愛には愛を司る星があります。同じ「あなた」の中でも、分野ごとに使われている星が違う——その3つを一冊にまとめた読みもの。
           </p>
           <ul class="report-includes">
-            <li>✦ 人生の転機・変容の時期</li>
-            <li>✦ 現在の星の流れ</li>
-            <li>✦ 次のフェーズへの準備</li>
-            <li>✦ 長期的な成長テーマ</li>
+            <li>✦ 仕事観の核と、輝く場面・天職の方向</li>
+            <li>✦ お金の感覚と、豊かさが育つ場所</li>
+            <li>✦ 愛し方の核と、求める関係性</li>
+            <li>✦ 3章を統合した「あなた」の全体像</li>
           </ul>
           <div class="report-cta">レポートを購入する</div>
-          <a href="/sample/lifecycle" target="_blank" class="sample-link" onclick="event.stopPropagation()">サンプルを見る</a>
+          <a href="/sample/field_report" target="_blank" class="sample-link" onclick="event.stopPropagation()">サンプルを見る</a>
         </div>
       </div>
+      {% endif %}
+
+      {% if not show_paid %}
+      <!-- Coming Soon カード（ソフトローンチ期間） -->
+      <div class="report-card" style="grid-column: span 2; background:rgba(184,152,88,.06); border:2px dashed var(--gold); padding:2.5rem 2rem; text-align:center;">
+        <div class="report-info">
+          <h3 style="color:var(--gold-d);">✨ 有料レポートは 2026.6.1 リリース</h3>
+          <p style="margin-top:1rem;font-size:0.95rem;color:var(--text-m);line-height:1.9;">
+            出生チャート・年間星読み・仕事/お金/恋愛 3分野レポート——<br>
+            ただいま最終仕上げ中です。リリース日まで、無料ライト版でお楽しみください。
+          </p>
+          <p style="margin-top:1rem;font-size:0.85rem;color:var(--text-l);">
+            <a href="/sample/natal" target="_blank" style="color:var(--gold-d);text-decoration:underline;margin:0 0.5rem;">出生チャート サンプル</a>
+            <a href="/sample/sr" target="_blank" style="color:var(--gold-d);text-decoration:underline;margin:0 0.5rem;">年間星読み サンプル</a>
+            <a href="/sample/field_report" target="_blank" style="color:var(--gold-d);text-decoration:underline;margin:0 0.5rem;">3分野レポート サンプル</a>
+          </p>
+        </div>
+      </div>
+      {% endif %}
 
     </div>
 
@@ -1011,9 +1165,8 @@ footer {
         そして53歳のとき、半年間の休職を経験しました。
       </p>
       <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;">
-        仕事を離れ、初めて「何もしない時間」ができたとき、気づいたことがあります。<br>
-        インプットより、アウトプット。知識を集めることより、実際に動くこと。<br>
-        「正解を探す」より、「今ここにある自分を受け取る」こと。
+        仕事を離れて気づいたのは、「もっと努力すれば、いつか自分のことがわかる」と走り続けてきたけれど、<br>
+        本当に必要だったのは、<strong>もう持っている自分の傾向を、ちゃんと言葉にして受け取ること</strong>だったということでした。
       </p>
     </div>
 
@@ -1028,7 +1181,7 @@ footer {
         「そもそも自分はどういう人間か」という問いに向き合うための道具として。
       </p>
       <p style="font-family:var(--serif);font-size:0.95rem;color:var(--text-d);line-height:2;margin-top:1.2rem;letter-spacing:0.06em;font-weight:500;">
-        自分が生まれてきた意味を知るために。
+        もう一度、自分の地図を確かめるために。
       </p>
     </div>
 
@@ -1101,57 +1254,98 @@ footer {
 <!-- レポート内容 -->
 <section id="what" class="sec-dark">
   <div class="inner">
-    <p class="sec-eyebrow">About the Report</p>
+    <p class="sec-eyebrow">About the Reports</p>
     <h2 class="sec-title">レポートでわかること</h2>
     <div class="sec-rule"></div>
     <p class="sec-lead">
-      出生データをもとに生成される、あなただけの星読みレポート。<br>
-      ブラウザでいつでも快適にご覧いただけます。
+      4つのレポートそれぞれで、読み取れる内容が異なります。<br>
+      生成されたレポートはPDFでお手元にお届けします。
     </p>
-    <div class="what-grid">
-      <div class="what-item">
-        <div class="what-num">01</div>
-        <div class="what-body">
-          <strong>得意なこと・強み</strong>
-          <span>7つの惑星が示す強みを統合し、あなたが自然に力を発揮できる分野を照らします。</span>
+
+    <!-- 出生チャート -->
+    <div class="report-detail">
+      <div class="report-detail-head">
+        <div class="report-detail-icon">🌟</div>
+        <div>
+          <h3 class="report-detail-title">出生チャート</h3>
+          <p class="report-detail-sub">あなたが何者かを知る　／　¥980</p>
         </div>
       </div>
-      <div class="what-item">
-        <div class="what-num">02</div>
-        <div class="what-body">
-          <strong>成長のヒント</strong>
-          <span>課題として現れやすいパターンと、それを乗り越えるための視点を星が語ります。</span>
-        </div>
-      </div>
-      <div class="what-item">
-        <div class="what-num">03</div>
-        <div class="what-body">
-          <strong>各惑星の詳細プロフィール</strong>
-          <span>7つすべての惑星について、その星座とあなたの個性を丁寧に読み解きます。</span>
-        </div>
-      </div>
-      <div class="what-item">
-        <div class="what-num">04</div>
-        <div class="what-body">
-          <strong>総合プロフィール</strong>
-          <span>「あなたという人」を1ページにまとめた統合プロフィール。すべての星を統合します。</span>
-        </div>
-      </div>
-      <div class="what-item">
-        <div class="what-num">05</div>
-        <div class="what-body">
-          <strong>ホロスコープチャート</strong>
-          <span>生まれた瞬間の天体配置を美しいチャートで可視化。あなただけの星空のマップ。</span>
-        </div>
-      </div>
-      <div class="what-item">
-        <div class="what-num">06</div>
-        <div class="what-body">
-          <strong>いつでも読み返せる</strong>
-          <span>生成されたレポートはブラウザの目次から自由に行き来できます。印刷にも対応しています。</span>
-        </div>
+      <div class="report-detail-body">
+        <p class="report-detail-lead">
+          7つの惑星すべて＋総合まとめを統合した、あなたの「核」を読み解く基本レポート。
+        </p>
+        <ul class="report-detail-list">
+          <li>☉ <strong>太陽</strong>：人生のテーマと自己表現のスタイル</li>
+          <li>☽ <strong>月</strong>：感情のクセと心の安らぎどころ</li>
+          <li>☿ <strong>水星</strong>：思考の特徴とコミュニケーションの傾向</li>
+          <li>♀ <strong>金星</strong>：愛と喜びのかたち、美意識</li>
+          <li>♂ <strong>火星</strong>：行動力と情熱の向け方</li>
+          <li>♃ <strong>木星</strong>：成長の方向と幸運の領域</li>
+          <li>♄ <strong>土星</strong>：人生の課題と魂の成熟テーマ</li>
+          <li>🌟 <strong>総合プロフィール</strong>：7惑星を統合した「あなたという人」</li>
+          <li>🔮 <strong>ホロスコープチャート</strong>：生まれた瞬間の天体配置図</li>
+        </ul>
       </div>
     </div>
+
+    <!-- ライフサイクル（一時非表示・2026-05-11 大改修中） -->
+    <!--
+    <div class="report-detail">
+      ... 元のライフサイクル詳細セクションはここに保管 ...
+    </div>
+    -->
+
+    <!-- 2026年星読み -->
+    <div class="report-detail">
+      <div class="report-detail-head">
+        <div class="report-detail-icon">🌅</div>
+        <div>
+          <h3 class="report-detail-title">2026年 星読み</h3>
+          <p class="report-detail-sub">今年のあなたを知る　／　¥980</p>
+        </div>
+      </div>
+      <div class="report-detail-body">
+        <p class="report-detail-lead">
+          誕生日を起点にした1年間のテーマと流れを、8つの惑星から読み解く年間レポート。
+        </p>
+        <ul class="report-detail-list">
+          <li>☀️ <strong>今年のあなた</strong>：太陽が照らす今年のメインテーマ</li>
+          <li>💼 <strong>今年の仕事運</strong>：土星・火星・水星・木星から読み解く職場のテーマ</li>
+          <li>🌙 <strong>感情・プライベート・家族</strong>：月が示す心の重心</li>
+          <li>✦ <strong>仕事・学び・コミュニケーション</strong>：水星のスタイル</li>
+          <li>🌹 <strong>愛・パートナーシップ・喜び</strong>：金星のかたち</li>
+          <li>🔥 <strong>行動・情熱・エネルギー</strong>：火星が向かう分野</li>
+          <li>⭐ <strong>成長・チャンス・広がり</strong>：木星のラッキーゾーン</li>
+          <li>🌿 <strong>課題・成熟・乗り越え方</strong>：土星の魂の成長テーマ</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 無料ライト版 -->
+    <div class="report-detail report-detail-free">
+      <div class="report-detail-head">
+        <div class="report-detail-icon">✦</div>
+        <div>
+          <h3 class="report-detail-title">無料ライト版</h3>
+          <p class="report-detail-sub">まず気軽に　／　無料</p>
+        </div>
+      </div>
+      <div class="report-detail-body">
+        <p class="report-detail-lead">
+          核となる3つの星から、自分らしさの輪郭を体験できる入門版。
+        </p>
+        <ul class="report-detail-list">
+          <li>☉ <strong>太陽</strong>：人生のテーマ</li>
+          <li>☽ <strong>月</strong>：感情と内面</li>
+          <li>☿ <strong>水星</strong>：思考とコミュニケーション</li>
+        </ul>
+        <p class="report-detail-note">
+          ※ 残りの惑星と総合まとめは、出生チャート（¥980）でお楽しみください。
+        </p>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1235,10 +1429,30 @@ footer {
           <div class="form-rule"></div>
 
           <div class="btn-group">
+
+            <!-- 無料 -->
+            <div class="form-plan-divider">
+              <span>まず無料でためす</span>
+            </div>
             <button class="btn btn-outline" type="submit"
                     formaction="/preview" formtarget="_blank" id="btn-html">
-              ✦ &nbsp;出生チャートを見る（無料）
+              ✦ &nbsp;無料ライト版を見る　<span class="btn-price free">無料</span>
             </button>
+            <p class="btn-note">太陽・月・水星の3天体のみ／登録不要</p>
+
+            {% if show_paid %}
+            <!-- 有料 -->
+            <div class="form-plan-divider paid">
+              <span>有料レポート（各¥980）</span>
+            </div>
+
+            <button class="btn btn-natal" type="submit"
+                    formaction="/preview" formtarget="_blank" id="btn-natal" disabled
+                    title="決済機能は5月中旬リリース予定">
+              🌟 &nbsp;出生チャート（フル版）　<span class="btn-price">¥980</span>
+            </button>
+            <p class="btn-note">7惑星すべて＋総合まとめ／<a href="/sample/natal" target="_blank">サンプルを見る</a></p>
+
             <div class="sr-row">
               <div class="sr-year-wrap">
                 <label class="sr-year-label">何年の星読み？</label>
@@ -1246,17 +1460,29 @@ footer {
               </div>
               <button class="btn btn-gold" type="submit"
                       formaction="/solar_return" formtarget="_blank" id="btn-sr">
-                ☀ &nbsp;星読みレポートを見る（SR）
+                ☀ &nbsp;2026年 星読み　<span class="btn-price">¥980</span>
               </button>
             </div>
+            <p class="btn-note">1年間のテーマと流れ／<a href="/sample/sr" target="_blank">サンプルを見る</a></p>
+
             <button class="btn btn-indigo" type="submit"
-                    formaction="/lifecycle" formtarget="_blank" id="btn-lc">
-              🌟 &nbsp;人生の転機を見る（ライフサイクル）
+                    formaction="/field_report" formtarget="_blank" id="btn-fr">
+              💼 &nbsp;仕事・お金・恋愛　<span class="btn-price">¥980</span>
             </button>
+            <p class="btn-note">3つの分野を一冊で／<a href="/sample/field_report" target="_blank">サンプルを見る</a></p>
+            {% else %}
+            <!-- ソフトローンチ期間：有料導線なし -->
+            <div class="form-plan-divider paid">
+              <span>有料レポート（2026.6.1 リリース予定）</span>
+            </div>
+            <p style="text-align:center;color:var(--text-l);font-size:0.88rem;padding:1.5rem 1rem;background:rgba(184,152,88,.05);border:1px dashed var(--gold);border-radius:4px;line-height:1.85;">
+              出生チャート・年間星読み・3分野レポートは<br>
+              <strong style="color:var(--gold-d);">2026年6月1日</strong> よりご購入いただけます。<br>
+              <small>※ サンプルレポートは上のリンクからご覧いただけます。</small>
+            </p>
+            {% endif %}
+
           </div>
-          <p class="hint" style="text-align:center;margin-top:10px">
-            ※ SR（ソーラーリターン）は1年間のテーマを読み解く年間レポートです。
-          </p>
         </form>
         <div id="status"></div>
       </div>
@@ -1274,6 +1500,8 @@ footer {
     本サービスのレポートは、出生時刻の天体配置を計算し、占星術データベースに基づいて自動生成されるものです。プロ占星術師による個別鑑定ではありません。
   </p>
   <div class="footer-links">
+    <a href="/glossary">用語解説</a>
+    <a href="/faq">よくある質問</a>
     <a href="/legal/tokushoho">特定商取引法に基づく表記</a>
     <a href="/legal/privacy">プライバシーポリシー</a>
     <a href="/legal/terms">利用規約</a>
@@ -1465,7 +1693,40 @@ Disallow: /fuuki_reading
 
 @app.route("/")
 def index():
-    return render_template_string(HTML)
+    # 環境変数 SHOW_PAID_PRODUCTS=1 で有料商品カードを表示
+    # 未設定または "0" の場合は「Coming Soon」モード（ソフトローンチ用）
+    show_paid = os.environ.get("SHOW_PAID_PRODUCTS", "0") == "1"
+    return render_template_string(HTML, show_paid=show_paid)
+
+
+# ============================================================
+# PDF生成（Playwright Chromium ヘッドレス）
+# ============================================================
+
+def html_to_pdf_bytes(html_str):
+    """HTML文字列をPDFバイト列に変換する。
+    Playwright（Chromium）でレンダリング → A4 PDF を返す。
+    """
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        try:
+            page = browser.new_page()
+            # data URL でHTMLを読み込む（外部ファイル不要）
+            import base64
+            b64 = base64.b64encode(html_str.encode("utf-8")).decode("ascii")
+            page.goto(f"data:text/html;base64,{b64}", wait_until="networkidle", timeout=30000)
+            # フォント読み込み待ち
+            page.wait_for_timeout(500)
+            pdf_bytes = page.pdf(
+                format="A4",
+                margin={"top":"14mm","bottom":"14mm","left":"12mm","right":"12mm"},
+                print_background=True,
+                prefer_css_page_size=False,
+            )
+        finally:
+            browser.close()
+    return pdf_bytes
 
 
 @app.route("/preview", methods=["POST"])
@@ -1487,9 +1748,10 @@ def preview():
         return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
 
     try:
+        # 無料ライト版（太陽・月・水星のみ）
         html = generate_html_report(
             name, year, month, day, hour, minute, city,
-            lat=lat, lng=lng, tz_str=tz
+            lat=lat, lng=lng, tz_str=tz, light=True
         )
     except Exception as e:
         import traceback; traceback.print_exc()
@@ -1568,6 +1830,51 @@ def solar_return():
     return Response(html, mimetype="text/html; charset=utf-8")
 
 
+@app.route("/field_report", methods=["POST"])
+def field_report():
+    """3分野レポート（仕事・お金・恋愛）"""
+    from flask import Response
+    data = request.form
+    try:
+        name   = str(data.get("name", "")).strip() or "あなた"
+        year   = int(data["year"])
+        month  = int(data["month"])
+        day    = int(data["day"])
+        hour   = int(data.get("hour", 12))
+        minute = int(data.get("minute", 0))
+        city   = str(data.get("city", "新潟市")).strip()
+        lat    = float(data.get("lat") or 37.9161)
+        lng    = float(data.get("lng") or 139.0364)
+    except (KeyError, ValueError) as e:
+        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+    try:
+        html = generate_field_report_html(
+            name, year, month, day, hour, minute, city,
+            lat=lat, lng=lng, tz_str="Asia/Tokyo",
+        )
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>3分野レポート計算エラー: {e}</p>", 500
+    return Response(html, mimetype="text/html; charset=utf-8")
+
+
+@app.route("/sample/field_report")
+def sample_field_report():
+    """3分野レポート サンプル"""
+    from flask import Response
+    s = SAMPLE_DATA
+    try:
+        html = generate_field_report_html(
+            s["name"], s["year"], s["month"], s["day"],
+            s["hour"], s["minute"], s["city"],
+            lat=s["lat"], lng=s["lng"], sample=True
+        )
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>サンプル生成エラー: {e}</p>", 500
+    return Response(html, mimetype="text/html; charset=utf-8")
+
+
 @app.route("/lifecycle", methods=["POST"])
 def lifecycle():
     from flask import Response
@@ -1609,7 +1916,7 @@ def sample_natal():
     try:
         html = generate_html_report(s["name"], s["year"], s["month"], s["day"],
                                      s["hour"], s["minute"], s["city"],
-                                     lat=s["lat"], lng=s["lng"])
+                                     lat=s["lat"], lng=s["lng"], sample=True)
     except Exception as e:
         import traceback; traceback.print_exc()
         return f"<p style='color:red'>サンプル生成エラー: {e}</p>", 500
@@ -1623,11 +1930,144 @@ def sample_sr():
         html = generate_solar_return_html(s["name"], s["year"], s["month"], s["day"],
                                            s["hour"], s["minute"], s["city"],
                                            lat=s["lat"], lng=s["lng"],
-                                           tz_str="Asia/Tokyo", target_year=2026)
+                                           tz_str="Asia/Tokyo", target_year=2026, sample=True)
     except Exception as e:
         import traceback; traceback.print_exc()
         return f"<p style='color:red'>サンプル生成エラー: {e}</p>", 500
     return Response(html, mimetype="text/html; charset=utf-8")
+
+# ── PDFダウンロード（フォーム送信から）──
+@app.route("/pdf/natal", methods=["POST"])
+def pdf_natal():
+    from flask import Response
+    data = request.form
+    try:
+        name   = str(data.get("name", "")).strip() or "あなた"
+        year   = int(data["year"]); month = int(data["month"]); day = int(data["day"])
+        hour   = int(data.get("hour", 12)); minute = int(data.get("minute", 0))
+        city   = str(data.get("city", "新潟市")).strip()
+        lat    = float(data.get("lat") or 37.9161)
+        lng    = float(data.get("lng") or 139.0364)
+    except (KeyError, ValueError) as e:
+        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+    try:
+        html = generate_html_report(name, year, month, day, hour, minute, city,
+                                     lat=lat, lng=lng, tz_str="Asia/Tokyo")
+        pdf  = html_to_pdf_bytes(html)
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+    from urllib.parse import quote
+    fname = f"{name}_出生チャート.pdf"
+    return Response(pdf, mimetype="application/pdf",
+                    headers={"Content-Disposition": f"attachment; filename=\"report.pdf\"; filename*=UTF-8''{quote(fname)}"})
+
+
+@app.route("/pdf/sr", methods=["POST"])
+def pdf_sr():
+    from flask import Response
+    data = request.form
+    try:
+        name   = str(data.get("name", "")).strip() or "あなた"
+        year   = int(data["year"]); month = int(data["month"]); day = int(data["day"])
+        hour   = int(data.get("hour", 12)); minute = int(data.get("minute", 0))
+        city   = str(data.get("city", "新潟市")).strip()
+        lat    = float(data.get("lat") or 37.9161)
+        lng    = float(data.get("lng") or 139.0364)
+        sr_year_raw = data.get("sr_year", "")
+        sr_year = int(sr_year_raw) if sr_year_raw.strip().isdigit() else None
+    except (KeyError, ValueError) as e:
+        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+    try:
+        html = generate_solar_return_html(name, year, month, day, hour, minute, city,
+                                           lat=lat, lng=lng, tz_str="Asia/Tokyo",
+                                           target_year=sr_year)
+        pdf  = html_to_pdf_bytes(html)
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+    from urllib.parse import quote
+    yr = sr_year if sr_year else 2026
+    fname = f"{name}_{yr}年星読み.pdf"
+    return Response(pdf, mimetype="application/pdf",
+                    headers={"Content-Disposition": f"attachment; filename=\"sr.pdf\"; filename*=UTF-8''{quote(fname)}"})
+
+
+@app.route("/pdf/lifecycle", methods=["POST"])
+def pdf_lifecycle():
+    from flask import Response
+    data = request.form
+    try:
+        name   = str(data.get("name", "")).strip() or "あなた"
+        year   = int(data["year"]); month = int(data["month"]); day = int(data["day"])
+        city   = str(data.get("city", "新潟市")).strip()
+        lat    = float(data.get("lat") or 37.9161)
+        lng    = float(data.get("lng") or 139.0364)
+    except (KeyError, ValueError) as e:
+        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+    try:
+        html = generate_lifecycle_html(name, year, month, day, city, lat=lat, lng=lng)
+        pdf  = html_to_pdf_bytes(html)
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+    from urllib.parse import quote
+    fname = f"{name}_ライフサイクル.pdf"
+    return Response(pdf, mimetype="application/pdf",
+                    headers={"Content-Disposition": f"attachment; filename=\"lifecycle.pdf\"; filename*=UTF-8''{quote(fname)}"})
+
+
+# ── サンプルPDF（GETでダウンロード可能）──
+@app.route("/sample/natal/pdf")
+def sample_natal_pdf():
+    from flask import Response
+    s = SAMPLE_DATA
+    try:
+        html = generate_html_report(s["name"], s["year"], s["month"], s["day"],
+                                     s["hour"], s["minute"], s["city"],
+                                     lat=s["lat"], lng=s["lng"])
+        pdf  = html_to_pdf_bytes(html)
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+    from urllib.parse import quote
+    return Response(pdf, mimetype="application/pdf",
+                    headers={"Content-Disposition": f"attachment; filename=\"sample_natal.pdf\"; filename*=UTF-8''{quote('moonlog_出生チャート_サンプル.pdf')}"})
+
+
+@app.route("/sample/sr/pdf")
+def sample_sr_pdf():
+    from flask import Response
+    s = SAMPLE_DATA
+    try:
+        html = generate_solar_return_html(s["name"], s["year"], s["month"], s["day"],
+                                           s["hour"], s["minute"], s["city"],
+                                           lat=s["lat"], lng=s["lng"],
+                                           tz_str="Asia/Tokyo", target_year=2026)
+        pdf  = html_to_pdf_bytes(html)
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+    from urllib.parse import quote
+    return Response(pdf, mimetype="application/pdf",
+                    headers={"Content-Disposition": f"attachment; filename=\"sample_sr.pdf\"; filename*=UTF-8''{quote('moonlog_2026年星読み_サンプル.pdf')}"})
+
+
+@app.route("/sample/lifecycle/pdf")
+def sample_lifecycle_pdf():
+    from flask import Response
+    s = SAMPLE_DATA
+    try:
+        html = generate_lifecycle_html(s["name"], s["year"], s["month"], s["day"],
+                                        s["city"], lat=s["lat"], lng=s["lng"])
+        pdf  = html_to_pdf_bytes(html)
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+    from urllib.parse import quote
+    return Response(pdf, mimetype="application/pdf",
+                    headers={"Content-Disposition": f"attachment; filename=\"sample_lifecycle.pdf\"; filename*=UTF-8''{quote('moonlog_ライフサイクル_サンプル.pdf')}"})
+
 
 @app.route("/sample/lifecycle")
 def sample_lifecycle():
@@ -1635,7 +2075,7 @@ def sample_lifecycle():
     s = SAMPLE_DATA
     try:
         html = generate_lifecycle_html(s["name"], s["year"], s["month"], s["day"],
-                                        s["city"], lat=s["lat"], lng=s["lng"])
+                                        s["city"], lat=s["lat"], lng=s["lng"], sample=True)
     except Exception as e:
         import traceback; traceback.print_exc()
         return f"<p style='color:red'>サンプル生成エラー: {e}</p>", 500
@@ -1740,6 +2180,8 @@ _LEGAL_HEADER = """
 
 _LEGAL_FOOTER = """
 <footer class="legal-footer">
+  <a href="/glossary" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">用語解説</a>
+  <a href="/faq" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">よくある質問</a>
   <a href="/legal/tokushoho" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">特定商取引法</a>
   <a href="/legal/privacy" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">プライバシーポリシー</a>
   <a href="/legal/terms" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">利用規約</a>
@@ -1882,6 +2324,417 @@ def legal_terms():
 {_LEGAL_FOOTER}
 </body></html>"""
     return html
+
+
+# ============================================================
+# 用語解説 / よくある質問
+# ============================================================
+
+_GLOSSARY_CSS_EXTRA = """
+<style>
+  .glossary-toc {
+    background: #FFFFFF; border: 1px solid var(--border); border-radius: 6px;
+    padding: 1.4rem 1.8rem; margin-bottom: 2.5rem;
+  }
+  .glossary-toc-title {
+    font-family: var(--serif); font-size: 0.78rem;
+    color: var(--gold-d); letter-spacing: 0.18em;
+    margin-bottom: 0.8rem; font-weight: 600;
+  }
+  .glossary-toc ul { list-style: none; padding: 0; margin: 0;
+                     display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                     gap: 0.4rem 1.4rem; }
+  .glossary-toc li { font-size: 0.82rem; margin: 0; }
+  .glossary-toc a { color: var(--text-d); text-decoration: none;
+                    border-bottom: 1px dashed transparent; transition: border-color .2s; }
+  .glossary-toc a:hover { border-bottom-color: var(--gold); color: var(--gold-d); }
+  .term {
+    background: #FFFFFF; border: 1px solid var(--border); border-radius: 6px;
+    padding: 1.6rem 2rem; margin-bottom: 1.4rem;
+  }
+  .term h2 {
+    font-family: var(--serif); font-size: 1.05rem; font-weight: 600;
+    color: var(--text-d) !important; margin: 0 0 0.4rem !important;
+    letter-spacing: 0.06em;
+  }
+  .term-en {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 0.78rem; color: var(--gold-d); letter-spacing: 0.12em;
+    margin-bottom: 1rem;
+  }
+  .term p { font-size: 0.86rem !important; line-height: 2 !important; color: var(--text-m); }
+  .term .key { color: var(--text-d); font-weight: 600; background: #F8F0E0; padding: 1px 6px; border-radius: 3px; }
+  .term-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; }
+  .term-table th, .term-table td {
+    border: 1px solid var(--border); padding: 0.55rem 0.9rem;
+    font-size: 0.82rem; text-align: left; vertical-align: top;
+  }
+  .term-table th { background: #F4EFE6; color: var(--text-d); font-weight: 500; }
+  .faq-item {
+    background: #FFFFFF; border: 1px solid var(--border); border-radius: 6px;
+    padding: 1.4rem 1.8rem; margin-bottom: 1rem;
+  }
+  .faq-q {
+    font-family: var(--serif); font-weight: 600; color: var(--text-d);
+    font-size: 0.95rem; letter-spacing: 0.04em; margin-bottom: 0.7rem;
+    display: flex; gap: 0.6rem; align-items: flex-start;
+  }
+  .faq-q::before { content: "Q."; color: var(--gold-d); font-family: 'Cormorant Garamond',serif;
+                    font-style: italic; font-weight: 600; font-size: 1rem; flex-shrink: 0; }
+  .faq-a { font-size: 0.85rem; color: var(--text-m); line-height: 2;
+           padding-left: 1.6rem; }
+  .faq-a a { color: var(--gold-d); }
+</style>
+"""
+
+@app.route("/glossary")
+def glossary_page():
+    html = f"""<!DOCTYPE html><html lang="ja"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>用語解説 | MOONLOG</title>
+{_LEGAL_CSS}
+{_GLOSSARY_CSS_EXTRA}
+</head><body>
+{_LEGAL_HEADER.format(title="用語解説")}
+<div class="legal-wrap">
+  <h1>用語解説</h1>
+  <p style="margin-bottom:2rem;">レポートを読むときに知っておくと役立つ占星術の基本用語をまとめました。</p>
+
+  <div class="glossary-toc">
+    <div class="glossary-toc-title">📋 目次</div>
+    <ul>
+      <li><a href="#chart">出生チャート（ネイタル）</a></li>
+      <li><a href="#sign">サイン（12星座）</a></li>
+      <li><a href="#house">ハウス（12室）</a></li>
+      <li><a href="#planet">惑星（7惑星）</a></li>
+      <li><a href="#aspect">アスペクト</a></li>
+      <li><a href="#solar-return">ソーラーリターン</a></li>
+      <li><a href="#transit">トランジット</a></li>
+      <li><a href="#lifecycle">ライフサイクル</a></li>
+    </ul>
+  </div>
+
+  <div class="term" id="chart">
+    <h2>出生チャート（ネイタルチャート）</h2>
+    <div class="term-en">Birth Chart / Natal Chart</div>
+    <p>あなたが生まれた瞬間の、太陽・月・惑星の配置図です。一生変わらない「あなたの設計図」のようなもの。<span class="key">生年月日・出生時刻・出生地</span>の3つから計算します。性格・才能・人生のテーマなど、生まれ持った傾向を読み解く基礎になります。</p>
+  </div>
+
+  <div class="term" id="sign">
+    <h2>サイン（12星座）</h2>
+    <div class="term-en">Sign / Zodiac</div>
+    <p>天空を黄道上で12等分した区画のこと。牡羊座から魚座まで12個あり、それぞれに性質・キャラクターがあります。</p>
+    <p>サインは <span class="key">「どんなふうに」</span> を示します。たとえば牡羊座は直球・スピード重視、おうし座はゆっくり・確実、ふたご座は多角的・柔軟、というように。</p>
+    <table class="term-table">
+      <tr><th>記号</th><th>サイン</th><th>キーワード</th></tr>
+      <tr><td>♈</td><td>牡羊座</td><td>始動・直球・チャレンジ</td></tr>
+      <tr><td>♉</td><td>牡牛座</td><td>安定・五感・蓄積</td></tr>
+      <tr><td>♊</td><td>双子座</td><td>知性・対話・柔軟</td></tr>
+      <tr><td>♋</td><td>蟹座</td><td>感情・家族・養育</td></tr>
+      <tr><td>♌</td><td>獅子座</td><td>表現・誇り・創造</td></tr>
+      <tr><td>♍</td><td>乙女座</td><td>分析・実務・改善</td></tr>
+      <tr><td>♎</td><td>天秤座</td><td>調和・関係性・美</td></tr>
+      <tr><td>♏</td><td>蠍座</td><td>深化・変容・本質</td></tr>
+      <tr><td>♐</td><td>射手座</td><td>探究・自由・哲学</td></tr>
+      <tr><td>♑</td><td>山羊座</td><td>達成・責任・戦略</td></tr>
+      <tr><td>♒</td><td>水瓶座</td><td>革新・自由・コミュニティ</td></tr>
+      <tr><td>♓</td><td>魚座</td><td>感受性・癒し・直感</td></tr>
+    </table>
+  </div>
+
+  <div class="term" id="house">
+    <h2>ハウス（12室）</h2>
+    <div class="term-en">House</div>
+    <p>地球から見た天空を、地平線と子午線を基準に12分割した区画です。1ハウスから12ハウスまであり、それぞれに「人生の分野」が割り当てられています。</p>
+    <p>ハウスは <span class="key">「どこで」</span> を示します。サインが「どんなふうに」なのに対し、ハウスは「人生のどの場面で」を表します。</p>
+    <p>※ ハウスは出生時刻と出生地が必要です。時刻が分からないと正確には読めません。</p>
+    <p>※ moonlog では <strong>Koch（コッホ）</strong>方式でハウスを計算しています。</p>
+    <table class="term-table">
+      <tr><th>ハウス</th><th>分野</th></tr>
+      <tr><td>1ハウス</td><td>あなた自身の在り方・第一印象</td></tr>
+      <tr><td>2ハウス</td><td>お金・豊かさ・価値観</td></tr>
+      <tr><td>3ハウス</td><td>学び・コミュニケーション</td></tr>
+      <tr><td>4ハウス</td><td>家族・家庭・プライベート</td></tr>
+      <tr><td>5ハウス</td><td>創造・喜び・恋愛</td></tr>
+      <tr><td>6ハウス</td><td>日々の仕事と健康</td></tr>
+      <tr><td>7ハウス</td><td>パートナーシップ</td></tr>
+      <tr><td>8ハウス</td><td>変容・深化・再生</td></tr>
+      <tr><td>9ハウス</td><td>旅・学び・大きなビジョン</td></tr>
+      <tr><td>10ハウス</td><td>キャリア・社会での立ち位置</td></tr>
+      <tr><td>11ハウス</td><td>仲間・コミュニティ・夢</td></tr>
+      <tr><td>12ハウス</td><td>内側の世界・精神性・癒し</td></tr>
+    </table>
+  </div>
+
+  <div class="term" id="planet">
+    <h2>惑星（7惑星）</h2>
+    <div class="term-en">Planets</div>
+    <p>占星術では、太陽・月・水星・金星・火星・木星・土星の7つを基本の天体として扱います。それぞれが人生の異なる側面を象徴しています。</p>
+    <table class="term-table">
+      <tr><th>記号</th><th>惑星</th><th>表すもの</th></tr>
+      <tr><td>☉</td><td>太陽</td><td>社会的な顔・人生のテーマ</td></tr>
+      <tr><td>☽</td><td>月</td><td>感情・内面・心の安らぎ</td></tr>
+      <tr><td>☿</td><td>水星</td><td>思考・言葉・コミュニケーション</td></tr>
+      <tr><td>♀</td><td>金星</td><td>愛・喜び・美意識</td></tr>
+      <tr><td>♂</td><td>火星</td><td>行動力・情熱・エネルギー</td></tr>
+      <tr><td>♃</td><td>木星</td><td>発展・幸運・拡大</td></tr>
+      <tr><td>♄</td><td>土星</td><td>課題・成熟・魂のテーマ</td></tr>
+    </table>
+  </div>
+
+  <div class="term" id="aspect">
+    <h2>アスペクト</h2>
+    <div class="term-en">Aspect</div>
+    <p>惑星と惑星が作る「角度」のこと。0度・60度・90度・120度・180度などの特定の角度のとき、その2つの惑星のエネルギーが響き合います。</p>
+    <p>たとえば「太陽と月が90度（スクエア）」だと、社会的な自分と感情的な自分の間に緊張がある——というふうに読みます。アスペクトは個性の深い部分を映し出します。</p>
+  </div>
+
+  <div class="term" id="solar-return">
+    <h2>ソーラーリターン（SR）</h2>
+    <div class="term-en">Solar Return</div>
+    <p>出生時の太陽と全く同じ位置に、運行中（トランジット）の太陽が戻ってくる瞬間のこと。だいたい誕生日の前後2日以内に起きます。</p>
+    <p>その瞬間を中心に新しいチャートを作って読むのが <span class="key">「2026年 星読み」</span> レポートです。1年に1度しか起きない宇宙的なイベントが、その年の「種」になるという考え方。</p>
+    <p>SRチャートは1年ごとに違う配置になります。前年と今年で何が変わったかを比べることで、その年に起きるテーマが立体的に見えてきます。</p>
+  </div>
+
+  <div class="term" id="transit">
+    <h2>トランジット</h2>
+    <div class="term-en">Transit</div>
+    <p>「現在運行中の」という意味。リアルタイムで動いている惑星の配置を指します。</p>
+    <p>「トランジットの木星があなたの月とコンジャンクション（重なる）」のように、出生チャートの星と現在の星の関係を読むことで、いま何が起きているか・これから何が来るかを読み取れます。</p>
+  </div>
+
+  <div class="term" id="lifecycle">
+    <h2>ライフサイクル</h2>
+    <div class="term-en">Life Cycle</div>
+    <p>惑星の公転周期に基づいて、誰にでも訪れる人生の節目を読む占星術の手法です。</p>
+    <p>たとえば <span class="key">土星リターン（29歳頃）</span>・<span class="key">ミッドライフ（42歳頃）</span>・<span class="key">カイロンリターン（50歳頃）</span> など。これらは惑星の周期に基づくため、誰にとってもほぼ同じ年齢で訪れます（±1年程度の個人差）。</p>
+    <p>moonlog の「ライフサイクル」レポートは、生まれてから100歳までの全フェーズ・転機を時系列でお届けします。</p>
+  </div>
+
+  <p class="legal-updated">最終更新日：2026年5月8日</p>
+</div>
+{_LEGAL_FOOTER}
+</body></html>"""
+    return html
+
+
+@app.route("/faq")
+def faq_page():
+    html = f"""<!DOCTYPE html><html lang="ja"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>よくある質問 | MOONLOG</title>
+{_LEGAL_CSS}
+{_GLOSSARY_CSS_EXTRA}
+</head><body>
+{_LEGAL_HEADER.format(title="よくある質問")}
+<div class="legal-wrap">
+  <h1>よくある質問</h1>
+  <p style="margin-bottom:2.5rem;">ご購入前・ご利用中によくいただくご質問をまとめました。
+    用語については <a href="/glossary" style="color:var(--gold-d);">用語解説ページ</a> もあわせてご覧ください。</p>
+
+  <h2>レポートについて</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">出生時刻が正確にわからないのですが、レポートは作れますか？</div>
+    <div class="faq-a">
+      レポートによります。<br>
+      ・<strong>ライフサイクル</strong>：生年月日のみで作成可能です。<br>
+      ・<strong>出生チャート・2026年星読み</strong>：出生時刻が必要です。不明な場合は12:00で計算しますが、ハウスの精度は下がります。<br>
+      母子手帳・親に確認・病院への問い合わせなどで分かることが多いので、可能なら確認をおすすめします。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">星読みは「占い」ですか？当たるんですか？</div>
+    <div class="faq-a">
+      moonlogは「占い」ではなく <strong>「自己理解のためのフレームワーク」</strong> として星読みを使っています。「当たる・当たらない」ではなく、<strong>「こういう傾向を持って生まれた人は、こういう環境で力を発揮しやすい」</strong> という読み方です。<br>
+      占い師による個別鑑定ではなく、出生時刻の天体配置を計算してデータベースから自動生成するレポートです。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">レポートはいつ届きますか？</div>
+    <div class="faq-a">
+      決済完了後、すぐに画面でレポートをご覧いただけます。同時にご登録メールアドレスにPDFをお届けします（数分以内）。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">PDFとブラウザ、どちらで読めますか？</div>
+    <div class="faq-a">
+      両方ですが、役割が違います。<br>
+      ・<strong>ブラウザ表示</strong>：購入直後にその場ですぐ読めます。ただし<strong>タブを閉じると再アクセスはできません</strong>（ページのURLを再度開いても表示されません）。<br>
+      ・<strong>PDF</strong>：購入直後にメールで届く、お手元に残る永久保存版です。<strong>いつでも・何度でも・どの端末でも</strong>読み返せます。<br>
+      → 後で読み返したいときは、必ず<strong>メールで届いたPDFをご利用ください</strong>。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">ブラウザのタブを閉じてしまったら、もう読めない？</div>
+    <div class="faq-a">
+      ブラウザでは再表示できませんが、<strong>メールで届いたPDFがお手元に残っています</strong>のでそちらをお開きください。PDFは永久保存版なので、いつでも何度でも読み返せます。<br>
+      ※ もしPDFが届いていない場合は、迷惑メールフォルダをご確認のうえ、それでも見当たらないときはお問い合わせください。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">スマートフォンでも読めますか？</div>
+    <div class="faq-a">
+      はい、PC・スマホ・タブレットすべてに対応しています。PDFはどの端末でもレイアウトを保ったままご覧いただけます。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">一度買ったレポートは何度も読み返せますか？</div>
+    <div class="faq-a">
+      はい。お届けしたPDFはお手元にずっと残るので、いつでも何度でも読み返せます。クラウドに保存しておけば、機種変更後も引き続きご利用いただけます。
+    </div>
+  </div>
+
+  <h2>商品の違いについて</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">3つのレポートはどう違うのですか？</div>
+    <div class="faq-a">
+      <strong>時間軸</strong>で違います。<br>
+      ・<strong>出生チャート</strong>：あなたが何者か（一生変わらない核）<br>
+      ・<strong>ライフサイクル</strong>：人生の流れ・転機（一生）<br>
+      ・<strong>2026年星読み</strong>：今年のテーマ（1年）<br>
+      まずは無料ライト版から試して、興味があれば有料レポートへどうぞ。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">無料ライト版と有料の出生チャートはどう違いますか？</div>
+    <div class="faq-a">
+      <strong>無料ライト版</strong>は太陽・月・水星の3天体のみ。あなたの核となる部分のさわりが読めます。<br>
+      <strong>有料の出生チャート（¥980）</strong>は7惑星すべて＋総合まとめ＋ホロスコープチャートの完全版。A4換算 約20ページのボリュームです。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">2026年星読みは毎年買い直すのですか？</div>
+    <div class="faq-a">
+      はい。星の配置は毎年変わるため、年ごとに新しいレポートになります。来年（2027年）になったら2027年版が買えるようになります。
+    </div>
+  </div>
+
+  <h2>料金・支払いについて</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">どうしてこんなに安いの？（¥980）</div>
+    <div class="faq-a">
+      <strong>必要なときに気軽に使ってほしい</strong>からです。占星術の鑑定は数千〜数万円のものが多く、月額課金サービスもありますが、moonlogは「迷ったときに開ける、手頃な地図」を目指しています。<br>
+      ※ オープン記念価格です。順次改定予定です。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">月額課金やサブスクはありますか？</div>
+    <div class="faq-a">
+      ありません。すべて1回購入の買い切り型です。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">返金はできますか？</div>
+    <div class="faq-a">
+      レポートの性質上、購入後の返金は原則お受けしていません。詳しくは <a href="/legal/tokushoho">特定商取引法に基づく表記</a> をご確認ください。<br>
+      不明点があれば購入前にお問い合わせください。
+    </div>
+  </div>
+
+  <h2>個人情報・プライバシーについて</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">入力した個人情報はどう扱われますか？</div>
+    <div class="faq-a">
+      レポート生成のためだけに使用し、第三者には提供しません。詳しくは <a href="/legal/privacy">プライバシーポリシー</a> をご覧ください。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">アカウント登録は必要ですか？</div>
+    <div class="faq-a">
+      <strong>無料ライト版</strong>はアカウント登録不要、すぐにご利用いただけます。<br>
+      <strong>有料レポート</strong>はメールアドレスのご登録が必要です（PDFのお届け先）。
+    </div>
+  </div>
+
+  <h2>レポートの作り方・解釈について</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">レポートはどうやって作られていますか？</div>
+    <div class="faq-a">
+      生年月日・出生時刻・出生地から <strong>swisseph（スイス天文暦）</strong> という標準的な天文計算ライブラリを使って、生まれた瞬間の天体配置を正確に算出しています。
+      その配置（惑星のサイン・ハウス）を、moonlog独自の解説データベースと突き合わせて、自動で文章を組み立てています。<br>
+      <strong>占い師による個別鑑定ではなく、データに基づく自動生成</strong>のレポートです。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">プロの占星術師の鑑定とは何が違いますか？</div>
+    <div class="faq-a">
+      moonlogは <strong>「自己理解の入口」</strong> として設計されています。プロ鑑定との主な違い：<br>
+      ・<strong>アスペクト（惑星間の角度）の解釈</strong>：moonlogではコンジャンクション（重なり）など主要なものに限定。複雑な角度の組み合わせは扱いません<br>
+      ・<strong>ディグニティ（惑星の品位）</strong>：簡略化しています<br>
+      ・<strong>逆行</strong>：チャート図に表示しますが、解釈には深く反映していません<br>
+      より深い分析や個別の悩み相談には、信頼できる占星術師への対面鑑定をおすすめします。<br>
+      moonlogは「自分という地図を確かめるツール」であり、人生の指針を一方的に決めるものではありません。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">解釈の流派・ハウスシステムは何を使っていますか？</div>
+    <div class="faq-a">
+      現代占星術（西洋占星術の心理学的アプローチ）をベースにしています。<br>
+      ハウスシステムは <strong>Koch（コッホ）</strong> を採用。出生時刻に基づいて精度の高いハウス分割ができる方式です。<br>
+      なお、よく使われる Placidus（プラシダス）と Koch では、1・4・7・10ハウスのカスプ（ASC・IC・DSC・MC）は同じで、その他のハウスのカスプ位置がわずかに異なります。<br>
+      各惑星×サイン・ハウスの解釈は、現代占星術の標準的なテキストを参考にしながら、moonlogのコンセプト（自己受容・後悔のない後半生）に合わせて言葉を選んでいます。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">解釈に違和感を感じたときはどう読めばいいですか？</div>
+    <div class="faq-a">
+      レポートの解釈は<strong>「あなたの傾向の一面」</strong>です。一字一句が当てはまるとは限りません。「これは自分っぽい」と感じる部分は受け取って、ピンとこない部分は <strong>「今の自分には響かない」と置いておいて</strong> 構いません。<br>
+      占星術は、星から人生を決めつけるものではなく、<strong>自分を見つめ直すきっかけを与える</strong>道具です。違和感のある記述があれば、なぜそう感じたかを考えること自体が、自己理解を深めるヒントになります。
+    </div>
+  </div>
+
+  <h2>その他</h2>
+
+  <div class="faq-item">
+    <div class="faq-q">占星術の知識がなくても読めますか？</div>
+    <div class="faq-a">
+      はい。専門用語は最小限に、わかりやすい言葉で書いています。記号や用語の意味は <a href="/glossary">用語解説ページ</a> でいつでも確認できます。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">家族や友人にプレゼントできますか？</div>
+    <div class="faq-a">
+      はい。受け取る方の生年月日があれば、その方のレポートを生成できます。お届けPDFをそのままプレゼントできます。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">サンプルを見たいです。</div>
+    <div class="faq-a">
+      各レポートのサンプルをご用意しています。<br>
+      ・<a href="/sample/natal">出生チャート サンプル</a><br>
+      ・<a href="/sample/sr">2026年 星読み サンプル</a><br>
+      ・<a href="/sample/lifecycle">ライフサイクル サンプル</a>
+    </div>
+  </div>
+
+  <p class="legal-updated">最終更新日：2026年5月8日</p>
+</div>
+{_LEGAL_FOOTER}
+</body></html>"""
+    return html
+
 
 # ============================================================
 # 起動

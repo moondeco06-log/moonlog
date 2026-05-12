@@ -231,11 +231,11 @@ SIGN_TAGS = {
 # ─── 惑星ごとのサブセクション見出し（本文を3分割） ───
 SECTION_LABELS = {
     "Sun":     ["本質と魂の方向", "社会での振る舞い", "人生のテーマ"],
-    "Moon":    ["感情の動き方", "安心を感じる源", "心が育つ環境"],
+    "Moon":    ["感情の動き方", "安心を感じる源", "心を整えるヒント"],
     "Mercury": ["思考のスタイル", "言葉と伝え方", "学び方の特徴"],
     "Venus":   ["美意識と感性", "愛と関係性のかたち", "喜びの感じ方"],
     "Mars":    ["行動パターン", "情熱の向け方", "挑戦の仕方"],
-    "Jupiter": ["拡大していく領域", "幸運のパターン", "成長の方向性"],
+    "Jupiter": ["幸せを感じる場面", "伸ばすと豊かになるところ", "魂の成長の方向"],
     "Saturn":  ["人生の課題テーマ", "克服のプロセス", "成熟への道"],
 }
 
@@ -253,7 +253,7 @@ SUN_PERSONALITY = {
             "目的意識が強く、誰かに言われる前から自分で課題を見つけ、前に進もうとするバイタリティが自然と周囲を引き連れていきます。\n\n"
             "裏表がなく、思ったことを素直に言葉や行動に変えられる正直さも、あなたの大きな魅力。\n"
             "駆け引きより真っ向勝負を好むので、初対面の相手にも「この人は信用できる」という印象を与えます。\n"
-            "競争心とパイオニア精神が強いぶん、自分が1番の座に就くことへの執着もありますが、それが行動のエンジンにもなっています。\n\n"
+            "競争心とパイオニア精神が強い分、自分が1番の座に就くことへの執着もありますが、それが行動のエンジンにもなっています。\n\n"
             "社会的には「決断力があって頼りになるリーダー」として周囲に映るでしょう。\n"
             "攻めに強く、守りには少し弱いという傾向がありますが、挑戦と達成を繰り返しながら、あなたの自我は力強く磨かれていきます。"
         ),
@@ -367,7 +367,7 @@ SUN_PERSONALITY = {
             "比較的孤独に強く、コツコツがんばれる粘り強さが内側にあります。\n"
             "「やるべきことをきちんとやり遂げる」という軸がぶれないので、周囲から積み上がる信頼は揺るぎないものになります。\n\n"
             "何も考えずに楽しむことが少し苦手で、常に善悪の基準を自分の中に持って行動するのがやぎ座の太陽らしさ。\n"
-            "自分に厳しいぶん、他人にも厳しく映ることがありますし、人生を悲観的に捉えてしまうときもあるでしょう。\n\n"
+            "自分に厳しい分、他人にも厳しく映ることがありますし、人生を悲観的に捉えてしまうときもあるでしょう。\n\n"
             "でも、時間をかけて積み上げてきたものが、ある日突然花開く瞬間がある——それがやぎ座の太陽の美しい本質です。\n"
             "社会的には「誠実で長期的に信頼できる人」「実力で道を切り拓いた人」として尊敬を集めます。"
         ),
@@ -425,10 +425,10 @@ MOON_PERSONALITY = {
         ),
     },
     "Gem": {
-        "keyword": "頭と言葉が動いているとき、内側がいちばん落ち着く知的な心",
+        "keyword": "言葉や情報に触れているとき、心がいちばん安心するタイプ",
         "body": (
-            "月がふたご座にあるあなたは、言葉を交わし、何かを知り、表現することの中に安らぎを見つける人です。\n"
-            "愛想が良くサービス精神も旺盛で、周りに人が集まりやすい内面の明るさがあります。\n\n"
+            "月がふたご座にあるあなたは、言葉を交わすこと・何かを知ること・表現することで、心が整っていくタイプです。\n"
+            "好奇心が動いている瞬間がいちばん「自分らしい」と感じられ、周りからも話しやすい人として映ります。\n\n"
             "同時に2つのことを器用にこなせますが、移り気で落ち着きがない面も持ち合わせています。\n"
             "生活そのものが変化に富んでいて、安定より好奇心に従って動いていく人生スタイルを好みます。\n\n"
             "常に頭を動かしているので、ときに皮肉を言ってしまったり、神経のバランスを崩しやすいという傾向も。\n"
@@ -527,7 +527,7 @@ MOON_PERSONALITY = {
             "自分と同じ趣味や考えを持つグループへの参加は好きですが、感情的にはクールで、あまり緻密な人間関係は苦手です。\n\n"
             "個性的で独創的な発想をするため、小さい頃は「変わり者」と言われたかもしれません。\n"
             "でも、「みんなそれぞれユニークでいい」という平等な視点を持っているので、人の気持ちには少し鈍感な面もあります。\n\n"
-            "感情より思考で処理しようとする傾向がありますが、そのぶん客観的で安定した内面の軸があります。\n"
+            "感情より思考で処理しようとする傾向がありますが、その分客観的で安定した内面の軸があります。\n"
             "仲間との繋がりの中に深い感情的充足を見出せる、あなたらしい内面の豊かさを大切にしてください。"
         ),
     },
@@ -679,9 +679,9 @@ MERCURY_PERSONALITY = {
         ),
     },
     "Pis": {
-        "keyword": "言葉にしなくてもわかってしまう、サイキックな共感の知性",
+        "keyword": "言葉にしなくてもわかってしまう、感受性で受けとる直感の知性",
         "body": (
-            "水星がうお座にあるあなたは、サイキックな知性の持ち主で、無意識に相手の考えを感じ取る力があります。\n"
+            "水星がうお座にあるあなたは、感受性が高く、相手の気持ちや場の空気を無意識に感じ取る直感的な知性の持ち主です。\n"
             "相手が言葉にする前から意図を感じ取れる鋭さがある一方、「伝わっているはず」と思い込んで大事な説明を省いてしまうことも。\n"
             "大事なことが抜けてしまう場合があるので注意が必要です。\n\n"
             "外からの感情やエネルギーをそのまま受け取ってしまうため、集中が乱れやすい一面があります。\n"
@@ -703,7 +703,7 @@ VENUS_PERSONALITY = {
             "逆に自分が興味のない人にどんなに言い寄られても、全くその気になりません。\n\n"
             "恋が成就した時点で興味が別の方向へ移りやすく、一人の人と長く関係を続けるには常に刺激が必要です。\n"
             "手に入りそうで入らない、またはライバルの存在がいるほうが燃えるでしょう。\n\n"
-            "自分を良く見せるのも得意で、マイナスに出ると喧嘩が多くなったり、金銭面でも衝動的で計画性に欠けることも。\n"
+            "自分を良く見せるのも得意で、マイナスに出ると言い争いが多くなったり、金銭面でも衝動的で計画性に欠けることも。\n"
             "情熱を持って追いかけることに、あなたの金星はいちばん輝きます。"
         ),
     },
@@ -734,7 +734,7 @@ VENUS_PERSONALITY = {
     "Can": {
         "keyword": "母性的な愛情でそっと包み込む、家族との繋がりを大切にする恋愛観",
         "body": (
-            "金星がかに座にあるあなたは、感情の保障と愛情に価値を置き、愛情表現は母性的で保護者的です。\n"
+            "金星がかに座にあるあなたは、心の安心と深い情緒のつながりに価値を置き、愛情表現は母性的で包み込むようなあたたかさを持っています。\n"
             "母親のことを必要としたり大好きな人も多く、恋愛も伝統的な感覚を大切にします。\n\n"
             "誰かを想っている状態が日常の活力になるタイプで、心の中に「好きな人」がいることで毎日が輝きます。\n"
             "家族が好きな人を認めてくれることや、彼に家族を紹介されることで安心します。\n"
@@ -760,7 +760,7 @@ VENUS_PERSONALITY = {
         "body": (
             "金星がおとめ座にあるあなたは、理想が高く、自分にも相手にも完璧を求めてしまいます。\n"
             "「汚いシーツだと眠れない」「食べ方が気に入らないから好きになれない」など細かい条件が出てきて、\n"
-            "理想が高いぶん「これで十分」と感じることが難しく、いつも何か足りない感覚を抱きやすいでしょう。\n\n"
+            "理想が高い分「これで十分」と感じることが難しく、いつも何か足りない感覚を抱きやすいでしょう。\n\n"
             "すごく好きになった場合は「あんなに素敵な人は私には釣り合わない」と思ってしまい、\n"
             "自己批判に走ってしまうこともあるでしょう。\n\n"
             "内側に描く愛の理想はとても純粋なのですが、現実の感情とのギャップに揺れることがあり、\n"
@@ -886,8 +886,8 @@ MARS_PERSONALITY = {
     "Can": {
         "keyword": "家族と愛する人を守るとき、誰にも負けないエネルギーが湧き出る",
         "body": (
-            "火星がかに座にあるあなたは、育った環境や母親に対して怒りを持っていることがあるかもしれません。\n"
-            "理想の家族の形を持っているので、ついブツブツ文句を言いたくなることも。\n\n"
+            "火星がかに座にあるあなたは、家族や育った環境への思い入れがエネルギーの源になりやすいタイプです。\n"
+            "「こうありたい」という理想の家族像を強く持っている分、現実とのギャップにモヤモヤを感じることもあるでしょう。\n\n"
             "感情的で人から影響を受けやすいですが、攻撃的なエネルギーは普段は出ません。\n"
             "しかし自分の立場や愛する人を守るため——特に家族のためには圧倒的なパワーが発揮されます。\n\n"
             "安定した居心地の良い生活や場所を築きたいという気持ちから、前向きなエネルギーが出てくるようです。\n"
@@ -1061,7 +1061,7 @@ SUN_CHALLENGE = {
     "Lib": "怠け癖があり、八方美人になって自分の本当の意見を失いがちです。気を遣いすぎて相手の欲求に合わせすぎると疲弊し、優柔不断で決断を先延ばしにするクセも成長の足かせになります。",
     "Sco": "猜疑心や嫉妬心が強く、他人からの承認を求めすぎる傾向があります。執着やコントロール欲が強く出ると、大切な関係をじわじわと傷つけてしまうことがあります。",
     "Sag": "誇大妄想と無責任な行動に出ることがあります。大きな夢を語ったまま実行が伴わないことも多く、具体的な細部を怠るクセがトラブルの原因になります。",
-    "Cap": "自分に厳しいぶん他人にも厳しくなりがちで、人生を悲観的に捉えてしまうことがあります。責任感が強すぎて休めず、感情表現が苦手なまま孤立感を抱え込む傾向があります。",
+    "Cap": "自分に厳しい分他人にも厳しくなりがちで、人生を悲観的に捉えてしまうことがあります。責任感が強すぎて休めず、感情表現が苦手なまま孤立感を抱え込む傾向があります。",
     "Aqu": "重い責任を背負うことが苦手で、周りには「風変わりな人」というレッテルを貼られることも。感情より理屈を優先しすぎて人の気持ちに鈍感と思われ、孤立することがあります。",
     "Pis": "意志が弱く自分を前に出すのが苦手で、同情心の強さから他人の影響を受けすぎます。現実逃避の傾向が出やすく、境界線がないまま流されてしまうことが課題です。",
 }
@@ -1070,13 +1070,13 @@ MOON_CHALLENGE = {
     "Ari": "精神的に移り気で落ち着きがなく、繊細さに欠けて自己中心的になりやすいのが欠点です。短気でカッとなった後に後悔することも多く、普段から怒りを持ちやすい場合は深層心理で自分を卑下している可能性もあります。",
     "Tau": "内面は結構頑固で、感情の切り替えがとても苦手です。こだわりや執着を手放せず、自分の欲しいものを素直に求めることができないまま感情をため込んでしまうことがあります。",
     "Gem": "移り気で落ち着きがなく、常に頭を動かしすぎて皮肉を言ってしまったり神経のバランスを崩しやすいです。感情が言葉になりすぎて表面的に見られ、本音が隠れて誤解されることもあります。",
-    "Can": "心配のしすぎが消化の妨げになります。愛情が重くなって相手への依存や束縛として伝わることがあり、納得できない思いや不安を固めすぎると心身の健康を害することもあります。",
+    "Can": "心配のしすぎが胃腸の不調や心身の疲れにつながりやすい傾向があります。愛情が深い分相手への依存や束縛として伝わってしまうことがあり、不安をひとりで抱え込みすぎると心と体のバランスを崩してしまうこともあります。",
     "Leo": "支配的になったり子供っぽくなったりと、優越感と劣等感の間を行ったり来たりすることがあります。認められないと拗ねてしまったり、感情的なドラマを起こして周りを疲れさせることもあります。",
     "Vir": "自己批判が強く、完璧を目指しすぎて潔癖症やストイックになりすぎるのが欠点です。心配や不安が止まらず些細なことに囚われ、感情面で神経質になって相手にも完璧を求めてしまいます。",
     "Lib": "良い人を演じすぎてストレスをためやすく、わがままになる時もあります。感情的な衝突を避けすぎて大事な問題を先送りにし続ける癖があり、自分の本当のニーズを表現できないまま不満が積もります。",
     "Sco": "嫉妬や束縛につながってしまうことがあり、感情を溜め込んで突然爆発したり、過去の傷を長く引きずる傾向があります。がんばりすぎて体を酷使しすぎないよう注意が必要です。",
     "Sag": "束縛されるとヒステリックになるほど自由への渇望が強く、感情的にも落ち着きがありません。辛いことから逃げる傾向があり、暴飲暴食で怒りをごまかしてしまうことにも注意が必要です。",
-    "Cap": "幼少期に感情を抑えて育った影響で、感情を抑圧しすぎて誰にも頼れない孤独感を長く抱え込みます。楽なことよりあえて辛いことを選ぶクセが、休む機会を奪ってしまうことがあります。",
+    "Cap": "感情を表に出すことが苦手で、ひとりで抱え込みすぎる傾向があります。「人に頼るより自分で何とかしよう」と背負いがちで、楽なことよりあえて辛いことを選ぶクセが休む機会を奪ってしまうことがあります。",
     "Aqu": "感情的にクールで、緻密な人間関係は避けたくなります。感情より論理で処理するため冷たく見られたり、人の気持ちに鈍感と思われて親密さを築くのが難しくなることがあります。",
     "Pis": "優柔不断で人の意見に流されやすく、悩んでいる人や自分を必要としてくれる人に依存してしまいがちです。他人の感情を引き受けすぎて消耗しやすく、自分の気持ちと他人の気持ちの区別が曖昧になります。",
 }
@@ -1097,7 +1097,7 @@ MERCURY_CHALLENGE = {
 }
 
 VENUS_CHALLENGE = {
-    "Ari": "恋が成就した時点で興味が別の方向へ移りやすく、熱しやすく冷めやすいため関係が長続きしにくいことがあります。金銭面でも衝動的で計画性に欠け、喧嘩が多くなりやすいでしょう。",
+    "Ari": "恋が成就した時点で興味が別の方向へ移りやすく、熱しやすく冷めやすいため関係が長続きしにくいことがあります。金銭面でも衝動的で計画性に欠け、言い争いが多くなりやすいでしょう。",
     "Tau": "物質的な満足や好きな人への所有欲が強く、物も人も私物化したくなる執着が自分を苦しめることがあります。こだわりを手放せず、感情も環境も変化させることがとても難しいタイプです。",
     "Gem": "感情的なコミットメントが苦手で、本命がいても別の人とも付き合えるような自分の行動を束縛されることを極度に嫌います。深い関係性を無意識に避け、恋に溺れることのない冷静さが孤独につながることも。",
     "Can": "愛情が深すぎて尽くしすぎてしまい、相手を甘やかしたり依存してしまう可能性があります。感情的に傷つきやすく、拒否されたと感じると自分の世界に引きこもってしまいます。",
@@ -1240,25 +1240,24 @@ def generate_synthesis_html(planets_data, name):
     me_kw   = MERCURY_PERSONALITY.get(me, {}).get("keyword", "独自の知性")
     ve_kw   = VENUS_PERSONALITY.get(ve,  {}).get("keyword", "美意識")
     ma_kw   = MARS_PERSONALITY.get(ma,  {}).get("keyword", "行動エネルギー")
-    # 木星・土星は各星座テキストの最初の節をキーワードとして使用
-    ju_text = JUPITER_SIGN.get(ju, "発展の方向性")
-    ju_kw   = ju_text.split("。")[0]
-    sa_text = SATURN_SIGN.get(sa, "魂の課題と成長")
-    sa_kw   = sa_text.split("。")[0]
+    # 木星・土星はサイン別のキーワードを使用（JUPITER_BODY/SATURN_BODY）
+    ju_kw = JUPITER_BODY.get(ju, {}).get("keyword", "発展の方向性")
+    sa_kw = SATURN_BODY.get(sa, {}).get("keyword", "魂の課題と成長")
 
     # 太陽と月が同じ星座かどうかで文章を調整
     if sn == mn:
         sun_moon_note = (
-            f"太陽も月も同じ<strong>{esc(sun_sign)}</strong>に位置していますが、"
-            f"太陽が「{esc(sun_kw)}」という社会的な顔を形づくるのに対し、"
-            f"月は「{esc(moon_kw)}」というかたちで内側の感情や無意識の反応として働いています。"
-            f"外と内の両面でこのエネルギーが強く現れるため、あなたの個性はとりわけ一貫しています。"
+            f"太陽も月も同じ<strong>{esc(sun_sign)}</strong>にあります。"
+            f"社会的な顔としての太陽は「{esc(sun_kw)}」というあり方で外に表れ、"
+            f"内側の心としての月も同じ星座にあるため「{esc(moon_kw)}」という形で動きます。"
+            f"外と内が同じ方向を向いている分、ぶれにくく一貫した個性が育ちやすいタイプです。"
         )
     else:
         sun_moon_note = (
-            f"<strong>{esc(sun_sign)}の太陽</strong>は社会的な場面での「{esc(sun_kw)}」という振る舞いを生み出し、"
-            f"<strong>{esc(moon_sign)}の月</strong>はあなたの内側で「{esc(moon_kw)}」という感情パターンとして静かに流れています。"
-            f"外に見せる顔と内なる感情軸、この2つが重なるとき、あなたは最も「自分らしい」と感じられます。"
+            f"<strong>{esc(sun_sign)}の太陽</strong>はあなたの社会的な顔をつくり、「{esc(sun_kw)}」というあり方で外に表れます。"
+            f"一方、<strong>{esc(moon_sign)}の月</strong>はあなたの内側にあって、「{esc(moon_kw)}」という形で感情や無意識の反応をつくっています。"
+            f"外で見せる顔と内側で感じている自分。違って見えるこの2つを、あなたは1日のなかで自然に行き来しています。"
+            f"どちらも本物のあなたで、その両方があるからこそ、あなたという人がかたちづくられています。"
         )
 
     # 3段落の総合プロフィール
@@ -1267,17 +1266,17 @@ def generate_synthesis_html(planets_data, name):
         + sun_moon_note
     )
     para2 = (
-        f"思考と言葉の面では、<strong>{esc(me_sign)}の水星</strong>が「{esc(me_kw)}」という知性の使い方を示しています。"
+        f"思考と言葉の面では、<strong>{esc(me_sign)}の水星</strong>が「{esc(me_kw)}」という知性の使い方をかたちづくっています。"
         f"人を好きになるとき・美しいと感じるとき、その感性は<strong>{esc(ve_sign)}の金星</strong>の「{esc(ve_kw)}」に根ざしています。"
-        f"そして物事に取り組む際の原動力は<strong>{esc(ma_sign)}の火星</strong>が担い、「{esc(ma_kw)}」というエネルギーで行動を後押しします。"
+        f"そして<strong>{esc(ma_sign)}の火星</strong>が、「{esc(ma_kw)}」という形であなたの行動の原動力を担っています。"
         f"これら3つの星が組み合わさり、あなた独自の<strong>思考・感性・行動スタイル</strong>が生まれています。"
     )
     para3 = (
-        f"人生の流れに目を向けると、<strong>{esc(ju_sign)}の木星</strong>は「{esc(ju_kw)}」という拡大の方向を示しており、"
-        f"この領域に意識を向けるほど自然と運が開いていきます。"
-        f"一方、<strong>{esc(sa_sign)}の土星</strong>は「{esc(sa_kw)}」という課題を通じて成長を促します。"
-        f"苦手意識を感じやすいテーマですが、時間をかけて向き合うことで、"
-        f"他の誰も持ちえない<strong>本物の強さと揺るぎない深み</strong>があなたに宿ります。"
+        f"人生の流れに目を向けると、<strong>{esc(ju_sign)}の木星</strong>はあなたに幸運と発展をもたらす星。"
+        f"『{esc(ju_kw)}』——ここがあなたにとって運が開く入り口です。"
+        f"一方、<strong>{esc(sa_sign)}の土星</strong>はあなたの本物の強さを育てる星。"
+        f"あなたの今世のテーマは『{esc(sa_kw)}』——時間をかけてここに向き合うほど、"
+        f"他の誰も持ちえない<strong>揺るぎない深みと成熟</strong>があなたに宿っていきます。"
         f"星はあなたを縛るものではなく、あなたの可能性を照らす地図です。"
     )
 
@@ -2112,8 +2111,8 @@ body{background:var(--bg);color:var(--text-d);font-family:var(--sans);
               font-weight:400;letter-spacing:.06em;}
 .strengths-grid{display:grid;grid-template-columns:1fr 1fr;
                 gap:.5rem;padding:1.4rem 1.8rem;}
-.strength-item{display:flex;align-items:flex-start;gap:.55rem;
-               font-size:.92rem;color:var(--text-d);}
+.strength-item{display:flex !important;align-items:flex-start;gap:.5rem;
+               font-size:.72rem !important;color:var(--text-d);line-height:1.65 !important;}
 .strength-item::before{content:'◆';color:var(--lav);font-size:.6rem;
                         margin-top:.45rem;flex-shrink:0;}
 
@@ -2126,8 +2125,8 @@ body{background:var(--bg);color:var(--text-d);font-family:var(--sans);
             font-weight:400;letter-spacing:.06em;}
 .caution-grid{display:grid;grid-template-columns:1fr 1fr;
               gap:.5rem;padding:1.4rem 1.8rem;}
-.caution-item{display:flex;align-items:flex-start;gap:.55rem;
-              font-size:.88rem;color:var(--text-m);}
+.caution-item{display:flex !important;align-items:flex-start;gap:.5rem;
+              font-size:.72rem !important;color:var(--text-m);line-height:1.7 !important;}
 .caution-item::before{content:'△';color:var(--rose);font-size:.6rem;
                        margin-top:.4rem;flex-shrink:0;}
 
@@ -2255,7 +2254,10 @@ footer{background:var(--night);border-top:1px solid rgba(184,146,58,.1);
   .sub-section{page-break-inside:avoid;border-top-color:#B89858 !important;}
 
   /* ページ折り返し制御 */
-  .planet-sec,.sec,.summary-sec,.section{
+  .planet-sec,.sec,.summary-sec,.section,
+  .synthesis-box,.strengths-box,.caution-box,
+  .keyword-card,.hoshi-note,.challenge-note,
+  .aspect-item,.lc-card{
     page-break-inside:avoid;
     break-inside:avoid;
   }
@@ -2266,7 +2268,7 @@ footer{background:var(--night);border-top:1px solid rgba(184,146,58,.1);
 SUN_HOSHI = {
     "Ari": "あなたの輝きは、迷わず踏み出すその一歩にあります。考えすぎる前に動き、失敗しても立て直せる力がもともと備わっています。「完璧になってから」ではなく「まず始めてから整える」を人生の合言葉にしてみてください。あなたが先頭に立つだけで、周りの空気はすっと動き始めます。",
     "Tau": "本当に大切なものをゆっくり選び取る目が、あなたの一番の財産です。焦らなくていい、急がなくていい——あなたのペースで積み重ねたものは、誰にも揺るがせない確かさになります。心地よさを大切にすることは怠慢ではなく、あなたらしく生きる知恵です。豊かな感覚をもっと信頼してください。",
-    "Gem": "「まず話す、あとで整える」を基本スタンスに。情報を集めすぎて動けなくなる前に、小さくでも形にすることを優先してください。多様な関心はあなたにしかできないつなぎ方の源です。それを堂々と活かす場を、自分から作りにいきましょう。",
+    "Gem": "「まず話す、あとで整える」を基本スタンスに。情報を集めすぎて動けなくなる前に、小さくでも形にすることを優先してください。あなたの幅広い興味は、人や情報を結びつける独自の視点を生み出します。それを堂々と活かす場を、自分から作りにいきましょう。",
     "Can": "あなたの強さは、人の痛みをそっと受け止められる深い感受性にあります。感じやすさを弱さと思わず、それこそがあなたの本質的な才能です。大切な人と築く安心感の中で、あなたは最も輝きます。自分を守りながら、愛することを恐れないでください。",
     "Leo": "あなたが本気で楽しんでいるとき、周りは自然と元気をもらいます。自分を表現することへの照れや遠慮は、少しずつ手放してください。舞台の中心に立つことは、わがままではなく、あなたに与えられた使命です。心からの喜びをもっと大きく生きていい。",
     "Vir": "細部に気づける目と、物事を丁寧に整える手が、あなたを本当に必要とされる人にします。完璧でなくてもいい、「十分によくできた」を認める練習をしてみてください。誠実さと誠意は必ず届きます。自分への批判的な声より、積み上げてきたものへの誇りを先に見てください。",
@@ -2338,6 +2340,264 @@ MARS_HOSHI = {
     "Pis": "あなたのエネルギーは波のように引いたり満ちたりします。理想や感情が行動の燃料になり、人の痛みのために動けるやさしさがあります。休むことへの罪悪感を手放してください。エネルギーを充電する時間も、あなたの大切な行動のひとつです。直感に従って動いたとき、最もよい結果が生まれます。",
 }
 
+JUPITER_BODY = {
+    "Ari": {
+        "keyword": "新しい一歩を踏み出すたびに、人生が大きく広がっていくタイプ",
+        "body": (
+            "木星がおひつじ座にあるあなたは、まだ誰もやっていないことに踏み出す瞬間、心が満たされるタイプです。\n"
+            "「やってみたい」と思ったことを試すとき・何かを始める初日・自分が先頭を切って動いている時間——そこに本物の喜びが流れます。\n\n"
+            "直感を信じてまず一歩動く瞬発力、自分で道を切り拓く勇気——ここを伸ばすほど、人生は広く豊かに開けていきます。\n"
+            "完璧を待たず「不完全なまま始める」勇気が、あなたの人生を動かす最大の力です。\n\n"
+            "長い目で見ると、誰かに先導されるのではなく、自分の意志で道を開くパイオニアになっていく道。\n"
+            "挑戦を重ねるたびに、あなたの存在そのものが周りを動かす力になっていきます。"
+        ),
+    },
+    "Tau": {
+        "keyword": "五感で味わえる本物の豊かさが、人生に深く積み上がっていくタイプ",
+        "body": (
+            "木星がおうし座にあるあなたは、五感で「これは本物」と感じる瞬間に深く満たされるタイプです。\n"
+            "手触りのよいもの・美味しいもの・心地よい時間——丁寧に味わえる場面のなかで、人生が豊かに育っていきます。\n\n"
+            "本物を見極める審美眼、ゆっくり時間をかけて育てる力、手放さずに守り続ける根気——ここを伸ばすほど、確かな豊かさが手に入ります。\n"
+            "安いから・流行ってるからで選ばず、本当に価値あるものを選ぶ習慣がそのまま人生の財産になります。\n\n"
+            "長い目で見ると、物質と心の両方の豊かさを、誰にも頼らず自分の手で築ける人になっていく道。\n"
+            "あなたの「本物を見抜く目」が、人生の最大の財産です。"
+        ),
+    },
+    "Gem": {
+        "keyword": "学びと出会いを通じて、世界がどんどん広がっていくタイプ",
+        "body": (
+            "木星がふたご座にあるあなたは、新しい知識に触れる瞬間・誰かと深い会話をする瞬間に、いちばん心が躍るタイプです。\n"
+            "読みかけの本・気になる人との対話・ふと飛び込んできた情報——好奇心が動いている時間そのものが、あなたの喜びの源です。\n\n"
+            "学び続ける姿勢、人と人をつなぐコミュニケーション力、複数の興味を持ち続ける柔軟さ——ここを伸ばすほど、思いがけない縁とチャンスが流れ込みます。\n"
+            "一つに絞らず広く持つことが、あなたの場合は怠惰ではなく戦略です。\n\n"
+            "長い目で見ると、得た知識を誰かに伝える側へ回る道。\n"
+            "教える・書く・話す・つなぐ——シェアするたびに、知識も豊かさも何倍にもなって返ってきます。"
+        ),
+    },
+    "Can": {
+        "keyword": "心の通った人とのつながりが、人生を温かく豊かに育てていくタイプ",
+        "body": (
+            "木星がかに座にあるあなたは、大切な人とゆっくり時間を過ごす瞬間に、いちばん深く満たされるタイプです。\n"
+            "家族との食卓・気を許せる友人とのお茶・自分のホームでくつろぐ時間——そこに本物の幸せが流れます。\n\n"
+            "人を温かく迎え入れる力、心のホームをつくる感性、誰かを守り育てる愛情——ここを伸ばすほど、人生はじんわり豊かに広がっていきます。\n"
+            "安心できる場所を整えること自体が、人生に良い流れを呼び込む土台になります。\n\n"
+            "長い目で見ると、誰かにとっての「安心の源」になる人になっていく道。\n"
+            "あなたの懐の深さは、人を癒し、世代を超えて受け継がれていく贈り物です。"
+        ),
+    },
+    "Leo": {
+        "keyword": "自分らしく表現するほど、世界がそれに応えてくれるタイプ",
+        "body": (
+            "木星がしし座にあるあなたは、自分が楽しんで表現している瞬間・人を喜ばせて反応をもらった瞬間に、いちばん輝くタイプです。\n"
+            "創作・表現・人前で話すこと——舞台が大きいほど、あなたの幸せの器も広がっていきます。\n\n"
+            "創造力、堂々とふるまう自信、惜しみなく与える気前の良さ——ここを伸ばすほど、人生は華やかに豊かに開けていきます。\n"
+            "「目立つのは恥ずかしい」を手放すたびに、世界はあなたに祝福を返してくれます。\n\n"
+            "長い目で見ると、ただ目立つ人ではなく、周りを照らす本物のリーダーになっていく道。\n"
+            "あなたが楽しんで生み出したものが、誰かの一日を明るくしていきます。"
+        ),
+    },
+    "Vir": {
+        "keyword": "丁寧な積み重ねが信頼となって返ってくる、地に足のついたタイプ",
+        "body": (
+            "木星がおとめ座にあるあなたは、細部まで丁寧に整えられた瞬間・誰かの役に立てた実感を得たときに、深く満たされるタイプです。\n"
+            "完璧に整った机・気の利いた配慮を喜ばれた瞬間——その小さな手応えが、人生の喜びの源になります。\n\n"
+            "鋭い観察眼、誠実な仕事ぶり、専門性を磨き続ける姿勢——ここを伸ばすほど、ゆっくりと、しかし確実に豊かさが積み上がります。\n"
+            "「目立たない誰かの役に立つこと」がそのまま、あなたの人生の追い風になります。\n\n"
+            "長い目で見ると、誰からも信頼される本物の専門家になっていく道。\n"
+            "あなたが磨いた技術や知識は、年を重ねるほど揺るがない財産に変わっていきます。"
+        ),
+    },
+    "Lib": {
+        "keyword": "良い関係性と美しい調和の中で、人生が豊かに花開いていくタイプ",
+        "body": (
+            "木星がてんびん座にあるあなたは、信頼できる人と過ごす時間・調和の取れた美しい空間にいるときに、心が満たされるタイプです。\n"
+            "気持ちのよい会話、フェアなやり取り、洗練された場——そこに本物の幸せが流れます。\n\n"
+            "人と協力する力、美的センス、フェアであろうとする姿勢——ここを伸ばすほど、人生は良い縁に恵まれていきます。\n"
+            "一人で頑張るより、信頼できる人と組むほうが遠くまで行けるタイプです。\n\n"
+            "長い目で見ると、人と人をつなぐ調和の担い手になっていく道。\n"
+            "あなたがいるだけで場の空気が整う、そんな存在に育っていきます。"
+        ),
+    },
+    "Sco": {
+        "keyword": "本質に触れたものから、深く揺るがない豊かさが返ってくるタイプ",
+        "body": (
+            "木星がさそり座にあるあなたは、表面ではなく本質に触れた瞬間・誰かと深く心が通った瞬間に、いちばん満たされるタイプです。\n"
+            "長い対話の末に分かり合えたとき・見えなかったものが見えたとき——そこに本物の幸せがあります。\n\n"
+            "深く掘り下げる探究心、変容を恐れない強さ、限られた人と深くつながる力——ここを伸ばすほど、人生は他の誰も持ちえない深みを獲得します。\n"
+            "古いものを手放すたびに、より大きな豊かさが流れ込んできます。\n\n"
+            "長い目で見ると、人や物事の本質を見抜ける、深みのある人になっていく道。\n"
+            "心理・研究・治癒——本質を扱う領域で、あなたの力は最大限に発揮されます。"
+        ),
+    },
+    "Sag": {
+        "keyword": "視野を広げるほど、世界が大きく開けていく木星本来のホームポジション",
+        "body": (
+            "木星がいて座にあるあなたは、視野が広がる瞬間に、いちばん深く満たされるタイプです。\n"
+            "旅先での発見・哲学的な対話・新しい世界に触れたとき——「広がる」感覚そのものが、あなたの幸せの源です。\n\n"
+            "探究心、楽観性、スケールを縮めずに大きく考える力——ここを伸ばすほど、人生はどんどん広がります。\n"
+            "木星本来のホームポジションだから、可能性を信じて動くほど、世界もそれに応えてくれます。\n\n"
+            "長い目で見ると、知恵を分かち合う教師・冒険者になっていく道。\n"
+            "あなたが見てきた世界を誰かに伝えるとき、知識も豊かさも二乗に増えていきます。"
+        ),
+    },
+    "Cap": {
+        "keyword": "コツコツ積み上げたものが、長い時間をかけて確かな豊かさになるタイプ",
+        "body": (
+            "木星がやぎ座にあるあなたは、コツコツ積み上げてきたものが形になった瞬間・誰かから「あなたに任せたい」と信頼を寄せられた瞬間に、深く満たされるタイプです。\n"
+            "目の前の成果より、続けてきた時間が報われる手応えに本物の喜びがあります。\n\n"
+            "継続する力、本物を選ぶ目、長期視点で物事を考える習慣——ここを伸ばすほど、人生は揺るぎない豊かさで満ちていきます。\n"
+            "目立つ短期の成果を追わず、5年・10年単位で実績を積む姿勢が、最大の追い風になります。\n\n"
+            "長い目で見ると、年を重ねるほど信頼が厚くなり、揺るがない実績を持つ人になっていく道。\n"
+            "50代・60代でこそ最大の花が咲くタイプ。若い頃の地道な積み重ねが、後半生で本物の財産に変わっていきます。"
+        ),
+    },
+    "Aqu": {
+        "keyword": "独自の視点と仲間とのつながりが、思いがけない可能性を広げるタイプ",
+        "body": (
+            "木星がみずがめ座にあるあなたは、独自のアイデアが形になった瞬間・志を同じくする仲間と未来を語る時間に、いちばん満たされるタイプです。\n"
+            "「自分らしい発想」が誰かに届いたときの手応えが、本物の幸せです。\n\n"
+            "革新的な発想力、未来を見据える視点、コミュニティと繋がる力——ここを伸ばすほど、人生は思いがけない方向に広がります。\n"
+            "「みんなと同じ」に合わせず、自分の感覚を信じるほうが流れに乗れるタイプです。\n\n"
+            "長い目で見ると、時代の少し先を行く革新者になっていく道。\n"
+            "あなたが今違和感を持つ「常識」が、5年後10年後の新しい当たり前になっていきます。"
+        ),
+    },
+    "Pis": {
+        "keyword": "直感と慈しみのなかに、思いがけない豊かさが流れ込むタイプ",
+        "body": (
+            "木星がうお座にあるあなたは、直感が当たった瞬間・誰かを癒せた瞬間・創造に没頭している時間に、深く満たされるタイプです。\n"
+            "理屈ではない「感じる」領域に、あなたの幸せの源が流れています。\n\n"
+            "繊細な感受性、創造力、流れに身を委ねる柔軟性——ここを伸ばすほど、思いがけない形で人生が豊かになっていきます。\n"
+            "すべてをコントロールしようとせず、心が動いた方を選ぶことが、あなたの人生を動かす羅針盤です。\n\n"
+            "長い目で見ると、人と世界に静かな癒しをもたらす創造者になっていく道。\n"
+            "あなたの繊細さは弱さではなく、世界を豊かにするギフトです。"
+        ),
+    },
+}
+
+SATURN_BODY = {
+    "Ari": {
+        "keyword": "自分の意志で動く力を、時間をかけて育てていく",
+        "body": (
+            "土星がおひつじ座にあるあなたの人生のテーマは、「自分の意志で動くこと」を学ぶことです。\n"
+            "若い頃は人の目を気にしすぎたり、自分の本当にやりたいことを後回しにする傾向があるかもしれません。\n\n"
+            "克服のプロセスは、小さな決断を自分で下す練習から始まります。「他の人がどう思うか」より「自分はどうしたいか」を選ぶ瞬間を、少しずつ増やしていく。\n"
+            "失敗しても「自分で選んだ」という事実が、本物の自信になっていきます。\n\n"
+            "成熟していく道は、誰かに先導されるのではなく、自分の足で立つリーダーへの道。年を重ねるごとに、決断する力と責任を引き受ける強さが、あなた本来の魅力になります。"
+        ),
+    },
+    "Tau": {
+        "keyword": "本当の豊かさを、自分の手で築いていく",
+        "body": (
+            "土星がおうし座にあるあなたの人生のテーマは、「本当の豊かさは何か」を時間をかけて学ぶことです。\n"
+            "若い頃は経済的な不安を強く感じたり、所有することへの執着と恐れの間で揺れることがあるかもしれません。\n\n"
+            "克服のプロセスは、自分にとっての「本物」を見極めることから始まります。安いから・流行っているからではなく、本当に価値のあるものを選ぶ目を磨いていく。\n"
+            "そして、地道な努力で自分の手でそれを築いていく経験が、揺るがない自信を作ります。\n\n"
+            "成熟していく道は、物質と精神、両方の豊かさを自分で築ける人になる道。誰かに依存しない経済的・精神的な土台が、あなたの最大の財産になります。"
+        ),
+    },
+    "Gem": {
+        "keyword": "言葉と知識を深め、責任を持って伝えていく",
+        "body": (
+            "土星がふたご座にあるあなたの人生のテーマは、「言葉と知識を深めること」を学ぶことです。\n"
+            "若い頃は話しすぎて誤解されたり、表面的な情報だけで判断してしまう傾向があるかもしれません。\n\n"
+            "克服のプロセスは、「広く浅く」から「深く確かに」へのシフトです。一つのテーマをじっくり掘り下げる経験・自分の言葉に責任を持つ訓練が、知性を成熟させていきます。\n"
+            "聞き手の立場で言葉を選べるようになると、あなたの言葉が人を動かす力に変わっていきます。\n\n"
+            "成熟していく道は、言葉と思考の専門家になる道。書くこと・教えること・正確に伝えることが、あなたの本物の強みになります。"
+        ),
+    },
+    "Can": {
+        "keyword": "感情の自立を学び、自分で自分を守り育てていく",
+        "body": (
+            "土星がかに座にあるあなたの人生のテーマは、「感情の自立」を学ぶことです。\n"
+            "若い頃は家族との関係に重さを感じたり、誰かに守られたいという気持ちと自立したい気持ちの間で揺れることがあるかもしれません。\n\n"
+            "克服のプロセスは、自分で自分を守り育てる内なる力を養うことです。母親役を誰かに求めるのではなく、自分の中に「自分の味方」をつくっていく。\n"
+            "感情を抑え込むのではなく、感じたものに責任を持って向き合う練習が、心を強くします。\n\n"
+            "成熟していく道は、自分で自分のホームをつくれる人になる道。あなた自身が誰かにとっての「安心できる場所」になっていきます。"
+        ),
+    },
+    "Leo": {
+        "keyword": "他者の承認に頼らず、自分の中から湧く喜びで輝いていく",
+        "body": (
+            "土星がしし座にあるあなたの人生のテーマは、「自分の中から湧く喜び」を見つけることです。\n"
+            "若い頃は他者からの承認を強く求めたり、認められないと自分の価値が分からなくなる傾向があるかもしれません。\n\n"
+            "克服のプロセスは、誰の評価もない場面で自分のために何かを生み出す経験を重ねることです。\n"
+            "「誰かのため」ではなく「自分が楽しいから」というモチベーションを取り戻すと、あなたの表現は本物の輝きを放ちます。\n\n"
+            "成熟していく道は、内なる自信から堂々と表現できる人になる道。年を重ねるごとに、外の評価に揺れない、芯のある魅力が育ちます。"
+        ),
+    },
+    "Vir": {
+        "keyword": "完璧主義から自分を解放し、やさしい誠実さを育てていく",
+        "body": (
+            "土星がおとめ座にあるあなたの人生のテーマは、「完璧でなくても十分」と自分に許可を出すことです。\n"
+            "若い頃は自分にも他人にも厳しすぎたり、できていないところばかりに目が行く傾向があるかもしれません。\n\n"
+            "克服のプロセスは、「ここまでで十分」というラインを自分で引けるようになることです。100点を目指して動けなくなるより、80点でも前に進む選択を増やしていく。\n"
+            "自分への厳しさを、自分へのやさしさに置き換える練習が、人生をしなやかにします。\n\n"
+            "成熟していく道は、自分にも他人にもやさしい誠実さを持てる人になる道。完璧でなく真摯であることが、本物の信頼を育てます。"
+        ),
+    },
+    "Lib": {
+        "keyword": "自分の意志で選び、対等な関係を築いていく",
+        "body": (
+            "土星がてんびん座にあるあなたの人生のテーマは、「相手任せにしない関係性」を学ぶことです。\n"
+            "若い頃は相手に合わせすぎたり、自分の意見を言えずに不満を溜め込む傾向があるかもしれません。\n\n"
+            "克服のプロセスは、「自分が何を望んでいるか」を知ることから始まります。誰かに選んでもらうより、自分で選ぶ練習を少しずつ増やしていく。\n"
+            "孤独を恐れず、一人の時間を持てるようになると、関係性そのものが対等になっていきます。\n\n"
+            "成熟していく道は、自立した者同士の本物のパートナーシップを築ける人になる道。一人でも立てる強さが、二人の絆を深くします。"
+        ),
+    },
+    "Sco": {
+        "keyword": "執着を手放し、信頼と変容を受け入れていく",
+        "body": (
+            "土星がさそり座にあるあなたの人生のテーマは、「執着を手放すこと」を学ぶことです。\n"
+            "若い頃は人や物事を強くコントロールしたくなったり、信頼することへの恐れを抱えやすいかもしれません。\n\n"
+            "克服のプロセスは、すべてを自分の力で守ろうとせず、信頼して委ねる経験を重ねることです。\n"
+            "失うことへの恐れと向き合うたびに、本当に大切なものが見えてきます。手放した先に、より深い豊かさが待っています。\n\n"
+            "成熟していく道は、変容を恐れず人生の深さに触れられる人になる道。あなたの内側に眠る本物の力は、手放すたびに目覚めていきます。"
+        ),
+    },
+    "Sag": {
+        "keyword": "理想を現実の形にしていく、信念と行動を学んでいく",
+        "body": (
+            "土星がいて座にあるあなたの人生のテーマは、「理想を現実の形にすること」を学ぶことです。\n"
+            "若い頃は大きく語っても具体的に動けなかったり、自由を求めるあまり責任を避けてしまう傾向があるかもしれません。\n\n"
+            "克服のプロセスは、夢を「やる」と「やらない」のサイズに分解することから始まります。哲学的な理想と、日々の小さな一歩——その両方を持てるようになる練習。\n"
+            "信念を語るだけでなく、それを生きる人になっていく時間が、あなたを成熟させます。\n\n"
+            "成熟していく道は、行動で示す思想家への道。ただの夢想家でも管理者でもない、理想と現実を統合できる存在に育っていきます。"
+        ),
+    },
+    "Cap": {
+        "keyword": "責任と社会的な役割を引き受けて成熟していく、土星本来のホームポジション",
+        "body": (
+            "土星がやぎ座にあるあなたの人生のテーマは、土星本来のホームでもある「責任と社会的な役割」を引き受けることです。\n"
+            "若いうちから重い責任を背負っていたり、自分に厳しく休めない傾向があるかもしれません。\n\n"
+            "克服のプロセスは、努力を続けるだけでなく「休む」「楽しむ」「人に頼る」を学ぶことです。\n"
+            "成果だけで自分を測らず、過程にいる自分を認めること——それが、長い人生を支える内なる強さになります。\n\n"
+            "成熟していく道は、社会的な信頼を築きながらも自分を労われる人になる道。年を重ねるごとに、誰もが頼りたくなる本物の大人へと成長していきます。"
+        ),
+    },
+    "Aqu": {
+        "keyword": "個性を保ちながら、誰かと深くつながる力を育てていく",
+        "body": (
+            "土星がみずがめ座にあるあなたの人生のテーマは、「個性を保ちながら誰かと深くつながる」ことを学ぶことです。\n"
+            "若い頃は周りから浮いていると感じたり、人と深くつながることへの恐れを抱えやすいかもしれません。\n\n"
+            "克服のプロセスは、自分の独自性を諦めずに、それでも仲間や社会とつながる方法を見つけることです。\n"
+            "「同じになる」のではなく「違ったまま手を繋ぐ」——その距離感を学ぶたびに、孤立感は連帯感に変わっていきます。\n\n"
+            "成熟していく道は、個人としての革新性と、コミュニティへの貢献を両立できる人になる道。社会を変える力は、孤立ではなく繋がりから生まれます。"
+        ),
+    },
+    "Pis": {
+        "keyword": "夢と現実を統合し、自分を守る境界線を育てていく",
+        "body": (
+            "土星がうお座にあるあなたの人生のテーマは、「逃げずに現実と向き合う」ことを学ぶことです。\n"
+            "若い頃は感情の世界に逃げ込みたくなったり、人との境界線が曖昧になって消耗してしまう傾向があるかもしれません。\n\n"
+            "克服のプロセスは、繊細な感性を否定するのではなく、それを守るための境界線を学ぶことです。\n"
+            "「ここまではOK、ここからはNO」を自分の中に持てるようになると、感受性は弱さではなくギフトに変わります。\n\n"
+            "成熟していく道は、夢と現実を行き来できる癒し手への道。あなたの繊細さに地に足のついた強さが宿ったとき、本当に人を支える存在になります。"
+        ),
+    },
+}
+
 JUPITER_HOSHI = {
     "Ari": "あなたの幸運は、先に動くことで開かれます。「準備ができてから」と待つより、まず一歩踏み出す先行者精神が、思いがけないチャンスをつかみます。リスクを恐れず、直感を信じて動く場面で、あなたの運は最も花開きます。",
     "Tau": "あなたの幸運は、継続と品質の中に宿ります。じっくり育てたものが、ある日突然大きく実を結ぶことが多い。焦らず丁寧に積み上げることが、豊かさへの最短ルートです。感覚と美意識を生かせる場で、運気は高まります。",
@@ -2370,32 +2630,53 @@ SATURN_HOSHI = {
 
 
 def generate_html_report(name, year, month, day, hour, minute, city,
-                         lat=None, lng=None, tz_str="Asia/Tokyo"):
-    """出生チャートHTMLレポート（SRレポートと同一構造・ワインレッド×ローズゴールド配色）"""
+                         lat=None, lng=None, tz_str="Asia/Tokyo", light=False, sample=False):
+    """出生チャートHTMLレポート
+    light=True : 太陽・月・水星のみの無料ライト版
+    sample=True: 太陽セクションのみ全文＋他項目はプレビューカード（販売用サンプル）
+    """
     import base64
     import html as htmllib
 
     def esc(s):
         return htmllib.escape(str(s))
 
-    # 惑星計算
+    # 惑星計算（ハウスシステムは Koch / コッホを使用）
     if lat is not None and lng is not None:
         subject = AstrologicalSubject(
             name, year, month, day, hour, minute,
-            lng=lng, lat=lat, tz_str=tz_str, online=False
+            lng=lng, lat=lat, tz_str=tz_str, online=False,
+            houses_system_identifier="K",
         )
     else:
-        subject = AstrologicalSubject(name, year, month, day, hour, minute, city, "JP")
+        subject = AstrologicalSubject(name, year, month, day, hour, minute, city, "JP",
+                                      houses_system_identifier="K")
 
     planets_data = {}
     for pn in ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn"]:
         obj = getattr(subject, pn.lower())
+        # ハウス番号（"First_House" → 1 など）
+        house_str = str(obj.house) if hasattr(obj, "house") else "First_House"
         planets_data[pn] = {
             "sign":      obj.sign,
             "position":  obj.position,
             "abs_pos":   obj.abs_pos,
             "retrograde":obj.retrograde,
+            "house":     HOUSE_NUM_MAP.get(house_str, None),
         }
+    # ASC（1ハウス）と MC（10ハウス）も保持
+    asc_obj = subject.first_house
+    mc_obj  = subject.tenth_house
+    asc_data = {
+        "sign":     asc_obj.sign,
+        "position": asc_obj.position,
+        "abs_pos":  asc_obj.abs_pos,
+    }
+    mc_data = {
+        "sign":     mc_obj.sign,
+        "position": mc_obj.position,
+        "abs_pos":  mc_obj.abs_pos,
+    }
 
     # チャート画像をBase64埋め込み
     with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as f:
@@ -2591,27 +2872,168 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
   .sec-planet,.sec-intro,.p-deg{color:#5A5870 !important;}
   .section,.chart-card{page-break-inside:avoid;break-inside:avoid;}
 }
+/* ── 無料ライト版アップグレードCTA ── */
+.upgrade-section{border:2px solid var(--rose);background:linear-gradient(180deg,#fff 0%,#FDF8F3 100%);}
+.upgrade-section .sec-title{color:var(--rose-d)}
+.upgrade-cta{display:inline-block;padding:14px 36px;background:var(--gold-d);color:#fff;
+             text-decoration:none;border-radius:4px;font-family:var(--serif);
+             font-size:.92rem;letter-spacing:.15em;font-weight:500;
+             transition:background .2s;}
+.upgrade-cta:hover{background:var(--gold)}
+/* ── サンプルレポート用スタイル ── */
+.sample-ribbon{display:inline-block;padding:6px 18px;
+               background:var(--gold-d);color:#fff;
+               font-family:var(--en);font-size:.7rem;letter-spacing:.3em;font-weight:600;
+               border-radius:20px;margin-bottom:14px;}
+.sample-preview-section{border:2px solid var(--rose);background:linear-gradient(180deg,#fff 0%,#FDF8F3 100%);}
+.sample-preview-section .sec-title{color:var(--rose-d)}
+.sample-cta-section{border:2px solid var(--gold);background:linear-gradient(180deg,#fff 0%,#F8EFE3 100%);}
+.sample-cta-section .sec-title{color:var(--gold-d)}
+.sample-prev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.sample-prev-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;
+                  position:relative;transition:transform .2s, box-shadow .2s;}
+.sample-prev-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(58,52,80,.08)}
+.sample-prev-unlocked{background:linear-gradient(180deg,#FFF 0%,#FAF6EE 100%);
+                      border-color:var(--gold);border-width:2px;}
+.sample-prev-summary{background:#F5EBE9}
+.sample-prev-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sample-prev-icon{font-size:1.4rem;flex-shrink:0;line-height:1}
+.sample-prev-title{flex:1;min-width:0}
+.sample-prev-name{font-family:var(--serif);font-weight:500;font-size:.95rem;color:var(--text-d);
+                  letter-spacing:.04em;line-height:1.4}
+.sample-prev-sign{color:var(--gold-d);font-size:.85rem;font-weight:400}
+.sample-prev-theme{font-size:.7rem;color:var(--text-l);margin-top:2px;letter-spacing:.04em}
+.sample-prev-lock{font-size:.85rem;opacity:.5;flex-shrink:0}
+.sample-prev-tag{font-size:.65rem;color:var(--gold-d);font-weight:500;letter-spacing:.08em;
+                 background:rgba(184,152,90,.12);padding:3px 8px;border-radius:10px;flex-shrink:0;white-space:nowrap}
+.sample-prev-keyword{font-size:.78rem;color:var(--text-m);line-height:1.7;
+                     padding-top:8px;border-top:1px dashed var(--border);}
+/* ── 惑星サイン・ハウス一覧テーブル ── */
+.chart-table-wrap{padding:20px 22px 22px;}
+.chart-table-title{font-family:var(--serif);font-size:.88rem;font-weight:600;
+                   color:var(--gold-d);letter-spacing:.06em;margin-bottom:10px;}
+.chart-table{width:100%;border-collapse:collapse;font-size:.84rem;}
+.chart-table th{background:#F4ECDD;color:var(--text-d);text-align:left;
+                padding:8px 12px;font-weight:600;font-size:.78rem;
+                letter-spacing:.04em;border-bottom:1px solid var(--border);}
+.chart-table td.t-body{padding:9px 12px;border-bottom:1px solid var(--border);
+                       color:var(--text-d);vertical-align:middle;}
+.chart-table tr:last-child td{border-bottom:none;}
+.t-name{font-weight:500;white-space:nowrap;}
+.t-sym{color:var(--gold-d);margin-right:4px;}
+.t-deg{color:var(--text-m);font-family:'Cormorant Garamond',serif;font-size:.92rem;}
+.t-housecell{text-align:center;}
+.t-house{display:inline-block;background:rgba(184,152,90,.12);
+         border:1px solid rgba(184,152,90,.4);
+         padding:2px 8px;border-radius:4px;font-size:.78rem;color:var(--gold-d);}
+.t-note{color:var(--text-m);font-size:.78rem;}
+.t-retro{color:var(--rose-d);font-size:.72rem;margin-left:8px;}
+.t-axis-row td{background:#FAF6EE;}
+.t-axis-row .t-name{color:var(--gold-d);font-weight:600;}
+.p-axis .p-sym{font-family:'Cormorant Garamond',serif;font-style:italic;
+               font-size:.85rem;color:var(--gold-d);font-weight:600;}
+@media(max-width:600px){
+  .chart-table{font-size:.76rem;}
+  .chart-table th,.chart-table td.t-body{padding:6px 8px;}
+  .t-note{display:none;}
+}
+/* ── アスペクト（コンジャンクション）セクション ── */
+.aspects-section{border:1px solid var(--gold-l)}
+.aspect-item{background:linear-gradient(180deg,#FAF6EE 0%,#F4ECDD 100%);
+              border:1px solid var(--border);border-radius:8px;
+              padding:14px 18px;margin-bottom:12px}
+.aspect-item:last-child{margin-bottom:0}
+.aspect-head{display:flex;gap:14px;align-items:center;margin-bottom:10px}
+.aspect-syms{font-size:1.5rem;color:var(--gold-d);line-height:1;flex-shrink:0;
+              background:#fff;border:1px solid var(--border);border-radius:6px;
+              padding:6px 10px;letter-spacing:.08em}
+.aspect-titles{flex:1;min-width:0}
+.aspect-title{font-family:var(--serif);font-weight:600;font-size:.92rem;
+               color:var(--navy);letter-spacing:.04em;line-height:1.5}
+.aspect-subtitle{font-size:.78rem;color:var(--gold-d);margin-top:3px;letter-spacing:.04em}
+.aspect-orb{color:var(--text-l);font-size:.7rem;}
+.aspect-body{font-size:.86rem;color:var(--text-m);line-height:2;letter-spacing:.02em;}
+.sample-prev-chart{grid-column:span 2;background:#fff;border-color:var(--gold)}
+.sample-prev-chart-body{padding-top:10px;border-top:1px dashed var(--border);
+                        display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
+.sample-prev-chart-img{text-align:center}
+.sample-prev-chart-img img{max-width:100%;max-height:280px;border-radius:6px}
+.sample-prev-legend{padding-left:18px;border-left:1px solid var(--border-l);min-width:130px}
+.sample-prev-legend-title{font-size:.72rem;color:var(--gold-d);letter-spacing:.12em;
+                          margin-bottom:10px;font-weight:500;border-bottom:1px solid var(--border-l);padding-bottom:5px}
+.sample-prev-legend-row{font-size:.78rem;color:var(--text-m);line-height:2;display:flex;align-items:center;gap:10px}
+.sample-prev-legend-row span{font-size:1.05rem;color:var(--gold-d);width:22px;text-align:center;flex-shrink:0}
+@media (max-width:600px){
+  .sample-prev-chart{grid-column:span 1}
+  .sample-prev-chart-body{grid-template-columns:1fr;gap:10px}
+  .sample-prev-legend{padding-left:0;border-left:none;border-top:1px dashed var(--border);padding-top:10px}
+}
+/* 強み・成長のヒント */
+.strengths-box,.caution-box{background:#FBF8F2;border:1px solid var(--border-l);
+                            border-radius:4px;overflow:hidden;margin-bottom:1.4rem;
+                            page-break-inside:avoid;break-inside:avoid;}
+.strengths-hd{background:rgba(136,120,176,.08);padding:.6rem 1.4rem;
+              font-family:var(--serif);font-size:.92rem;color:#7058A0;
+              font-weight:500;letter-spacing:.05em;}
+.caution-hd{background:rgba(176,120,136,.07);padding:.6rem 1.4rem;
+            font-family:var(--serif);font-size:.92rem;color:#A05870;
+            font-weight:500;letter-spacing:.05em;}
+.strengths-grid,.caution-grid{padding:.9rem 1.4rem;display:flex;flex-direction:column;gap:.35rem;}
+.strength-item{font-size:.9rem;color:var(--text-d);line-height:1.85;}
+.caution-item{font-size:.9rem;color:var(--text-m);line-height:1.85;}
 </style>"""
 
     # ── ナビ ──
-    NAT_SECTIONS = [
-        ("summary", "🌟 まとめ"),
-        ("chart",   "🔮 チャート"),
-        ("Sun",     "☉ 太陽"),
-        ("Moon",    "☽ 月"),
-        ("Mercury", "✦ 水星"),
-        ("Venus",   "🌹 金星"),
-        ("Mars",    "🔥 火星"),
-        ("Jupiter", "⭐ 木星"),
-        ("Saturn",  "🌿 土星"),
-    ]
+    if sample:
+        NAT_SECTIONS = [
+            ("preview", "📋 含まれるもの"),
+            ("Sun",     "☉ 太陽（試し読み）"),
+            ("upgrade", "✦ 購入する"),
+        ]
+        _nav_label = '★ 出生チャート サンプル'
+    elif light:
+        NAT_SECTIONS = [
+            ("chart",   "🔮 チャート"),
+            ("Sun",     "☉ 太陽"),
+            ("Moon",    "☽ 月"),
+            ("Mercury", "✦ 水星"),
+            ("upgrade", "✦ 続きを読む"),
+        ]
+        _nav_label = f'✦ {esc(name)} さんの無料ライト版'
+    else:
+        NAT_SECTIONS = [
+            ("summary", "🌟 まとめ"),
+            ("chart",   "🔮 チャート"),
+            ("Sun",     "☉ 太陽"),
+            ("Moon",    "☽ 月"),
+            ("Mercury", "✦ 水星"),
+            ("Venus",   "🌹 金星"),
+            ("Mars",    "🔥 火星"),
+            ("Jupiter", "⭐ 木星"),
+            ("Saturn",  "🌿 土星"),
+            ("aspects", "⚡ 重なる星"),
+        ]
+        _nav_label = f'✦ {esc(name)} さんの星読み'
     nav_links = "".join(f'<a href="#{sid}">{esc(lbl)}</a>' for sid, lbl in NAT_SECTIONS)
-    nav_html = f'<nav class="nav"><span class="nav-name">✦ {esc(name)} さんの星読み</span>{nav_links}</nav>'
+    nav_html = f'<nav class="nav"><span class="nav-name">{_nav_label}</span>{nav_links}</nav>'
 
     # ── ヒーロー ──
     sun_sign_jp = SIGN_SHORT.get(planets_data["Sun"]["sign"], planets_data["Sun"]["sign"])
     moon_sign_jp = SIGN_SHORT.get(planets_data["Moon"]["sign"], planets_data["Moon"]["sign"])
-    hero_html = f"""<div class="hero">
+    if sample:
+        hero_html = f"""<div class="hero">
+  <div class="sample-ribbon">★ SAMPLE REPORT</div>
+  <div class="hero-label">出生チャート サンプル</div>
+  <h1>{esc(name)} さんの場合</h1>
+  <div class="hero-sub">生年月日：{esc(birth_info)}（架空データ）</div>
+  <div class="hero-badge">
+    <div class="lbl">サンプルでは「太陽」セクションのみ全文公開</div>
+    <div class="thm">太陽：{esc(sun_sign_jp)}　／　月：{esc(moon_sign_jp)}</div>
+    <div class="kw">残りの項目はプレビュー表示。実際のレポートは7惑星すべてが詳細に</div>
+  </div>
+</div>"""
+    else:
+        hero_html = f"""<div class="hero">
   <div class="hero-label">Natal Chart Report ／ 星読みレポート</div>
   <h1>{esc(name)} さんへ</h1>
   <div class="hero-sub">生年月日：{esc(birth_info)}</div>
@@ -2622,15 +3044,43 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
   </div>
 </div>"""
 
+    # 出生時刻不明判定（12:00ぴったりはデフォルト値=不明と扱う・サンプル時は除外）
+    time_unknown = (not sample) and (hour == 12 and minute == 0)
+    time_warning_html = ""
+    if time_unknown:
+        time_warning_html = """<div style="background:#FFF4E0;border:1px solid #E0B870;border-radius:6px;
+            padding:12px 18px;margin:18px auto 0;max-width:820px;
+            font-size:.82rem;line-height:1.8;color:#7A5818;">
+          <strong>⚠ 出生時刻が12:00で計算されています</strong><br>
+          太陽・月・各惑星の<strong>サイン（星座）</strong>はおおむね正しく読めますが、
+          <strong>ハウス（人生の分野）</strong>は出生時刻に強く依存するため、
+          時刻が分からない・12:00 のまま入力された場合は<strong>精度が下がります</strong>。
+          ハウス情報は参考程度にお読みください。母子手帳・親に確認・出生病院への問い合わせなどで分かることが多いので、
+          可能なら正確な時刻でレポートを再生成することをおすすめします。
+        </div>"""
+
     # 概要テキスト
-    overview_text = (
-        f"{esc(name)}さんの星読みレポートへようこそ。"
-        f"あなたが生まれた瞬間の空に輝いていた7つの星——太陽・月・水星・金星・火星・木星・土星——が、"
-        f"あなたの個性・感情・才能・課題のすべてを語っています。"
-        f"ここでは難しい占星術の言葉は使いません。"
-        f"あなた自身の言葉で、あなたらしさを感じてください。"
-    )
-    overview_html = f'<div class="overview"><div class="overview-inner">{overview_text}</div></div>'
+    if sample:
+        overview_text = (
+            "これは出生チャートレポートの<strong>サンプル</strong>です。"
+            "下の「含まれるもの」で全項目の概要を、その下の太陽セクションで実際の書き味をご覧いただけます。"
+            "あなた自身のレポートでは、すべての項目が同じ密度で詳細に書かれます。"
+        )
+    elif light:
+        overview_text = (
+            f"{esc(name)}さんの<strong>無料ライト版</strong>レポートへようこそ。"
+            f"このライト版では、あなたの核となる3つの星——<strong>太陽・月・水星</strong>——を読み解きます。"
+            f"残りの惑星（金星・火星・木星・土星）と総合まとめは、有料の出生チャート（¥980）でお楽しみください。"
+        )
+    else:
+        overview_text = (
+            f"{esc(name)}さんの星読みレポートへようこそ。"
+            f"あなたが生まれた瞬間の空に輝いていた7つの星——太陽・月・水星・金星・火星・木星・土星——が、"
+            f"あなたの個性・感情・才能・課題のすべてを語っています。"
+            f"ここでは難しい占星術の言葉は使いません。"
+            f"あなた自身の言葉で、あなたらしさを感じてください。"
+        )
+    overview_html = f'<div class="overview"><div class="overview-inner">{overview_text}</div></div>{time_warning_html}'
 
     # ── チャート画像カード ──
     p_list_html = ""
@@ -2648,15 +3098,79 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
             f'<span class="p-deg">{d["position"]:.1f}°{esc(retro)}</span>'
             f'</div>'
         )
+    # ASC・MC を最後に追加
+    asc_sign_jp = SIGN_MAP.get(asc_data["sign"], asc_data["sign"])
+    mc_sign_jp  = SIGN_MAP.get(mc_data["sign"],  mc_data["sign"])
+    p_list_html += (
+        f'<div class="p-item p-axis"><span class="p-sym">ASC</span>'
+        f'<span class="p-jp">上昇点</span>'
+        f'<span class="p-sign">{esc(asc_sign_jp)}</span>'
+        f'<span class="p-deg">{asc_data["position"]:.1f}°</span></div>'
+        f'<div class="p-item p-axis"><span class="p-sym">MC</span>'
+        f'<span class="p-jp">天頂</span>'
+        f'<span class="p-sign">{esc(mc_sign_jp)}</span>'
+        f'<span class="p-deg">{mc_data["position"]:.1f}°</span></div>'
+    )
+
+    # ── 詳細テーブル（旧版形式：天体・サイン・度数・ハウス・備考） ──
+    PLANET_THEME_SHORT = {
+        "Sun":"自己表現・人生のテーマ", "Moon":"感情・内面・心の安らぎ",
+        "Mercury":"思考・伝達", "Venus":"愛・喜び・美意識",
+        "Mars":"行動力・情熱", "Jupiter":"成長・幸運・拡大",
+        "Saturn":"人生の課題・成熟",
+    }
+    table_rows = ""
+    for pn in ["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn"]:
+        d    = planets_data[pn]
+        sym  = PLANET_SYMBOL[pn]
+        jp   = PLANET_JP[pn]
+        sign = SIGN_SHORT.get(d["sign"], d["sign"])
+        h    = d.get("house")
+        theme = PLANET_THEME_SHORT.get(pn, "")
+        h_cell = f'<span class="t-house">{h}H</span>' if h else "—"
+        table_rows += (
+            f'<tr>'
+            f'<td class="t-body t-name"><span class="t-sym">{sym}</span> {esc(jp)}</td>'
+            f'<td class="t-body">{esc(sign)}</td>'
+            f'<td class="t-body t-deg">{d["position"]:.1f}°</td>'
+            f'<td class="t-body t-housecell">{h_cell}</td>'
+            f'<td class="t-body t-note">{esc(theme)}</td>'
+            f'</tr>'
+        )
+    # ASC・MC 行
+    table_rows += (
+        f'<tr class="t-axis-row">'
+        f'<td class="t-body t-name">ASC</td>'
+        f'<td class="t-body">{esc(SIGN_SHORT.get(asc_data["sign"], asc_data["sign"]))}</td>'
+        f'<td class="t-body t-deg">{asc_data["position"]:.1f}°</td>'
+        f'<td class="t-body t-housecell">—</td>'
+        f'<td class="t-body t-note">外の顔・第一印象</td>'
+        f'</tr>'
+        f'<tr class="t-axis-row">'
+        f'<td class="t-body t-name">MC</td>'
+        f'<td class="t-body">{esc(SIGN_SHORT.get(mc_data["sign"], mc_data["sign"]))}</td>'
+        f'<td class="t-body t-deg">{mc_data["position"]:.1f}°</td>'
+        f'<td class="t-body t-housecell">—</td>'
+        f'<td class="t-body t-note">社会的方向性・天職</td>'
+        f'</tr>'
+    )
+    detail_table_html = f"""
+    <div class="chart-table-wrap">
+      <div class="chart-table-title">🪐 惑星サイン・ハウス一覧</div>
+      <table class="chart-table">
+        <thead><tr>
+          <th>天体</th><th>サイン</th><th>度数</th><th>ハウス</th><th>テーマ</th>
+        </tr></thead>
+        <tbody>{table_rows}</tbody>
+      </table>
+    </div>"""
+
     chart_html = f"""<div class="chart-card" id="chart">
   <div class="chart-head">
     <div class="chart-head-title">🔮 ネイタルチャート</div>
-    <div class="chart-head-sub">あなたが生まれた瞬間の星の配置</div>
+    <div class="chart-head-sub">あなたが生まれた瞬間の星の配置（Koch ハウス）</div>
   </div>
-  <div class="chart-body">
-    <img src="data:image/png;base64,{chart_b64}" class="chart-img" alt="ホロスコープ">
-    <div class="p-list">{p_list_html}</div>
-  </div>
+  {detail_table_html}
 </div>"""
 
     # ── 惑星セクション生成ヘルパー ──
@@ -2784,11 +3298,19 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
     }
 
     sections_html = ""
-    for pn, db in [("Sun",     SUN_PERSONALITY),
-                   ("Moon",    MOON_PERSONALITY),
-                   ("Mercury", MERCURY_PERSONALITY),
-                   ("Venus",   VENUS_PERSONALITY),
-                   ("Mars",    MARS_PERSONALITY)]:
+    if sample:
+        _planet_list = [("Sun", SUN_PERSONALITY)]
+    elif light:
+        _planet_list = [("Sun",     SUN_PERSONALITY),
+                        ("Moon",    MOON_PERSONALITY),
+                        ("Mercury", MERCURY_PERSONALITY)]
+    else:
+        _planet_list = [("Sun",     SUN_PERSONALITY),
+                        ("Moon",    MOON_PERSONALITY),
+                        ("Mercury", MERCURY_PERSONALITY),
+                        ("Venus",   VENUS_PERSONALITY),
+                        ("Mars",    MARS_PERSONALITY)]
+    for pn, db in _planet_list:
         sk   = planets_data[pn]["sign"]
         cont = db.get(sk, {"keyword": "", "body": ""})
         sign_jp = SIGN_SHORT.get(sk, sk)
@@ -2806,16 +3328,15 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
             hoshi_txt=hoshi_dbs.get(pn, {}).get(sk, ""),
         )
 
-    # ── 木星・土星 ──
-    for pn, general, sign_db in [
-        ("Jupiter", JUPITER_PERSONALITY, JUPITER_SIGN),
-        ("Saturn",  SATURN_PERSONALITY,  SATURN_SIGN),
-    ]:
+    # ── 木星・土星 （ライト版・サンプル版ではスキップ）──
+    _outer_list = [] if (light or sample) else [
+        ("Jupiter", JUPITER_BODY, JUPITER_HOSHI),
+        ("Saturn",  SATURN_BODY,  SATURN_HOSHI),
+    ]
+    for pn, body_db, hoshi_db in _outer_list:
         sk       = planets_data[pn]["sign"]
         sign_jp  = SIGN_SHORT.get(sk, sk)
-        sign_note = sign_db.get(sk, "")
-        body_raw = general.get("text","") + ("\n\n" + sign_note if sign_note else "")
-        hoshi_db_map = {"Jupiter": JUPITER_HOSHI, "Saturn": SATURN_HOSHI}
+        cont     = body_db.get(sk, {"keyword":"", "body":""})
         sections_html += build_planet_section(
             pid=pn,
             icon=ICONS[pn],
@@ -2823,11 +3344,11 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
             theme_label=PLANET_THEME[pn],
             sign_jp=sign_jp,
             sign_key=sk,
-            keyword=general.get("keyword",""),
-            body_raw=body_raw,
+            keyword=cont.get("keyword",""),
+            body_raw=cont.get("body",""),
             challenge_txt="",
             intro_note=INTRO_NOTES[pn],
-            hoshi_txt=hoshi_db_map[pn].get(sk, ""),
+            hoshi_txt=hoshi_db.get(sk, ""),
         )
 
     # ── まとめセクション ──
@@ -2848,10 +3369,160 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
         f'</div>'
         for ico, jp, pos in summary_items
     )
-    synthesis_html = generate_synthesis_html(planets_data, name)
-    synth_paras = [p.strip() for p in synthesis_html.replace("<br>","").replace("\n\n","\n").split("\n") if p.strip()]
-    # synthesis_htmlはHTMLなのでそのまま使う
-    summary_section = f"""<div class="section summary-section" id="summary">
+    if sample:
+        # ── サンプル版：プレビューグリッド + 太陽セクション + CTA ──
+        # プレビューグリッドの素材
+        preview_specs = [
+            ("Moon",    "☽", "月",     SIGN_SHORT.get(planets_data["Moon"]["sign"], ""),     MOON_PERSONALITY,    "感情・内面・心の安らぎ"),
+            ("Mercury", "✦", "水星",   SIGN_SHORT.get(planets_data["Mercury"]["sign"], ""),  MERCURY_PERSONALITY, "思考・言葉・コミュニケーション"),
+            ("Venus",   "🌹","金星",   SIGN_SHORT.get(planets_data["Venus"]["sign"], ""),    VENUS_PERSONALITY,   "愛情・美意識・喜び"),
+            ("Mars",    "🔥","火星",   SIGN_SHORT.get(planets_data["Mars"]["sign"], ""),     MARS_PERSONALITY,    "行動力・情熱・エネルギー"),
+            ("Jupiter", "⭐","木星",   SIGN_SHORT.get(planets_data["Jupiter"]["sign"], ""),  JUPITER_BODY, "発展・成長・幸運"),
+            ("Saturn",  "🌿","土星",   SIGN_SHORT.get(planets_data["Saturn"]["sign"], ""),   SATURN_BODY,  "課題・学び・成熟"),
+        ]
+        preview_cards = ""
+        for pn, ico, jp, sign_jp, db, theme in preview_specs:
+            sk = planets_data[pn]["sign"]
+            cont = db.get(sk, {"keyword": "", "body": ""})
+            kw = cont.get("keyword", "")
+            preview_cards += f"""
+        <div class="sample-prev-card">
+          <div class="sample-prev-head">
+            <span class="sample-prev-icon">{ico}</span>
+            <div class="sample-prev-title">
+              <div class="sample-prev-name">{esc(jp)}　<span class="sample-prev-sign">{esc(sign_jp)}</span></div>
+              <div class="sample-prev-theme">{esc(theme)}</div>
+            </div>
+            <div class="sample-prev-lock">🔒</div>
+          </div>
+          <div class="sample-prev-keyword">{esc(kw) if kw else 'キーワードはレポート本編で'}</div>
+        </div>"""
+        sample_preview_section = f"""<div class="section sample-preview-section" id="preview">
+  <div class="sec-head">
+    <div class="sec-icon">📋</div>
+    <div>
+      <div class="sec-title">このレポートに含まれるもの</div>
+      <div class="sec-planet">7惑星 ＋ 総合まとめ ＋ ネイタルチャート（A4換算 約20ページ）</div>
+    </div>
+  </div>
+  <div class="sec-body">
+    <div class="sample-prev-grid">
+      <div class="sample-prev-card sample-prev-unlocked">
+        <div class="sample-prev-head">
+          <span class="sample-prev-icon">☉</span>
+          <div class="sample-prev-title">
+            <div class="sample-prev-name">太陽　<span class="sample-prev-sign">{esc(SIGN_SHORT.get(planets_data["Sun"]["sign"], ""))}</span></div>
+            <div class="sample-prev-theme">個性・自己表現・人生テーマ</div>
+          </div>
+          <div class="sample-prev-tag">★ サンプル公開中</div>
+        </div>
+        <div class="sample-prev-keyword">↓ 下のセクションで全文をご覧いただけます</div>
+      </div>
+      {preview_cards}
+      <div class="sample-prev-card sample-prev-summary">
+        <div class="sample-prev-head">
+          <span class="sample-prev-icon">🌟</span>
+          <div class="sample-prev-title">
+            <div class="sample-prev-name">総合まとめ</div>
+            <div class="sample-prev-theme">7つの星が映し出すあなたという人</div>
+          </div>
+          <div class="sample-prev-lock">🔒</div>
+        </div>
+        <div class="sample-prev-keyword">7惑星を統合した解釈で「あなたとは何者か」を1つの物語として描きます</div>
+      </div>
+      <div class="sample-prev-card sample-prev-chart">
+        <div class="sample-prev-head">
+          <span class="sample-prev-icon">🔮</span>
+          <div class="sample-prev-title">
+            <div class="sample-prev-name">ネイタルチャート</div>
+            <div class="sample-prev-theme">生まれた瞬間の天体配置を可視化</div>
+          </div>
+          <div class="sample-prev-tag">★ サンプル</div>
+        </div>
+        <div class="sample-prev-chart-body">
+          <div class="sample-prev-chart-img">
+            <img src="data:image/png;base64,{chart_b64}" alt="ネイタルチャート サンプル">
+          </div>
+          <div class="sample-prev-legend">
+            <div class="sample-prev-legend-title">惑星の記号</div>
+            <div class="sample-prev-legend-row"><span>☉</span>太陽</div>
+            <div class="sample-prev-legend-row"><span>☽</span>月</div>
+            <div class="sample-prev-legend-row"><span>☿</span>水星</div>
+            <div class="sample-prev-legend-row"><span>♀</span>金星</div>
+            <div class="sample-prev-legend-row"><span>♂</span>火星</div>
+            <div class="sample-prev-legend-row"><span>♃</span>木星</div>
+            <div class="sample-prev-legend-row"><span>♄</span>土星</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>"""
+
+        # CTA セクション（サンプル用）
+        summary_section = f"""<div class="section sample-cta-section" id="upgrade">
+  <div class="sec-head">
+    <div class="sec-icon">✦</div>
+    <div>
+      <div class="sec-title">あなたのレポートを生成しませんか？</div>
+      <div class="sec-planet">サンプルでお見せした密度のレポートが、あなたのチャートで読めます</div>
+    </div>
+  </div>
+  <div class="sec-body">
+    <div style="text-align:center;padding:32px 24px;background:linear-gradient(180deg,#F8EFE3 0%,#F4ECDD 100%);border:1px solid var(--border);border-radius:10px;">
+      <div style="font-family:var(--en);font-style:italic;font-size:.78rem;letter-spacing:.3em;color:var(--gold-d);margin-bottom:8px;">Birth Chart Reading</div>
+      <div style="font-family:var(--serif);font-size:1.25rem;color:var(--text-d);margin-bottom:8px;">出生チャート（フル版）</div>
+      <div style="font-size:0.85rem;color:var(--text-m);margin-bottom:16px;line-height:1.9;">
+        7惑星すべて＋総合まとめ＋ネイタルチャートを<br>あなた自身のデータで詳細に
+      </div>
+      <div style="font-size:2rem;color:var(--gold-d);font-weight:500;letter-spacing:.05em;margin-bottom:4px;">¥980</div>
+      <div style="font-size:.72rem;color:var(--text-l);margin-bottom:18px;">通常価格 ¥3,980 を予定 / オープン記念価格</div>
+      <a href="/" class="upgrade-cta">トップに戻って自分のレポートを生成</a>
+    </div>
+  </div>
+</div>"""
+        # サンプル時：チャート画像も非表示にしたいので、後続のテンプレートで使うchart_htmlも上書き
+        # （プレビューグリッドの中にチャート枠を入れたので）
+        # → preview_grid を sections_html の前に挟むため、ここで保持
+        sample_preview_section_ref = sample_preview_section
+    elif light:
+        # ライト版：総合まとめは「続きは有料版」CTA に置き換え
+        sample_preview_section_ref = ""
+        summary_section = f"""<div class="section upgrade-section" id="upgrade">
+  <div class="sec-head">
+    <div class="sec-icon">✦</div>
+    <div>
+      <div class="sec-title">ここまでが無料ライト版です</div>
+      <div class="sec-planet">続きは「出生チャート」レポートで読めます</div>
+    </div>
+  </div>
+  <div class="sec-body">
+    <p style="font-size:.95rem;line-height:2;color:var(--text-d);margin-bottom:18px;">
+      無料ライト版では、あなたの<strong>太陽・月・水星</strong>——核となる3つの星をご覧いただきました。<br>
+      残りの惑星と統合解釈は、有料の出生チャートレポートに収録されています。
+    </p>
+    <ul style="list-style:none;padding:0;margin:0 0 22px;font-size:.88rem;line-height:2.1;color:var(--text-m);">
+      <li>🌹 <strong>金星</strong>：愛と喜び・美意識のかたち</li>
+      <li>🔥 <strong>火星</strong>：行動・情熱・エネルギーの向け方</li>
+      <li>⭐ <strong>木星</strong>：成長・幸運・拡大の方向</li>
+      <li>🌿 <strong>土星</strong>：人生の課題と魂の成熟テーマ</li>
+      <li>🌟 <strong>総合まとめ</strong>：7つの星を統合した、あなたという人の解釈</li>
+      <li>🔮 <strong>アスペクト</strong>：星と星のつながりが生む個性</li>
+    </ul>
+    <div style="text-align:center;padding:22px 18px;background:linear-gradient(180deg,#F8EFE3 0%,#F4ECDD 100%);border:1px solid var(--border);border-radius:10px;">
+      <div style="font-family:var(--en);font-style:italic;font-size:.72rem;letter-spacing:.3em;color:var(--gold-d);margin-bottom:6px;">Birth Chart Reading</div>
+      <div style="font-family:var(--serif);font-size:1.1rem;color:var(--text-d);margin-bottom:4px;">出生チャート（フル版）</div>
+      <div style="font-size:1.6rem;color:var(--gold-d);font-weight:500;letter-spacing:.05em;margin-bottom:4px;">¥980</div>
+      <div style="font-size:.72rem;color:var(--text-l);margin-bottom:14px;">通常価格 ¥3,980 を予定 / オープン記念価格</div>
+      <a href="/" class="upgrade-cta">トップに戻って購入する</a>
+    </div>
+  </div>
+</div>"""
+    else:
+        sample_preview_section_ref = ""
+        synthesis_html = generate_synthesis_html(planets_data, name)
+        synth_paras = [p.strip() for p in synthesis_html.replace("<br>","").replace("\n\n","\n").split("\n") if p.strip()]
+        summary_section = f"""<div class="section summary-section" id="summary">
   <div class="sec-head">
     <div class="sec-icon">🌟</div>
     <div>
@@ -2866,18 +3537,112 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
   </div>
 </div>"""
 
+    # ── コンジャンクション（重なる惑星）セクション ──
+    # 主要ペアで0度・オーブ8°以内を検出
+    CONJUNCTION_INTERPS = {
+        ("Sun","Moon"):     ("自我と感情の一体化", "社会的な自分（太陽）と心の内側（月）が同じ方向を向き、内外の一致した、芯のはっきりした人になります。「自分はこういう人」という自己像と、感じている自分が違和感なく重なる強みがあります。"),
+        ("Sun","Mercury"):  ("自己と思考の融合", "自分の考えこそが「自分らしさ」になる配置。話し方・書き方・伝え方そのものがアイデンティティになります。よく考え、よく語り、考えを発信することで自分を確認していくタイプ。"),
+        ("Sun","Venus"):    ("自己と魅力の一致", "「自分らしくある」ことが、そのまま魅力や愛され方につながる配置。美意識・好きなもの・楽しみが、自分の核と密接に結びついています。好きなことを大切にすることが、人生のテーマと重なります。"),
+        ("Sun","Mars"):     ("意志と行動の一致", "「やりたい」と「やる」がほぼ同じになる配置。情熱とエネルギーが自分のあり方と直結し、行動力が個性そのものになります。受け身でいると消耗しやすく、動いていることが自然です。"),
+        ("Sun","Jupiter"):  ("自己拡大・幸運の年輪", "存在感が大きく、自然と人や機会を引き寄せる配置。楽観的で器が大きく、自分らしくあるだけで道が開けやすい傾向があります。広げすぎ・盛り過ぎには注意。"),
+        ("Sun","Saturn"):   ("自己と責任の一致", "「真面目に生きる」ことそのものが自分らしさになる配置。若い頃は重さを感じやすいけれど、年を重ねるごとに本物の力に変わっていきます。誠実さと積み上げが最大の財産。"),
+        ("Moon","Mercury"): ("感情と思考の一致", "感じたことをそのまま言葉にできるタイプ。感情と知性が分離しないため、自分の気持ちをよく理解し、表現も自然です。日記・書くこと・話すことで内側が整います。"),
+        ("Moon","Venus"):   ("感情と愛の調和", "感じることと愛することが同じ場所にある配置。やわらかな雰囲気・共感力・調和を求める心が強く、人を癒す存在になりやすい。安心と美しさが両立する空間で力を発揮します。"),
+        ("Moon","Mars"):    ("感情と行動の直結", "感じたら動く、ストレートな配置。情熱的で素直な反面、感情に振り回されやすい面も。怒り・焦りに気づいて整える習慣で大きな推進力に変わります。"),
+        ("Moon","Jupiter"): ("感情の豊かさ・楽観性", "心に広がりがあり、人を包む温かさを持ちます。安心の感覚が大きく、誰かを支えたり育てたりする力に恵まれています。心が満たされると、周りも豊かになる連鎖が起きます。"),
+        ("Moon","Saturn"):  ("感情の自制・深い真面目さ", "感情を表に出さず、内側で抱える傾向。寂しさを感じやすい配置でもありますが、その分、深い責任感と本物の愛情を育てることができます。一人時間と信頼できる関係が大切です。"),
+        ("Mercury","Venus"):("言葉と美の感性", "話し方・書き方が美しく、コミュニケーションそのものに魅力が宿る配置。言葉のセンス・表現力が才能になります。文章・対話・芸術的な発信で輝きやすいタイプ。"),
+        ("Mercury","Mars"): ("鋭い思考と行動", "頭の回転が速く、考えがすぐ行動に変わる配置。議論・判断・スピード感ある仕事に強い。言葉が直球になりやすいので、温かさを意識すると関係がスムーズに。"),
+        ("Mercury","Jupiter"):("広い知性・教える才", "学ぶこと・伝えることが好きで得意な配置。視野が広く、複数のテーマをつなげて考えられる力があります。教育・出版・発信・専門家としての道に向いています。"),
+        ("Mercury","Saturn"):("深い思考・地に足の着いた知性", "じっくり考え、構造的に理解するタイプ。即興は苦手でも、本質を見抜く力が育ちます。研究・編集・分析・専門領域の積み上げに強み。"),
+        ("Venus","Mars"):   ("愛と情熱の一致", "「好き」と「動きたい」が同じ場所にある配置。情熱的な恋愛・創造・表現の力が強い。感情がストレートに行動に出るので、愛と仕事と表現が一体化しやすい人。"),
+        ("Venus","Jupiter"):("愛と幸運の重なり", "愛され、与えられ、楽しめる配置。豊かさ・喜び・人間関係に恵まれる傾向。受け取る力を意識的に開くと、惜しみなく流れ込んできます。"),
+        ("Venus","Saturn"): ("真摯な愛・本物の関係", "愛や美に対して真面目で慎重。表面的な関係より、長く深く育てる関係を求めます。若い頃は寂しさを感じやすい配置ですが、年を重ねるほど本物の愛と豊かさが育ちます。"),
+        ("Mars","Jupiter"): ("行動力と幸運", "動けば動くほど道が開けるダイナミックな配置。行動と拡大が一致し、挑戦が幸運を呼びます。やりすぎ・無謀さには注意。"),
+        ("Mars","Saturn"):  ("意志と忍耐の融合", "情熱を長期で持続させる強さを持つ配置。短距離より長距離・持久戦に強い。若い頃は焦りやブレーキを感じやすいですが、年を重ねるごとに揺るがない実行力に育ちます。"),
+        ("Jupiter","Saturn"):("拡大と責任のバランス", "夢と現実、自由と規律が同じ場所にある配置。理想を語るだけでなく、それを地道に形にする力を持ちます。社会的な達成・長期計画・本物の構築に向いた配置です。"),
+    }
+    PLANET_ORDER = ["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn"]
+    conjunctions = []
+    for i, p1 in enumerate(PLANET_ORDER):
+        for p2 in PLANET_ORDER[i+1:]:
+            d1 = planets_data[p1]["abs_pos"]
+            d2 = planets_data[p2]["abs_pos"]
+            diff = abs(d1 - d2)
+            if diff > 180: diff = 360 - diff
+            if diff <= 8.0:
+                key = (p1, p2)
+                interp = CONJUNCTION_INTERPS.get(key)
+                if interp:
+                    conjunctions.append({
+                        "p1": p1, "p2": p2,
+                        "title": interp[0], "body": interp[1],
+                        "orb": diff,
+                    })
+
+    aspects_section = ""
+    # コンジャンクションセクションは廃止（広がりすぎる・太陽×金星はほぼ全員に出るため）
+    if False and conjunctions and not light:
+        rows = ""
+        for c in conjunctions:
+            sym1 = PLANET_SYMBOL.get(c["p1"], "")
+            sym2 = PLANET_SYMBOL.get(c["p2"], "")
+            jp1 = PLANET_JP.get(c["p1"], "")
+            jp2 = PLANET_JP.get(c["p2"], "")
+            rows += f"""
+        <div class="aspect-item">
+          <div class="aspect-head">
+            <span class="aspect-syms">{sym1} ☌ {sym2}</span>
+            <div class="aspect-titles">
+              <div class="aspect-title">{esc(jp1)} と {esc(jp2)} のコンジャンクション</div>
+              <div class="aspect-subtitle">{esc(c['title'])}　<span class="aspect-orb">（{c['orb']:.1f}°）</span></div>
+            </div>
+          </div>
+          <p class="aspect-body">{esc(c['body'])}</p>
+        </div>"""
+
+        aspects_section = f"""<div class="section aspects-section" id="aspects">
+  <div class="sec-head">
+    <div class="sec-icon">⚡</div>
+    <div>
+      <div class="sec-title">重なる星 ─ コンジャンクション</div>
+      <div class="sec-planet">2つの惑星が重なって生まれる、あなただけの個性</div>
+      <div class="sec-intro">惑星と惑星が同じ位置で結ばれているとき、その2つのエネルギーが融合した特別な質が生まれます。8°以内の重なりを抽出しています。</div>
+    </div>
+  </div>
+  <div class="sec-body">
+    {rows}
+  </div>
+</div>"""
+
     # ── 目次 ──
-    toc_items = [
-        ("summary", "🌟", "総合まとめ", "あなたという人・7つの星の統合"),
-        ("chart",   "🔮", "ネイタルチャート", "星の配置図"),
-        ("Sun",     "☉",  "太陽　" + SIGN_SHORT.get(planets_data["Sun"]["sign"], ""), "個性・自己表現・人生テーマ"),
-        ("Moon",    "☽",  "月　" + SIGN_SHORT.get(planets_data["Moon"]["sign"], ""), "感情・内面・心の安らぎ"),
-        ("Mercury", "✦",  "水星　" + SIGN_SHORT.get(planets_data["Mercury"]["sign"], ""), "思考・言葉・コミュニケーション"),
-        ("Venus",   "🌹", "金星　" + SIGN_SHORT.get(planets_data["Venus"]["sign"], ""), "愛情・美意識・喜び"),
-        ("Mars",    "🔥", "火星　" + SIGN_SHORT.get(planets_data["Mars"]["sign"], ""), "行動力・情熱・エネルギー"),
-        ("Jupiter", "⭐", "木星　" + SIGN_SHORT.get(planets_data["Jupiter"]["sign"], ""), "発展・成長・幸運"),
-        ("Saturn",  "🌿", "土星　" + SIGN_SHORT.get(planets_data["Saturn"]["sign"], ""), "課題・学び・成熟"),
-    ]
+    if sample:
+        toc_items = [
+            ("preview", "📋", "このレポートに含まれるもの", "9項目すべての概要"),
+            ("Sun",     "☉",  "太陽　" + SIGN_SHORT.get(planets_data["Sun"]["sign"], "") + "（試し読み）", "実際のレポートの書き味をお確かめください"),
+            ("upgrade", "✦",  "あなたのレポートを生成", "¥980 で全項目"),
+        ]
+    elif light:
+        toc_items = [
+            ("chart",   "🔮", "ネイタルチャート", "星の配置図"),
+            ("Sun",     "☉",  "太陽　" + SIGN_SHORT.get(planets_data["Sun"]["sign"], ""), "個性・自己表現・人生テーマ"),
+            ("Moon",    "☽",  "月　" + SIGN_SHORT.get(planets_data["Moon"]["sign"], ""), "感情・内面・心の安らぎ"),
+            ("Mercury", "✦",  "水星　" + SIGN_SHORT.get(planets_data["Mercury"]["sign"], ""), "思考・言葉・コミュニケーション"),
+            ("upgrade", "✦",  "続きを読むには", "金星・火星・木星・土星・統合まとめ"),
+        ]
+    else:
+        toc_items = [
+            ("summary", "🌟", "総合まとめ", "あなたという人・7つの星の統合"),
+            ("chart",   "🔮", "ネイタルチャート", "星の配置図"),
+            ("Sun",     "☉",  "太陽　" + SIGN_SHORT.get(planets_data["Sun"]["sign"], ""), "個性・自己表現・人生テーマ"),
+            ("Moon",    "☽",  "月　" + SIGN_SHORT.get(planets_data["Moon"]["sign"], ""), "感情・内面・心の安らぎ"),
+            ("Mercury", "✦",  "水星　" + SIGN_SHORT.get(planets_data["Mercury"]["sign"], ""), "思考・言葉・コミュニケーション"),
+            ("Venus",   "🌹", "金星　" + SIGN_SHORT.get(planets_data["Venus"]["sign"], ""), "愛情・美意識・喜び"),
+            ("Mars",    "🔥", "火星　" + SIGN_SHORT.get(planets_data["Mars"]["sign"], ""), "行動力・情熱・エネルギー"),
+            ("Jupiter", "⭐", "木星　" + SIGN_SHORT.get(planets_data["Jupiter"]["sign"], ""), "発展・成長・幸運"),
+            ("Saturn",  "🌿", "土星　" + SIGN_SHORT.get(planets_data["Saturn"]["sign"], ""), "課題・学び・成熟"),
+        ]
+        # コンジャンクションセクションは廃止
     toc_rows = "".join(f"""
       <a href="#{tid}" class="toc-row">
         <span class="toc-icon">{icon}</span>
@@ -2891,13 +3656,30 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
   </div>
 </div>"""
 
+    # ── 本文の組み立て（モード別の順序） ──
+    if sample:
+        # サンプル：TOC → プレビューグリッド → 太陽セクション → CTA（チャート画像は非表示）
+        body_html = f"""{toc_html}
+{sample_preview_section_ref}
+{sections_html}
+{summary_section}"""
+        title_text = f"{esc(name)} さんの出生チャート（サンプル）"
+    else:
+        # 通常／ライト版：TOC → まとめ／CTA → チャート → 各セクション → コンジャンクション
+        body_html = f"""{toc_html}
+{summary_section}
+{chart_html}
+{sections_html}
+{aspects_section}"""
+        title_text = f"{esc(name)} さんの星読みレポート"
+
     # ── 完成HTML ──
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>{esc(name)} さんの星読みレポート</title>
+<title>{title_text}</title>
 {css}
 </head>
 <body>
@@ -2905,10 +3687,7 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
 {hero_html}
 {overview_html}
 <div class="container">
-{toc_html}
-{summary_section}
-{chart_html}
-{sections_html}
+{body_html}
 </div>
 <div class="footer">
   ✦ Natal Chart Report　{esc(name)} さん　{esc(birth_info)}<br>
@@ -4191,11 +4970,12 @@ def calc_solar_return(name, birth_year, birth_month, birth_day,
     import swisseph as swe
     from datetime import date, timedelta, datetime, timezone
 
-    # 出生チャートの太陽黄経を取得
+    # 出生チャートの太陽黄経を取得（Koch ハウス）
     natal = AstrologicalSubject(
         name, birth_year, birth_month, birth_day,
         birth_hour, birth_minute,
-        lng=birth_lng, lat=birth_lat, tz_str=birth_tz, online=False
+        lng=birth_lng, lat=birth_lat, tz_str=birth_tz, online=False,
+        houses_system_identifier="K",
     )
     natal_sun_lon = natal.sun.abs_pos
 
@@ -4231,12 +5011,13 @@ def calc_solar_return(name, birth_year, birth_month, birth_day,
     sr_mo_jst = dt_jst.month
     sr_yr_jst = dt_jst.year
 
-    # SRチャートを出生地・UTC時刻で作成
+    # SRチャートを出生地・UTC時刻で作成（Koch ハウス）
     sr_subject = AstrologicalSubject(
         f"{name}_SR{target_year}",
         yr, mo, dy, hour_utc, minute_utc,
         lng=birth_lng, lat=birth_lat,
-        tz_str="UTC", online=False
+        tz_str="UTC", online=False,
+        houses_system_identifier="K",
     )
 
     return sr_subject, target_year, sr_yr_jst, sr_mo_jst, sr_dy_jst, sr_hr_jst, sr_mn_jst
@@ -4248,8 +5029,10 @@ def calc_solar_return(name, birth_year, birth_month, birth_day,
 
 def generate_solar_return_html(name, year, month, day, hour, minute, city,
                                 lat=None, lng=None, tz_str="Asia/Tokyo",
-                                target_year=None):
-    """ソーラーリターンのHTMLレポートを生成して文字列で返す（惑星中心・全文無料）"""
+                                target_year=None, sample=False):
+    """ソーラーリターンのHTMLレポートを生成して文字列で返す
+    sample=True : 「今年のあなた」セクションのみ全文＋他項目はプレビューカード（販売用サンプル）
+    """
     import html as htmllib
     def esc(s): return htmllib.escape(str(s))
 
@@ -4280,6 +5063,29 @@ def generate_solar_return_html(name, year, month, day, hour, minute, city,
     })
     birth_info  = f"{year}年{month}月{day}日　{hour:02d}:{minute:02d}　{city}"
     sr_date_str = f"{sr_yr}年{sr_mo}月{sr_dy}日　{sr_hr:02d}:{sr_mn:02d}（JST）"
+
+    # ── 前年SRも計算（変化サマリー用）──
+    prev_year_data = None
+    try:
+        prev_subject, prev_target, _, _, _, _, _ = calc_solar_return(
+            name, year, month, day, hour, minute, lat, lng, tz_str,
+            target_year=target_year - 1
+        )
+        prev_planets = {}
+        for pn in pnames:
+            obj = getattr(prev_subject, pn.lower())
+            house_str = str(obj.house) if hasattr(obj,"house") else "First_House"
+            prev_planets[pn] = {
+                "sign": obj.sign,
+                "house": HOUSE_NUM_MAP.get(house_str, 1),
+            }
+        prev_year_data = {
+            "planets": prev_planets,
+            "asc":     prev_subject.first_house.sign,
+            "year":    prev_target,
+        }
+    except Exception as _e:
+        prev_year_data = None
 
     css = """<style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300;1,500&family=Shippori+Mincho:wght@300;400;500;600&display=swap');
@@ -4443,19 +5249,184 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
 .toc-label{font-size:.88rem;font-weight:600;min-width:11rem;flex-shrink:0;}
 .toc-desc{font-size:.76rem;color:var(--text-l);flex:1;}
 .toc-arrow{color:var(--text-l);font-size:1rem;flex-shrink:0;}
+/* ── サンプル版スタイル ── */
+.sample-ribbon{display:inline-block;padding:6px 18px;background:var(--gold-d);color:#fff;
+               font-family:var(--en);font-size:.7rem;letter-spacing:.3em;font-weight:600;
+               border-radius:20px;margin-bottom:14px;}
+.sample-preview-section{border:2px solid var(--lav);background:linear-gradient(180deg,#fff 0%,#F5F2FC 100%);}
+.sample-preview-section .sec-title{color:var(--lav-d)}
+.sample-cta-section{border:2px solid var(--gold);background:linear-gradient(180deg,#fff 0%,#F8EFE3 100%);}
+.sample-cta-section .sec-title{color:var(--gold-d)}
+.sample-prev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;}
+.sample-prev-card{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:14px 16px;
+                  position:relative;transition:transform .2s, box-shadow .2s;}
+.sample-prev-card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(58,52,80,.08)}
+.sample-prev-unlocked{background:linear-gradient(180deg,#FFF 0%,#FAF6EE 100%);
+                      border-color:var(--gold);border-width:2px;}
+.sample-prev-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sample-prev-icon{font-size:1.4rem;flex-shrink:0;line-height:1}
+.sample-prev-title{flex:1;min-width:0}
+.sample-prev-name{font-family:var(--serif);font-weight:500;font-size:.95rem;color:var(--text-d);
+                  letter-spacing:.04em;line-height:1.4}
+.sample-prev-pos{color:var(--lav-d);font-size:.72rem;font-weight:400;margin-top:2px;letter-spacing:.04em}
+.sample-prev-lock{font-size:.85rem;opacity:.5;flex-shrink:0}
+.sample-prev-tag{font-size:.65rem;color:var(--gold-d);font-weight:500;letter-spacing:.08em;
+                 background:rgba(184,152,90,.12);padding:3px 8px;border-radius:10px;flex-shrink:0;white-space:nowrap}
+.sample-prev-keyword{font-size:.78rem;color:var(--text-m);line-height:1.7;
+                     padding-top:8px;border-top:1px dashed var(--border);}
+.upgrade-cta{display:inline-block;padding:14px 36px;background:var(--gold-d);color:#fff;
+             text-decoration:none;border-radius:4px;font-family:var(--serif);
+             font-size:.92rem;letter-spacing:.15em;font-weight:500;
+             transition:background .2s;}
+.upgrade-cta:hover{background:var(--gold)}
+/* ── 前年からの変化セクション（表形式） ── */
+.change-section{border:1px solid var(--lav);background:linear-gradient(180deg,#F5F2FC 0%,#EDE8F8 100%);}
+.change-section .sec-title{color:var(--lav-d)}
+.change-table{width:100%;background:rgba(255,255,255,.75);border-radius:8px;
+              border:1px solid rgba(168,156,200,.3);overflow:hidden;}
+.change-tr{display:grid;grid-template-columns:44px 150px 1fr 30px 1fr;
+           align-items:center;gap:12px;padding:12px 16px;
+           border-bottom:1px solid rgba(168,156,200,.18);}
+.change-tr:last-child{border-bottom:none}
+.change-tr-head{background:rgba(168,156,200,.12);font-family:var(--serif);
+                font-size:.74rem;letter-spacing:.1em;color:var(--lav-d);
+                font-weight:600;padding:10px 16px;}
+.change-tr-head .change-th-prev{color:var(--text-m);}
+.change-tr-head .change-th-cur{color:var(--gold-d);}
+.change-icon{font-size:1.3rem;text-align:center;line-height:1}
+.change-label{font-family:var(--serif);font-weight:600;font-size:.82rem;
+              color:var(--navy);letter-spacing:.04em;line-height:1.5}
+.change-from{color:var(--text-m);font-size:.84rem;line-height:1.6}
+.change-arrow{color:var(--gold-d);font-weight:600;font-size:1.1rem;text-align:center}
+.change-to{color:var(--lav-d);font-weight:600;font-size:.84rem;line-height:1.6}
+@media(max-width:600px){
+  .change-tr,.change-tr-head{grid-template-columns:36px 1fr;gap:6px;}
+  .change-tr-head .change-th-prev,
+  .change-tr-head .change-th-cur,
+  .change-tr-head .change-th-arrow,
+  .change-tr-head .change-th-icon{display:none;}
+  .change-tr-head{text-align:center}
+  .change-tr .change-from{grid-column:2;}
+  .change-tr .change-arrow{display:none;}
+  .change-tr .change-to{grid-column:2;font-weight:700;}
+  .change-tr .change-from::before{content:"前年：";color:var(--text-l);font-size:.7rem;margin-right:4px;}
+  .change-tr .change-to::before{content:"今年：";color:var(--gold-d);font-size:.7rem;margin-right:4px;}
+}
 </style>"""
 
+    # ── 前年からの変化サマリーHTML ──
+    def build_change_section():
+        if not prev_year_data:
+            return ""
+        changes = []
+        # ASC（全体テーマ）
+        if prev_year_data["asc"] != asc_sign:
+            prev_theme = SR_ASC.get(prev_year_data["asc"], {}).get("theme", "")
+            changes.append({
+                "icon": "🌅", "label": "全体テーマ",
+                "from": prev_theme, "to": asc_data["theme"],
+            })
+        # ハウス位置で見る惑星
+        planet_house_specs = [
+            ("Sun",     "☀️", "太陽（年のフォーカス）"),
+            ("Moon",    "🌙", "月（感情の重心）"),
+            ("Mars",    "🔥", "火星（情熱の向き先）"),
+            ("Jupiter", "⭐", "木星（幸運の領域）"),
+            ("Saturn",  "🌿", "土星（魂の課題）"),
+        ]
+        for pn, ico, label in planet_house_specs:
+            prev_h = prev_year_data["planets"][pn]["house"]
+            cur_h  = sr_planets[pn]["house"]
+            if prev_h != cur_h:
+                changes.append({
+                    "icon": ico, "label": label,
+                    "from": AREA_LABEL.get(prev_h, ""),
+                    "to":   AREA_LABEL.get(cur_h, ""),
+                })
+        # サインで見る惑星
+        planet_sign_specs = [
+            ("Mercury", "✦",  "水星（思考スタイル）"),
+            ("Venus",   "🌹", "金星（愛のかたち）"),
+        ]
+        for pn, ico, label in planet_sign_specs:
+            prev_s = prev_year_data["planets"][pn]["sign"]
+            cur_s  = sr_planets[pn]["sign"]
+            if prev_s != cur_s:
+                changes.append({
+                    "icon": ico, "label": label,
+                    "from": SIGN_SHORT.get(prev_s, prev_s),
+                    "to":   SIGN_SHORT.get(cur_s, cur_s),
+                })
+
+        if not changes:
+            inner = '<p style="text-align:center;color:var(--text-l);font-size:.85rem;line-height:2;">主要な配置は前年から大きな変化がありません。<br>同じテーマを深める年と読み解けます。</p>'
+        else:
+            prev_yr = prev_year_data["year"]
+            cur_yr  = target_year
+            rows = "".join(f"""
+        <div class="change-tr">
+          <span class="change-icon">{c['icon']}</span>
+          <span class="change-label">{esc(c['label'])}</span>
+          <span class="change-from">{esc(c['from'])}</span>
+          <span class="change-arrow">→</span>
+          <span class="change-to">{esc(c['to'])}</span>
+        </div>""" for c in changes)
+            inner = f'''<div class="change-table">
+        <div class="change-tr change-tr-head">
+          <span class="change-th-icon"></span>
+          <span>項目</span>
+          <span class="change-th-prev">{prev_yr}年</span>
+          <span class="change-th-arrow"></span>
+          <span class="change-th-cur">{cur_yr}年（今年）</span>
+        </div>
+        {rows}
+      </div>'''
+
+        return f'''<div class="section change-section" id="change">
+  <div class="sec-head">
+    <div class="sec-icon">📍</div>
+    <div>
+      <div class="sec-title">{prev_year_data["year"]}年からの変化</div>
+      <div class="sec-planet">星の配置が動いた項目だけを表示しています（変わらないものは省略）</div>
+      <div class="sec-intro">前年と比べて何が変わったかを一目で。今年のテーマがより立体的に見えてきます。</div>
+    </div>
+  </div>
+  <div class="sec-body">
+    {inner}
+  </div>
+</div>'''
+
+    change_html = build_change_section()
+
     # ナビ
-    overall_nav = '<a href="#overall">🌟 総合判断</a>'
-    nav_links = overall_nav + "".join(
-        f'<a href="#{s["id"]}">{s["icon"]} {esc(s["title"])}</a>'
-        for s in SR2_SECTIONS
-    )
-    nav_html = f'<nav class="nav"><span class="nav-name">✦ {esc(name)} の {target_year}年</span>{nav_links}</nav>'
+    change_nav = '<a href="#change">📍 前年からの変化</a>' if change_html else ''
+    if sample:
+        nav_links = '<a href="#preview">📋 含まれるもの</a>' + change_nav + '<a href="#sun">☀️ 今年のあなた（試し読み）</a><a href="#upgrade">✦ 購入する</a>'
+        nav_html = f'<nav class="nav"><span class="nav-name">★ {target_year}年 星読み サンプル</span>{nav_links}</nav>'
+    else:
+        overall_nav = '<a href="#overall">🌟 総合判断</a>'
+        nav_links = change_nav + overall_nav + "".join(
+            f'<a href="#{s["id"]}">{s["icon"]} {esc(s["title"])}</a>'
+            for s in SR2_SECTIONS
+        )
+        nav_html = f'<nav class="nav"><span class="nav-name">✦ {esc(name)} の {target_year}年</span>{nav_links}</nav>'
 
     # Hero
     asc_jp = SIGN_SHORT.get(asc_sign, asc_sign)
-    hero_html = f"""<div class="hero">
+    if sample:
+        hero_html = f"""<div class="hero">
+  <div class="sample-ribbon">★ SAMPLE REPORT</div>
+  <div class="hero-label">{target_year}年 星読み サンプル</div>
+  <h1>{esc(name)} さんの <span>{target_year}年</span></h1>
+  <div class="hero-sub">生年月日：{esc(birth_info)}（架空データ）</div>
+  <div class="hero-asc">
+    <div class="lbl">サンプルでは「今年のあなた」セクションのみ全文公開</div>
+    <div class="thm">今年の全体テーマ：{esc(asc_data['theme'])}</div>
+    <div class="kw">残り7項目はプレビュー表示。実際のレポートは8項目すべてが詳細に</div>
+  </div>
+</div>"""
+    else:
+        hero_html = f"""<div class="hero">
   <div class="hero-label">Solar Return Report ／ 今年の星読み</div>
   <h1>{esc(name)} さんの <span>{target_year}年</span></h1>
   <div class="hero-sub">生年月日：{esc(birth_info)}　｜　今年の太陽回帰：{esc(sr_date_str)}</div>
@@ -4466,7 +5437,27 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
   </div>
 </div>"""
 
-    overview_html = f'<div class="overview"><div class="overview-inner">{esc(asc_data["text"])}</div></div>'
+    if sample:
+        overview_text = (
+            f"これは{target_year}年 星読みレポートの<strong>サンプル</strong>です。"
+            f"下の「含まれるもの」で全項目の概要を、その下の「今年のあなた」セクションで実際の書き味をご覧いただけます。"
+            f"あなた自身のレポートでは、すべての項目が同じ密度で詳細に書かれます。"
+        )
+        overview_html = f'<div class="overview"><div class="overview-inner">{overview_text}</div></div>'
+    else:
+        overview_html = f'<div class="overview"><div class="overview-inner">{esc(asc_data["text"])}</div></div>'
+
+    # 出生時刻不明警告（SR・サンプル時は除外）
+    sr_time_unknown = (not sample) and (hour == 12 and minute == 0)
+    if sr_time_unknown:
+        overview_html += """<div style="background:#FFF4E0;border:1px solid #E0B870;border-radius:6px;
+            padding:12px 18px;margin:18px auto 0;max-width:820px;
+            font-size:.82rem;line-height:1.8;color:#7A5818;">
+          <strong>⚠ 出生時刻が12:00で計算されています</strong><br>
+          今年の <strong>ASC（全体テーマ）</strong>と各惑星の<strong>ハウス（人生の分野）</strong>は出生時刻に強く依存します。
+          時刻が分からない・12:00 のまま入力された場合は<strong>精度が下がります</strong>。
+          サイン（水星・金星）はおおむね正しく読めます。ハウス情報は参考程度にお読みください。
+        </div>"""
 
     # 同じエリアラベルが段落内で繰り返される場合、2回目以降を「同じ分野」「そこ」に言い換える
     def _dedupe_areas(txt, areas):
@@ -4622,7 +5613,12 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
   </div>
 </div>"""
 
-    sections_html = "".join(build_section(s) for s in SR2_SECTIONS)
+    if sample:
+        # サンプル：太陽（今年のあなた）セクションのみ
+        _sample_sections = [s for s in SR2_SECTIONS if s["id"] == "sun"]
+        sections_html = "".join(build_section(s) for s in _sample_sections)
+    else:
+        sections_html = "".join(build_section(s) for s in SR2_SECTIONS)
 
     # 総合判断セクション
     def build_overall_section():
@@ -4699,13 +5695,120 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
   </div>
 </div>'''
 
-    overall_html = build_overall_section()
+    if sample:
+        # サンプル用プレビューグリッドとCTA
+        # 各セクションのプレビューカード（太陽以外を表示）
+        preview_cards = ""
+        for s in SR2_SECTIONS:
+            if s["id"] == "sun":
+                continue  # 太陽はサンプル公開のため除外
+            pn = s["planet"]
+            if pn == "work_combined":
+                pos_label = f"土星：{AREA_LABEL.get(sr_planets['Saturn']['house'], '')}"
+            elif s["by"] == "house":
+                d = sr_planets[pn]
+                pos_label = f"{PLANET_JP.get(pn, pn)}：{AREA_LABEL.get(d['house'], '')}"
+            else:
+                d = sr_planets[pn]
+                pos_label = f"{PLANET_JP.get(pn, pn)}：{SIGN_SHORT.get(d['sign'], d['sign'])}"
+            preview_cards += f"""
+        <div class="sample-prev-card">
+          <div class="sample-prev-head">
+            <span class="sample-prev-icon">{s['icon']}</span>
+            <div class="sample-prev-title">
+              <div class="sample-prev-name">{esc(s['title'])}</div>
+              <div class="sample-prev-pos">{esc(pos_label)}</div>
+            </div>
+            <div class="sample-prev-lock">🔒</div>
+          </div>
+          <div class="sample-prev-keyword">{esc(s['intro'])}</div>
+        </div>"""
+
+        # 太陽セクションのカード（先頭・unlocked表示）
+        sun_sec = next(s for s in SR2_SECTIONS if s["id"] == "sun")
+        sun_pos = f"太陽：{AREA_LABEL.get(sr_planets['Sun']['house'], '')}"
+        preview_cards_full = f"""
+        <div class="sample-prev-card sample-prev-unlocked">
+          <div class="sample-prev-head">
+            <span class="sample-prev-icon">{sun_sec['icon']}</span>
+            <div class="sample-prev-title">
+              <div class="sample-prev-name">{esc(sun_sec['title'])}</div>
+              <div class="sample-prev-pos">{esc(sun_pos)}</div>
+            </div>
+            <div class="sample-prev-tag">★ サンプル公開中</div>
+          </div>
+          <div class="sample-prev-keyword">↓ 下のセクションで全文をご覧いただけます</div>
+        </div>{preview_cards}
+        <div class="sample-prev-card" style="background:#F5EBE9">
+          <div class="sample-prev-head">
+            <span class="sample-prev-icon">🌟</span>
+            <div class="sample-prev-title">
+              <div class="sample-prev-name">総合的な今年の星読み</div>
+              <div class="sample-prev-pos">7惑星すべてを統合</div>
+            </div>
+            <div class="sample-prev-lock">🔒</div>
+          </div>
+          <div class="sample-prev-keyword">8項目を統合した「{target_year}年のあなた」を1つの物語として描きます</div>
+        </div>"""
+
+        overall_html = f"""<div class="section sample-preview-section" id="preview">
+  <div class="sec-head">
+    <div class="sec-icon">📋</div>
+    <div>
+      <div class="sec-title">このレポートに含まれるもの</div>
+      <div class="sec-planet">8項目（仕事・感情・愛・行動・成長・課題ほか）＋ 総合まとめ（A4換算 約18ページ）</div>
+    </div>
+  </div>
+  <div class="sec-body">
+    <div class="sample-prev-grid">{preview_cards_full}
+    </div>
+  </div>
+</div>"""
+
+        # CTAセクション（最後尾用）
+        cta_html = f"""<div class="section sample-cta-section" id="upgrade">
+  <div class="sec-head">
+    <div class="sec-icon">✦</div>
+    <div>
+      <div class="sec-title">あなたのレポートを生成しませんか？</div>
+      <div class="sec-planet">サンプルでお見せした密度のレポートが、あなたのチャートで読めます</div>
+    </div>
+  </div>
+  <div class="sec-body">
+    <div style="text-align:center;padding:32px 24px;background:linear-gradient(180deg,#F8EFE3 0%,#F4ECDD 100%);border:1px solid var(--border);border-radius:10px;">
+      <div style="font-family:var(--en);font-style:italic;font-size:.78rem;letter-spacing:.3em;color:var(--gold-d);margin-bottom:8px;">Solar Return Reading</div>
+      <div style="font-family:var(--serif);font-size:1.25rem;color:var(--text-d);margin-bottom:8px;">{target_year}年 星読みレポート</div>
+      <div style="font-size:0.85rem;color:var(--text-m);margin-bottom:16px;line-height:1.9;">
+        8項目すべて＋総合まとめを<br>あなた自身のデータで詳細に
+      </div>
+      <div style="font-size:2rem;color:var(--gold-d);font-weight:500;letter-spacing:.05em;margin-bottom:4px;">¥980</div>
+      <div style="font-size:.72rem;color:var(--text-l);margin-bottom:18px;">通常価格 ¥3,980 を予定 / オープン記念価格</div>
+      <a href="/" class="upgrade-cta">トップに戻って自分のレポートを生成</a>
+    </div>
+  </div>
+</div>"""
+    else:
+        overall_html = build_overall_section()
+        cta_html = ""
 
     # 目次
-    toc_items = [("overall", "🌟", "総合的な今年の星読み", "すべての惑星が語る今年の全体像")] + [
-        (s["id"], s["icon"], s["title"], s["intro"][:22] + "…")
-        for s in SR2_SECTIONS
-    ]
+    if sample:
+        toc_items = [("preview", "📋", "このレポートに含まれるもの", "8項目すべての概要")]
+        if change_html:
+            toc_items.append(("change", "📍", f"{prev_year_data['year']}年からの変化", "前年と比べて何が変わったか"))
+        toc_items += [
+            ("sun",     "☀️", "今年のあなた（試し読み）", "実際のレポートの書き味をお確かめください"),
+            ("upgrade", "✦",  "あなたのレポートを生成", "¥980 で全項目"),
+        ]
+    else:
+        toc_items = []
+        if change_html:
+            toc_items.append(("change", "📍", f"{prev_year_data['year']}年からの変化", "前年と比べて動いた項目を一目で"))
+        toc_items += [("overall", "🌟", "総合的な今年の星読み", "すべての惑星が語る今年の全体像")]
+        toc_items += [
+            (s["id"], s["icon"], s["title"], s["intro"][:22] + "…")
+            for s in SR2_SECTIONS
+        ]
     toc_rows = "".join(
         f'<a href="#{tid}" class="toc-row">'
         f'<span class="toc-icon">{icon}</span>'
@@ -4717,12 +5820,26 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
     )
     toc_html = f'<div class="toc-card"><div class="toc-title">📋 このレポートの内容</div><div class="toc-list">{toc_rows}</div></div>'
 
+    if sample:
+        body_html = f"""{toc_html}
+{overall_html}
+{change_html}
+{sections_html}
+{cta_html}"""
+        title_text = f"{esc(name)} さんの {target_year}年 星読み（サンプル）"
+    else:
+        body_html = f"""{toc_html}
+{change_html}
+{overall_html}
+{sections_html}"""
+        title_text = f"{esc(name)} さんの {target_year}年 星読みレポート"
+
     html = f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>{esc(name)} さんの {target_year}年 星読みレポート</title>
+<title>{title_text}</title>
 {css}
 </head>
 <body>
@@ -4730,9 +5847,7 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
 {hero_html}
 {overview_html}
 <div class="container">
-{toc_html}
-{overall_html}
-{sections_html}
+{body_html}
 </div>
 <div class="footer">
   ✦ Solar Return Report　{esc(name)} さん　{target_year}年<br>
@@ -4757,10 +5872,12 @@ def generate_report(name, year, month, day, hour, minute, city,
     if lat is not None and lng is not None:
         subject = AstrologicalSubject(
             name, year, month, day, hour, minute,
-            lng=lng, lat=lat, tz_str=tz_str, online=False
+            lng=lng, lat=lat, tz_str=tz_str, online=False,
+            houses_system_identifier="K",
         )
     else:
-        subject = AstrologicalSubject(name, year, month, day, hour, minute, city, "JP")
+        subject = AstrologicalSubject(name, year, month, day, hour, minute, city, "JP",
+                                      houses_system_identifier="K")
 
     planets_data = {}
     for pn in ["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn"]:
@@ -5796,8 +6913,10 @@ LIFECYCLE_DATA = [
 ]
 
 
-def generate_lifecycle_html(name, year, month, day, city, lat=None, lng=None):
-    """ライフサイクルレポートHTMLを生成"""
+def generate_lifecycle_html(name, year, month, day, city, lat=None, lng=None, sample=False):
+    """ライフサイクルレポートHTMLを生成
+    sample=True : 現在のフェーズのみ全文＋他は時系列プレビューカード（販売用サンプル）
+    """
     import html as htmllib
     from datetime import date
 
@@ -5845,14 +6964,20 @@ def generate_lifecycle_html(name, year, month, day, city, lat=None, lng=None):
     # ── ナビリンク生成 ──
     nav_links = ""
     for ev in sorted_data:
+        if ev["type"] == "phase":
+            nav_age = f'{ev["age_start"]}〜{ev["age_end"]}歳'
+        else:
+            nav_age = f'{ev["age"]}歳頃'
         nav_links += (
             f'<li><a href="#{esc(ev["id"])}">'
-            f'{esc(ev["icon"])} {esc(ev["title"][:12])}</a></li>\n'
+            f'{esc(ev["icon"])} {nav_age}</a></li>\n'
         )
 
     # ── セクションHTML生成 ──
     sections_html = ""
-    for ev in sorted_data:
+    # サンプル時は現在のフェーズのみ
+    _section_data = [ev for ev in sorted_data if ev["id"] == current_id] if sample else sorted_data
+    for ev in _section_data:
         ev_id = ev["id"]
         is_current = ev_id == current_id
 
@@ -5945,28 +7070,168 @@ def generate_lifecycle_html(name, year, month, day, city, lat=None, lng=None):
 """
 
     # ── 目次カード ──
-    toc_rows = ""
-    for ev in sorted_data:
-        ev_type_label = "" if ev["type"] == "phase" else "🔄 "
-        if ev["type"] == "phase":
-            age_str = f'{ev["age_start"]}〜{ev["age_end"]}歳'
-        else:
-            age_str = f'{ev["age"]}歳頃'
-        is_cur = ev["id"] == current_id
-        toc_rows += (
-            f'<a href="#{esc(ev["id"])}" class="toc-row{" toc-current" if is_cur else ""}">'
-            f'<span class="toc-icon">{esc(ev["icon"])}</span>'
-            f'<span class="toc-label">{esc(age_str)}</span>'
-            f'<span class="toc-age">{ev_type_label}{esc(ev["title"])}</span>'
-            f'<span class="toc-arrow">›</span>'
-            f'</a>'
+    if sample:
+        # サンプル：簡略目次
+        toc_rows = (
+            f'<a href="#preview" class="toc-row"><span class="toc-icon">📋</span>'
+            f'<span class="toc-label">含まれるもの</span>'
+            f'<span class="toc-age">100歳までのフェーズと転機すべて</span>'
+            f'<span class="toc-arrow">›</span></a>'
+            f'<a href="#{esc(current_id)}" class="toc-row toc-current"><span class="toc-icon">★</span>'
+            f'<span class="toc-label">現在のフェーズ</span>'
+            f'<span class="toc-age">{esc(current_phase_title)}（試し読み）</span>'
+            f'<span class="toc-arrow">›</span></a>'
+            f'<a href="#upgrade" class="toc-row"><span class="toc-icon">✦</span>'
+            f'<span class="toc-label">あなたのレポートを生成</span>'
+            f'<span class="toc-age">¥980 で全項目</span>'
+            f'<span class="toc-arrow">›</span></a>'
         )
-    toc_html = (
-        f'<div class="toc-card">'
-        f'<div class="toc-title">📋 ライフサイクル一覧（現在：{esc(current_phase_title)}）</div>'
-        f'{toc_rows}'
-        f'</div>'
-    )
+        toc_html = (
+            f'<div class="toc-card">'
+            f'<div class="toc-title">📋 サンプルレポートの構成</div>'
+            f'{toc_rows}'
+            f'</div>'
+        )
+
+        # ── サンプル用プレビューグリッド ──
+        preview_cards = ""
+        for ev in sorted_data:
+            if ev["id"] == current_id:
+                continue  # 現在は別表示
+            if ev["type"] == "phase":
+                age_str = f'{ev["age_start"]}〜{ev["age_end"]}歳'
+            else:
+                age_str = f'{ev["age"]}歳頃'
+            preview_cards += f"""
+        <div class="sample-prev-card">
+          <div class="sample-prev-head">
+            <span class="sample-prev-icon">{esc(ev['icon'])}</span>
+            <div class="sample-prev-title">
+              <div class="sample-prev-name">{esc(ev['title'])}</div>
+              <div class="sample-prev-pos">{esc(age_str)}　／　{esc(ev['planet'])}</div>
+            </div>
+            <div class="sample-prev-lock">🔒</div>
+          </div>
+          <div class="sample-prev-keyword">{esc(ev['theme'])}</div>
+        </div>"""
+
+        # 現在フェーズのカード（unlocked）
+        current_ev = next(ev for ev in sorted_data if ev["id"] == current_id)
+        if current_ev["type"] == "phase":
+            current_age_str = f'{current_ev["age_start"]}〜{current_ev["age_end"]}歳'
+        else:
+            current_age_str = f'{current_ev["age"]}歳頃'
+        current_card = f"""
+        <div class="sample-prev-card sample-prev-unlocked">
+          <div class="sample-prev-head">
+            <span class="sample-prev-icon">{esc(current_ev['icon'])}</span>
+            <div class="sample-prev-title">
+              <div class="sample-prev-name">{esc(current_ev['title'])}</div>
+              <div class="sample-prev-pos">{esc(current_age_str)}　／　{esc(current_ev['planet'])}</div>
+            </div>
+            <div class="sample-prev-tag">★ 現在 ／ サンプル公開中</div>
+          </div>
+          <div class="sample-prev-keyword">↓ 下のセクションで全文をご覧いただけます</div>
+        </div>"""
+
+        # 時系列で並べる：現在より前のものは前に、現在より後のものは後に
+        before_cards = ""
+        after_cards = ""
+        passed_current = False
+        for ev in sorted_data:
+            if ev["id"] == current_id:
+                passed_current = True
+                continue
+            if ev["type"] == "phase":
+                age_str = f'{ev["age_start"]}〜{ev["age_end"]}歳'
+            else:
+                age_str = f'{ev["age"]}歳頃'
+            card = f"""
+        <div class="sample-prev-card">
+          <div class="sample-prev-head">
+            <span class="sample-prev-icon">{esc(ev['icon'])}</span>
+            <div class="sample-prev-title">
+              <div class="sample-prev-name">{esc(ev['title'])}</div>
+              <div class="sample-prev-pos">{esc(age_str)}　／　{esc(ev['planet'])}</div>
+            </div>
+            <div class="sample-prev-lock">🔒</div>
+          </div>
+          <div class="sample-prev-keyword">{esc(ev['theme'])}</div>
+        </div>"""
+            if not passed_current:
+                before_cards += card
+            else:
+                after_cards += card
+
+        preview_section_html = f"""
+<div class="section sample-preview-section" id="preview">
+  <div class="sec-head">
+    <div class="sec-icon">📋</div>
+    <div>
+      <div class="sec-title">このレポートに含まれるもの</div>
+      <div class="sec-planet">100歳までの全フェーズ・転機（A4換算 約12ページ）／ 時系列で並べています</div>
+    </div>
+  </div>
+  <div class="sec-body">
+    <div style="background:#FAF6EE;border:1px dashed var(--gold);border-radius:6px;padding:14px 18px;margin-bottom:18px;font-size:.82rem;line-height:1.9;color:var(--navy2);">
+      <strong style="color:var(--gold-d);">💡 各転機の年齢について</strong><br>
+      ここに表示される「29歳頃」「42歳頃」などの年齢は、<strong>惑星の公転周期</strong>に基づくサイクルです。
+      木星は約12年、土星は約29.5年、天王星は約84年で太陽を一周するため、これらの転機は<strong>誰にとってもほぼ同じ年齢で訪れます</strong>（±1年程度の個人差）。
+      実際のレポートでは、<strong>{esc(name)}さんが生まれた{esc(str(birth_year))}年から計算した「西暦」</strong>もあわせてお届けします。
+    </div>
+    <div class="sample-prev-grid">{before_cards}{current_card}{after_cards}
+    </div>
+  </div>
+</div>"""
+
+        # CTAセクション
+        cta_html = f"""
+<div class="section sample-cta-section" id="upgrade">
+  <div class="sec-head">
+    <div class="sec-icon">✦</div>
+    <div>
+      <div class="sec-title">あなたのレポートを生成しませんか？</div>
+      <div class="sec-planet">サンプルでお見せした密度のレポートが、あなたの誕生日で読めます</div>
+    </div>
+  </div>
+  <div class="sec-body">
+    <div style="text-align:center;padding:32px 24px;background:linear-gradient(180deg,#F8EFE3 0%,#F4ECDD 100%);border:1px solid var(--cream3);border-radius:10px;">
+      <div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.78rem;letter-spacing:.3em;color:var(--gold-d);margin-bottom:8px;">Life Cycle Reading</div>
+      <div style="font-family:'Noto Serif JP',serif;font-size:1.25rem;color:var(--navy);margin-bottom:8px;">ライフサイクル レポート</div>
+      <div style="font-size:0.85rem;color:var(--navy2);margin-bottom:16px;line-height:1.9;">
+        生まれてから100歳までの全フェーズ・転機を<br>あなたの誕生日で詳細に
+      </div>
+      <div style="font-size:2rem;color:var(--gold-d);font-weight:500;letter-spacing:.05em;margin-bottom:4px;">¥980</div>
+      <div style="font-size:.72rem;color:var(--cream3);margin-bottom:18px;">通常価格 ¥3,980 を予定 / オープン記念価格</div>
+      <a href="/" style="display:inline-block;padding:14px 36px;background:var(--gold-d);color:#fff;text-decoration:none;border-radius:4px;font-family:'Noto Serif JP',serif;font-size:.92rem;letter-spacing:.15em;">トップに戻って自分のレポートを生成</a>
+    </div>
+  </div>
+</div>"""
+    else:
+        toc_rows = ""
+        for ev in sorted_data:
+            ev_type_label = "" if ev["type"] == "phase" else "🔄 "
+            if ev["type"] == "phase":
+                age_str = f'{ev["age_start"]}〜{ev["age_end"]}歳'
+            else:
+                age_str = f'{ev["age"]}歳頃'
+            is_cur = ev["id"] == current_id
+            toc_rows += (
+                f'<a href="#{esc(ev["id"])}" class="toc-row{" toc-current" if is_cur else ""}">'
+                f'<span class="toc-icon">{esc(ev["icon"])}</span>'
+                f'<span class="toc-label">{esc(age_str)}</span>'
+                f'<span class="toc-age">{ev_type_label}{esc(ev["title"])}</span>'
+                f'<span class="toc-arrow">›</span>'
+                f'</a>'
+            )
+        toc_html = (
+            f'<div class="toc-card">'
+            f'<div class="toc-title">📋 ライフサイクル一覧（現在：{esc(current_phase_title)}）</div>'
+            f'{toc_rows}'
+            f'</div>'
+        )
+        preview_section_html = ""
+        cta_html = ""
 
     # ── HTML全体 ──
     html_out = f"""<!DOCTYPE html>
@@ -6257,43 +7522,66 @@ footer {{
   .sec-intro {{ color: #5A5870 !important; }}
   .hoshi-note {{ border: 1px solid #C0B8D8 !important; }}
 }}
+/* ── サンプル版スタイル ── */
+.sample-ribbon{{display:inline-block;padding:6px 18px;background:var(--gold-d);color:#fff;
+               font-family:'Cormorant Garamond',serif;font-size:.7rem;letter-spacing:.3em;font-weight:600;
+               border-radius:20px;margin-bottom:14px;}}
+.sample-preview-section{{border:2px solid var(--gold) !important;background:linear-gradient(180deg,#fff 0%,#FAF6EE 100%) !important;}}
+.sample-preview-section .sec-title{{color:var(--gold-d) !important}}
+.sample-cta-section{{border:2px solid var(--gold) !important;background:linear-gradient(180deg,#fff 0%,#F8EFE3 100%) !important;}}
+.sample-cta-section .sec-title{{color:var(--gold-d) !important}}
+.sample-prev-grid{{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}}
+.sample-prev-card{{background:var(--cream2);border:1px solid var(--cream3);border-radius:8px;padding:14px 16px;
+                  position:relative;transition:transform .2s, box-shadow .2s;}}
+.sample-prev-card:hover{{transform:translateY(-2px);box-shadow:0 4px 12px rgba(58,52,80,.08)}}
+.sample-prev-unlocked{{background:linear-gradient(180deg,#FFF 0%,#FAF6EE 100%);
+                      border-color:var(--gold);border-width:2px;}}
+.sample-prev-head{{display:flex;align-items:center;gap:10px;margin-bottom:8px}}
+.sample-prev-icon{{font-size:1.4rem;flex-shrink:0;line-height:1}}
+.sample-prev-title{{flex:1;min-width:0}}
+.sample-prev-name{{font-family:'Noto Serif JP',serif;font-weight:500;font-size:.92rem;color:var(--navy);
+                  letter-spacing:.04em;line-height:1.4}}
+.sample-prev-pos{{color:var(--gold-d);font-size:.7rem;font-weight:400;margin-top:3px;letter-spacing:.04em}}
+.sample-prev-lock{{font-size:.85rem;opacity:.5;flex-shrink:0}}
+.sample-prev-tag{{font-size:.62rem;color:#fff;font-weight:500;letter-spacing:.06em;
+                 background:var(--gold-d);padding:3px 8px;border-radius:10px;flex-shrink:0;white-space:nowrap}}
+.sample-prev-keyword{{font-size:.76rem;color:var(--navy2);line-height:1.7;
+                     padding-top:8px;border-top:1px dashed var(--cream3);}}
   </style>
 </head>
 <body>
 
 <nav>
-  <a class="nav-logo" href="#hero">✦ ライフサイクル</a>
+  <a class="nav-logo" href="#hero">{("★ ライフサイクル サンプル" if sample else "✦ ライフサイクル")}</a>
   <ul class="nav-links">
-    {nav_links}
+    {('<li><a href="#preview">📋 含まれるもの</a></li><li><a href="#' + esc(current_id) + '">★ 現在（試し読み）</a></li><li><a href="#upgrade">✦ 購入する</a></li>') if sample else nav_links}
   </ul>
 </nav>
 
 <section id="hero">
-  <p class="hero-eyebrow">Life Cycle Report</p>
-  <h1 class="hero-title"><em>{esc(name)}</em> さんの<br>ライフサイクル</h1>
+  {('<div class="sample-ribbon">★ SAMPLE REPORT</div>' if sample else '')}
+  <p class="hero-eyebrow">{("ライフサイクル サンプル" if sample else "Life Cycle Report")}</p>
+  <h1 class="hero-title"><em>{esc(name)}</em> さんの<br>ライフサイクル{(" の場合" if sample else "")}</h1>
   <div class="hero-rule"></div>
   <p class="hero-sub">
-    生まれてから100歳まで、星が示す人生の転機<br>
+    {("（架空データのサンプルレポート）" if sample else "生まれてから100歳まで、星が示す人生の転機")}<br>
     {esc(birth_info)}
   </p>
-  <div class="hero-badge">現在 {esc(str(current_age))}歳 ／ {esc(current_phase_title)}</div>
+  <div class="hero-badge">{("サンプルでは「現在のフェーズ」のみ全文公開" if sample else f"現在 {esc(str(current_age))}歳 ／ {esc(current_phase_title)}")}</div>
 </section>
 
 <div class="overview">
   <div class="inner">
-    <p>占星術には、どの人にも共通して訪れる「人生の転機サイクル」があります。
-    惑星の公転周期がそのまま人生のリズムを刻んでいます。
-    このレポートでは、{esc(name)}さんが{esc(str(birth_year))}年に生まれてから100歳になるまでの転機を、
-    実際の年号とともにお届けします。
-    現在 {esc(str(current_age))}歳 の {esc(name)}さんが
-    今どの時代にいるのかも、ハイライトでお示しします。</p>
+    {('<p>これはライフサイクルレポートの<strong>サンプル</strong>です。下の「含まれるもの」で生まれてから100歳までの全フェーズ・転機の一覧を、その下の「現在のフェーズ」セクションで実際の書き味をご覧いただけます。あなた自身のレポートでは、すべての項目が同じ密度で詳細に書かれます。</p>') if sample else (f'<p>占星術には、どの人にも共通して訪れる「人生の転機サイクル」があります。惑星の公転周期がそのまま人生のリズムを刻んでいます。このレポートでは、{esc(name)}さんが{esc(str(birth_year))}年に生まれてから100歳になるまでの転機を、実際の年号とともにお届けします。現在 {esc(str(current_age))}歳 の {esc(name)}さんが今どの時代にいるのかも、ハイライトでお示しします。</p>')}
   </div>
 </div>
 
 <div class="timeline">
   <div class="inner">
     {toc_html}
+    {preview_section_html}
     {sections_html}
+    {cta_html}
   </div>
 </div>
 
