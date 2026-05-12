@@ -2410,7 +2410,6 @@ def glossary_page():
       <li><a href="#aspect">アスペクト</a></li>
       <li><a href="#solar-return">ソーラーリターン</a></li>
       <li><a href="#transit">トランジット</a></li>
-      <li><a href="#lifecycle">ライフサイクル</a></li>
     </ul>
   </div>
 
@@ -2504,15 +2503,7 @@ def glossary_page():
     <p>「トランジットの木星があなたの月とコンジャンクション（重なる）」のように、出生チャートの星と現在の星の関係を読むことで、いま何が起きているか・これから何が来るかを読み取れます。</p>
   </div>
 
-  <div class="term" id="lifecycle">
-    <h2>ライフサイクル</h2>
-    <div class="term-en">Life Cycle</div>
-    <p>惑星の公転周期に基づいて、誰にでも訪れる人生の節目を読む占星術の手法です。</p>
-    <p>たとえば <span class="key">土星リターン（29歳頃）</span>・<span class="key">ミッドライフ（42歳頃）</span>・<span class="key">カイロンリターン（50歳頃）</span> など。これらは惑星の周期に基づくため、誰にとってもほぼ同じ年齢で訪れます（±1年程度の個人差）。</p>
-    <p>moonlog の「ライフサイクル」レポートは、生まれてから100歳までの全フェーズ・転機を時系列でお届けします。</p>
-  </div>
-
-  <p class="legal-updated">最終更新日：2026年5月8日</p>
+  <p class="legal-updated">最終更新日：2026年5月13日</p>
 </div>
 {_LEGAL_FOOTER}
 </body></html>"""
@@ -2530,17 +2521,23 @@ def faq_page():
 {_LEGAL_HEADER.format(title="よくある質問")}
 <div class="legal-wrap">
   <h1>よくある質問</h1>
-  <p style="margin-bottom:2.5rem;">ご購入前・ご利用中によくいただくご質問をまとめました。
+  <p style="margin-bottom:1.5rem;">ご利用前によくいただくご質問をまとめました。
     用語については <a href="/glossary" style="color:var(--gold-d);">用語解説ページ</a> もあわせてご覧ください。</p>
+
+  <div style="background:rgba(184,152,88,.08);border:1px dashed var(--gold);border-radius:4px;padding:1rem 1.4rem;margin-bottom:2.5rem;line-height:1.85;">
+    <strong style="color:var(--gold-d);">🌙 現在ソフトローンチ期間中</strong><br>
+    <span style="font-size:.92rem;">現在は <strong>無料ライト版</strong> のみご利用いただけます。<br>
+    有料レポート（出生チャート・2026年星読み・3分野レポート）は <strong>2026年6月1日</strong> リリース予定です。</span>
+  </div>
 
   <h2>レポートについて</h2>
 
   <div class="faq-item">
     <div class="faq-q">出生時刻が正確にわからないのですが、レポートは作れますか？</div>
     <div class="faq-a">
-      レポートによります。<br>
-      ・<strong>ライフサイクル</strong>：生年月日のみで作成可能です。<br>
-      ・<strong>出生チャート・2026年星読み</strong>：出生時刻が必要です。不明な場合は12:00で計算しますが、ハウスの精度は下がります。<br>
+      作成可能ですが、精度に違いがあります。<br>
+      ・<strong>無料ライト版</strong>：生年月日のみで作成可能です（太陽・月・水星のサインを読みます）。<br>
+      ・<strong>有料レポート（6/1リリース予定）</strong>：出生時刻が必要です。不明な場合は12:00で計算しますが、ハウスや天頂（MC）の精度は下がります。<br>
       母子手帳・親に確認・病院への問い合わせなどで分かることが多いので、可能なら確認をおすすめします。
     </div>
   </div>
@@ -2595,13 +2592,14 @@ def faq_page():
   <h2>商品の違いについて</h2>
 
   <div class="faq-item">
-    <div class="faq-q">3つのレポートはどう違うのですか？</div>
+    <div class="faq-q">レポートの種類はどう違うのですか？</div>
     <div class="faq-a">
-      <strong>時間軸</strong>で違います。<br>
-      ・<strong>出生チャート</strong>：あなたが何者か（一生変わらない核）<br>
-      ・<strong>ライフサイクル</strong>：人生の流れ・転機（一生）<br>
-      ・<strong>2026年星読み</strong>：今年のテーマ（1年）<br>
-      まずは無料ライト版から試して、興味があれば有料レポートへどうぞ。
+      <strong>切り口</strong>で違います。<br>
+      ・<strong>無料ライト版</strong>：太陽・月・水星のさわり（今すぐ読める）<br>
+      ・<strong>出生チャート</strong>（6/1〜）：あなたが何者か——7惑星すべての完全版<br>
+      ・<strong>2026年 星読み</strong>（6/1〜）：今年のテーマと流れ<br>
+      ・<strong>仕事・お金・恋愛 3分野レポート</strong>（6/1〜）：関心の高い3分野を一冊で<br>
+      まずは無料ライト版から試して、リリース後に興味のあるレポートへどうぞ。
     </div>
   </div>
 
@@ -2609,7 +2607,7 @@ def faq_page():
     <div class="faq-q">無料ライト版と有料の出生チャートはどう違いますか？</div>
     <div class="faq-a">
       <strong>無料ライト版</strong>は太陽・月・水星の3天体のみ。あなたの核となる部分のさわりが読めます。<br>
-      <strong>有料の出生チャート（¥980）</strong>は7惑星すべて＋総合まとめ＋ホロスコープチャートの完全版。A4換算 約20ページのボリュームです。
+      <strong>有料の出生チャート（¥980・6/1リリース予定）</strong>は7惑星すべて＋総合まとめ＋ホロスコープチャートの完全版。A4換算 約20ページのボリュームです。
     </div>
   </div>
 
@@ -2725,11 +2723,11 @@ def faq_page():
       各レポートのサンプルをご用意しています。<br>
       ・<a href="/sample/natal">出生チャート サンプル</a><br>
       ・<a href="/sample/sr">2026年 星読み サンプル</a><br>
-      ・<a href="/sample/lifecycle">ライフサイクル サンプル</a>
+      ・<a href="/sample/field_report">仕事・お金・恋愛 3分野レポート サンプル</a>
     </div>
   </div>
 
-  <p class="legal-updated">最終更新日：2026年5月8日</p>
+  <p class="legal-updated">最終更新日：2026年5月13日</p>
 </div>
 {_LEGAL_FOOTER}
 </body></html>"""
