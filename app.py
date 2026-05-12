@@ -2205,7 +2205,7 @@ def legal_tokushoho():
     <tr><th>電話番号</th><td>請求があった場合に遅滞なく開示いたします</td></tr>
     <tr><th>メールアドレス</th><td>{CONTACT_EMAIL}</td></tr>
     <tr><th>販売URL</th><td>https://moonlog.jp</td></tr>
-    <tr><th>販売価格</th><td>各レポートページに表示の価格（税込）<br>ホロスコープ鑑定レポート ¥980 / 今年の星読みレポート ¥980 / ライフサイクルレポート ¥980</td></tr>
+    <tr><th>販売価格</th><td>各レポートページに表示の価格（税込）<br>出生チャート（ホロスコープ鑑定）レポート ¥980 / 2026年 星読みレポート ¥980 / 仕事・お金・恋愛 3分野レポート ¥980<br><small style="color:#9A8870;">※ 有料レポートは2026年6月1日リリース予定</small></td></tr>
     <tr><th>販売価格以外の費用</th><td>なし（インターネット接続料・通信料はお客様のご負担となります）</td></tr>
     <tr><th>支払方法</th><td>クレジットカード（Visa / Mastercard / American Express / JCB）</td></tr>
     <tr><th>支払時期</th><td>購入手続き完了時にお支払いが確定します</td></tr>
@@ -2213,7 +2213,7 @@ def legal_tokushoho():
     <tr><th>返品・キャンセル</th><td>デジタルコンテンツの性質上、購入完了後の返金・キャンセルはお受けできません。ご不明な点はご購入前にお問い合わせください</td></tr>
     <tr><th>動作環境</th><td>最新版の主要ブラウザ（Chrome / Safari / Firefox / Edge）推奨</td></tr>
   </table>
-  <p class="legal-updated">最終更新日：2026年4月30日</p>
+  <p class="legal-updated">最終更新日：2026年5月13日</p>
 </div>
 {_LEGAL_FOOTER}
 </body></html>"""
