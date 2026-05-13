@@ -1729,6 +1729,91 @@ def html_to_pdf_bytes(html_str):
     return pdf_bytes
 
 
+FEEDBACK_FORM_URL = os.environ.get("FEEDBACK_FORM_URL", "https://forms.gle/PLACEHOLDER")
+COUPON_CODE = os.environ.get("COUPON_CODE", "EARLYBIRD500")
+
+def _free_cta_footer(name, year, month, day, hour, minute, city, lat, lng):
+    """無料ライト版の末尾に挿入するCTA：PDFダウンロード + フィードバック + クーポン"""
+    return f"""
+<div style="background:#FBF8F2;padding:48px 24px;border-top:2px solid #B89858;margin-top:48px;">
+  <div style="max-width:680px;margin:0 auto;">
+    <h2 style="text-align:center;font-family:'Hiragino Mincho ProN',serif;color:#5A3818;font-size:1.6rem;margin:0 0 8px;letter-spacing:.04em;">📥 PDFでお手元に残しませんか？</h2>
+    <p style="text-align:center;color:#6B607A;font-size:.95rem;margin:0 0 24px;">読みやすいA4レイアウトで、いつでも何度でも読み返せます。</p>
+
+    <form method="post" action="/pdf/preview" target="_blank" style="text-align:center;margin-bottom:48px;">
+      <input type="hidden" name="name" value="{_esc(name)}">
+      <input type="hidden" name="year" value="{year}">
+      <input type="hidden" name="month" value="{month}">
+      <input type="hidden" name="day" value="{day}">
+      <input type="hidden" name="hour" value="{hour}">
+      <input type="hidden" name="minute" value="{minute}">
+      <input type="hidden" name="city" value="{_esc(city)}">
+      <input type="hidden" name="lat" value="{lat}">
+      <input type="hidden" name="lng" value="{lng}">
+      <button type="submit" style="background:#5A3818;color:#fff;border:none;padding:14px 32px;font-size:1rem;
+        font-family:inherit;border-radius:4px;cursor:pointer;letter-spacing:.04em;">
+        📄 無料ライト版をPDFでダウンロード
+      </button>
+    </form>
+
+    <div style="background:rgba(184,152,88,.08);border:1px dashed #B89858;border-radius:4px;padding:24px;margin-bottom:24px;">
+      <h3 style="font-family:'Hiragino Mincho ProN',serif;color:#5A3818;margin:0 0 8px;font-size:1.2rem;text-align:center;">🌹 もう少しだけ、お時間をいただけますか？</h3>
+      <p style="color:#1C1A2E;line-height:1.85;margin:8px 0;font-size:.95rem;">
+        読んでみての感想・違和感・「これは私だ」と感じた箇所、ぜひ教えてください。<br>
+        moonlog はまだ磨いている最中で、あなたの声が、リリース時の品質を作ります。
+      </p>
+      <p style="text-align:center;margin:16px 0 8px;">
+        <a href="{FEEDBACK_FORM_URL}" target="_blank" rel="noopener" style="display:inline-block;background:#B89858;color:#fff;text-decoration:none;padding:12px 28px;border-radius:4px;font-size:.95rem;letter-spacing:.04em;">
+          ✦ 感想を送る（1分で完了）
+        </a>
+      </p>
+      <p style="text-align:center;color:#6B607A;font-size:.85rem;margin:8px 0 0;">
+        フィードバックをくれた方には、6月1日リリース時の<br>
+        <strong style="color:#5A3818;font-size:1.1rem;">¥500 OFF クーポンコード「{COUPON_CODE}」</strong><br>
+        <small>（出生チャート/年間星読み/3分野レポート ¥980 → ¥480）</small>
+      </p>
+    </div>
+
+    <p style="text-align:center;color:#9A8870;font-size:.82rem;line-height:1.7;margin:0;">
+      ※ クーポンは6/1〜6/30の期間限定です。<br>
+      ※ メールアドレスはフィードバックフォームでお伺いします。
+    </p>
+  </div>
+</div>
+"""
+
+def _esc(s):
+    import html as h
+    return h.escape(str(s))
+
+
+@app.route("/pdf/preview", methods=["POST"])
+def pdf_preview():
+    """無料ライト版をPDFで返す"""
+    from flask import Response
+    data = request.form
+    try:
+        name   = str(data.get("name", "")).strip() or "あなた"
+        year   = int(data["year"]); month = int(data["month"]); day = int(data["day"])
+        hour   = int(data.get("hour", 12)); minute = int(data.get("minute", 0))
+        city   = str(data.get("city", "新潟市")).strip()
+        lat    = float(data.get("lat") or 37.9161)
+        lng    = float(data.get("lng") or 139.0364)
+    except (KeyError, ValueError) as e:
+        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+    try:
+        html = generate_html_report(name, year, month, day, hour, minute, city,
+                                     lat=lat, lng=lng, tz_str="Asia/Tokyo", light=True)
+        pdf  = html_to_pdf_bytes(html)
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+    from urllib.parse import quote
+    fname = f"{name}_moonlog_無料ライト版.pdf"
+    return Response(pdf, mimetype="application/pdf",
+                    headers={"Content-Disposition": f"attachment; filename=\"moonlog_light.pdf\"; filename*=UTF-8''{quote(fname)}"})
+
+
 @app.route("/preview", methods=["POST"])
 def preview():
     from flask import Response
@@ -1753,6 +1838,12 @@ def preview():
             name, year, month, day, hour, minute, city,
             lat=lat, lng=lng, tz_str=tz, light=True
         )
+        # CTAフッターを末尾に追加
+        cta = _free_cta_footer(name, year, month, day, hour, minute, city, lat, lng)
+        if "</body>" in html:
+            html = html.replace("</body>", cta + "</body>")
+        else:
+            html = html + cta
     except Exception as e:
         import traceback; traceback.print_exc()
         return f"<p style='color:red'>エラーが発生しました: {e}</p>", 500
