@@ -2791,6 +2791,18 @@ def faq_page():
   </div>
 
   <div class="faq-item">
+    <div class="faq-q">レポートの「☀ 太陽　家族・家庭・プライベート」みたいな表記は、太陽星座のことですか？</div>
+    <div class="faq-a">
+      いいえ、それは <strong>太陽が今いる「人生の分野（ハウス）」</strong> を示しています。<br>
+      たとえば「☀ 太陽　家族・家庭・プライベート」は、<strong>太陽が4ハウス（家族・家庭の分野）に位置している</strong> という意味で、太陽星座が蟹座という意味ではありません。<br>
+      ・<strong>サイン（12星座）</strong>＝ どんなふうに（性質・キャラクター）<br>
+      ・<strong>ハウス（12室）</strong>＝ どこで（人生のどの分野）<br>
+      詳しくは <a href="/glossary#sign" style="color:var(--gold-d);">用語解説</a> をご覧ください。<br>
+      なお、レポートでは <strong>太陽・月・火星・木星・土星はハウス</strong>（人生の分野）で、<strong>水星・金星はサイン</strong>（星座）で表示しています。これは出生時刻による精度の違いによるものです。
+    </div>
+  </div>
+
+  <div class="faq-item">
     <div class="faq-q">解釈に違和感を感じたときはどう読めばいいですか？</div>
     <div class="faq-a">
       レポートの解釈は<strong>「あなたの傾向の一面」</strong>です。一字一句が当てはまるとは限りません。「これは自分っぽい」と感じる部分は受け取って、ピンとこない部分は <strong>「今の自分には響かない」と置いておいて</strong> 構いません。<br>

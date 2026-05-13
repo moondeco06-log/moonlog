@@ -5673,21 +5673,15 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
 
         # Summary tags（人生分野 or 星座）
         summary_items = [
-            ("☀️", "太陽", f"{sr_planets['Sun']['house']}H：" + AREA_LABEL.get(sr_planets["Sun"]["house"], "")),
-            ("🌙", "月",   f"{sr_planets['Moon']['house']}H：" + AREA_LABEL.get(sr_planets["Moon"]["house"], "")),
-            ("🔥", "火星", f"{sr_planets['Mars']['house']}H：" + AREA_LABEL.get(sr_planets["Mars"]["house"], "")),
-            ("⭐", "木星", f"{sr_planets['Jupiter']['house']}H：" + AREA_LABEL.get(sr_planets["Jupiter"]["house"], "")),
-            ("🌿", "土星", f"{sr_planets['Saturn']['house']}H：" + AREA_LABEL.get(sr_planets["Saturn"]["house"], "")),
-            ("✦", "水星", SIGN_SHORT.get(sr_planets["Mercury"]["sign"], "") + "座"),
-            ("🌹", "金星", SIGN_SHORT.get(sr_planets["Venus"]["sign"], "") + "座"),
+            ("☀️", "太陽", AREA_LABEL.get(sr_planets["Sun"]["house"], "")),
+            ("🌙", "月",   AREA_LABEL.get(sr_planets["Moon"]["house"], "")),
+            ("🔥", "火星", AREA_LABEL.get(sr_planets["Mars"]["house"], "")),
+            ("⭐", "木星", AREA_LABEL.get(sr_planets["Jupiter"]["house"], "")),
+            ("🌿", "土星", AREA_LABEL.get(sr_planets["Saturn"]["house"], "")),
+            ("✦", "水星", SIGN_SHORT.get(sr_planets["Mercury"]["sign"], "")),
+            ("🌹", "金星", SIGN_SHORT.get(sr_planets["Venus"]["sign"], "")),
         ]
-        tag_intro_html = (
-            "<p style='font-size:.85rem;color:#7A6850;margin:0 0 8px;line-height:1.7;'>"
-            "今年、各惑星が動く<strong>人生の分野（ハウス）</strong>と<strong>星座</strong>です。"
-            "「太陽 4H：家族・家庭」は <em>太陽が4ハウス（家族の分野）に位置している</em> ことを示します。"
-            "</p>"
-        )
-        tags_html = tag_intro_html + "".join(
+        tags_html = "".join(
             f'<div class="sum-tag"><span class="sum-icon">{ico}</span>'
             f'<span class="sum-planet">{esc(jp)}</span>'
             f'<span class="sum-pos">{esc(pos)}</span></div>'
