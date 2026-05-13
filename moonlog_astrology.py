@@ -5654,37 +5654,40 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
         )
 
         text = _dedupe_areas(text, [sun_area, sat_area, jup_area, moon_area])
-        # 木星と土星の対話パラグラフ（常に挿入）
+        # 「今年の追い風と課題」パラグラフ（常に挿入）
         jup_sat_bridge = (
-            f"木星が「{jup_area}」に幸運をもたらし、土星が「{sat_area}」に課題を置く——"
-            f"この二つの星の対話が今年の成長の核心です。"
-            f"木星は「もっと楽しんでいい、広がっていい」と促し、"
-            f"土星は「本物かどうかを問え、誠実に向き合え」と求めます。"
-            f"一見すると反対のメッセージに聞こえますが、これは矛盾ではありません。"
-            f"土星が求める問いに正直に向き合うことで初めて、"
-            f"木星が開く幸運の扉が本当の意味で輝きます。"
-            f"成長しながら楽しむ、責任を果たしながら喜ぶ——"
-            f"今年のあなたはその両方を同時に生きることが求められています。"
-            f"この二つの星は車の両輪です。どちらか一方だけでは、人は前に進めません。"
+            f"今年、追い風が吹くのは「{jup_area}」の分野。"
+            f"ここで広げる・楽しむ・受け取ることが、今年の幸運の流れを最大化します。"
+            f"一方、向き合うべき課題は「{sat_area}」の分野にあります。"
+            f"ここでは慎重に、誠実に、本物かどうかを問い直す姿勢が求められます。"
+            f"追い風（伸ばす分野）と課題（向き合う分野）——一見すると反対方向に見えますが、"
+            f"両方を同時に大切にすることが、今年のあなたの本物の成長につながります。"
+            f"楽しみながら整える、広げながら深める——今年のテーマはその両立にあります。"
         )
 
         paras = [p.strip() for p in text.split("\n") if p.strip()]
-        # 総合テキストの後ろに木星・土星の対話パラグラフを追加
+        # 総合テキストの後ろに「今年の追い風と課題」パラグラフを追加
         paras.append(jup_sat_bridge)
-        overall_labels = ["今年の全体像", "今年の流れとテーマ", "木星と土星の対話"]
+        overall_labels = ["今年の全体像", "今年の流れとテーマ", "今年の追い風と課題"]
         body = _build_subsections(paras, overall_labels)
 
-        # Summary tags
+        # Summary tags（人生分野 or 星座）
         summary_items = [
-            ("☀️", "太陽", AREA_LABEL.get(sr_planets["Sun"]["house"], "")),
-            ("🌙", "月",   AREA_LABEL.get(sr_planets["Moon"]["house"], "")),
-            ("🔥", "火星", AREA_LABEL.get(sr_planets["Mars"]["house"], "")),
-            ("⭐", "木星", AREA_LABEL.get(sr_planets["Jupiter"]["house"], "")),
-            ("🌿", "土星", AREA_LABEL.get(sr_planets["Saturn"]["house"], "")),
-            ("✦", "水星", SIGN_SHORT.get(sr_planets["Mercury"]["sign"], "")),
-            ("🌹", "金星", SIGN_SHORT.get(sr_planets["Venus"]["sign"], "")),
+            ("☀️", "太陽", f"{sr_planets['Sun']['house']}H：" + AREA_LABEL.get(sr_planets["Sun"]["house"], "")),
+            ("🌙", "月",   f"{sr_planets['Moon']['house']}H：" + AREA_LABEL.get(sr_planets["Moon"]["house"], "")),
+            ("🔥", "火星", f"{sr_planets['Mars']['house']}H：" + AREA_LABEL.get(sr_planets["Mars"]["house"], "")),
+            ("⭐", "木星", f"{sr_planets['Jupiter']['house']}H：" + AREA_LABEL.get(sr_planets["Jupiter"]["house"], "")),
+            ("🌿", "土星", f"{sr_planets['Saturn']['house']}H：" + AREA_LABEL.get(sr_planets["Saturn"]["house"], "")),
+            ("✦", "水星", SIGN_SHORT.get(sr_planets["Mercury"]["sign"], "") + "座"),
+            ("🌹", "金星", SIGN_SHORT.get(sr_planets["Venus"]["sign"], "") + "座"),
         ]
-        tags_html = "".join(
+        tag_intro_html = (
+            "<p style='font-size:.85rem;color:#7A6850;margin:0 0 8px;line-height:1.7;'>"
+            "今年、各惑星が動く<strong>人生の分野（ハウス）</strong>と<strong>星座</strong>です。"
+            "「太陽 4H：家族・家庭」は <em>太陽が4ハウス（家族の分野）に位置している</em> ことを示します。"
+            "</p>"
+        )
+        tags_html = tag_intro_html + "".join(
             f'<div class="sum-tag"><span class="sum-icon">{ico}</span>'
             f'<span class="sum-planet">{esc(jp)}</span>'
             f'<span class="sum-pos">{esc(pos)}</span></div>'
