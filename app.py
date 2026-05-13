@@ -1705,28 +1705,34 @@ def index():
 
 def html_to_pdf_bytes(html_str):
     """HTML文字列をPDFバイト列に変換する。
-    Playwright（Chromium）でレンダリング → A4 PDF を返す。
+    優先: Playwright(Chromium)。失敗時は WeasyPrint へフォールバック。
+    本番環境(Render)では WeasyPrint を使うのが想定。
     """
-    from playwright.sync_api import sync_playwright
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        try:
-            page = browser.new_page()
-            # data URL でHTMLを読み込む（外部ファイル不要）
-            import base64
-            b64 = base64.b64encode(html_str.encode("utf-8")).decode("ascii")
-            page.goto(f"data:text/html;base64,{b64}", wait_until="networkidle", timeout=30000)
-            # フォント読み込み待ち
-            page.wait_for_timeout(500)
-            pdf_bytes = page.pdf(
-                format="A4",
-                margin={"top":"14mm","bottom":"14mm","left":"12mm","right":"12mm"},
-                print_background=True,
-                prefer_css_page_size=False,
-            )
-        finally:
-            browser.close()
-    return pdf_bytes
+    # Playwright を試す（ローカル開発で使用想定）
+    try:
+        from playwright.sync_api import sync_playwright
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True)
+            try:
+                page = browser.new_page()
+                import base64
+                b64 = base64.b64encode(html_str.encode("utf-8")).decode("ascii")
+                page.goto(f"data:text/html;base64,{b64}", wait_until="networkidle", timeout=30000)
+                page.wait_for_timeout(500)
+                pdf_bytes = page.pdf(
+                    format="A4",
+                    margin={"top":"14mm","bottom":"14mm","left":"12mm","right":"12mm"},
+                    print_background=True,
+                    prefer_css_page_size=False,
+                )
+            finally:
+                browser.close()
+        return pdf_bytes
+    except Exception as e:
+        # Playwright が使えない環境 (本番Render) では WeasyPrint へフォールバック
+        print(f"[html_to_pdf_bytes] Playwright失敗 → WeasyPrintへ: {e}")
+        from weasyprint import HTML
+        return HTML(string=html_str).write_pdf()
 
 
 FEEDBACK_FORM_URL = os.environ.get("FEEDBACK_FORM_URL", "https://forms.gle/PLACEHOLDER")
