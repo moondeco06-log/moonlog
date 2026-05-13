@@ -346,3 +346,4 @@ if __name__ == "__main__":
     with open(out, "w") as f:
         f.write(html)
     print(f"OK → {out}")
+
