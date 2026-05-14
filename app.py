@@ -1743,7 +1743,7 @@ def html_to_pdf_bytes(html_str):
         return HTML(string=html_str).write_pdf()
 
 
-FEEDBACK_FORM_URL = os.environ.get("FEEDBACK_FORM_URL", "https://forms.gle/PLACEHOLDER")
+FEEDBACK_FORM_URL = os.environ.get("FEEDBACK_FORM_URL", "https://forms.gle/P82aWvS61fpN2X1J9")
 COUPON_CODE = os.environ.get("COUPON_CODE", "EARLYBIRD500")
 
 def _free_cta_footer(name, year, month, day, hour, minute, city, lat, lng):
