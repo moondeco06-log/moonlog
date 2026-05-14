@@ -44,6 +44,14 @@ threading.Thread(target=_preload, daemon=True).start()
 HTML = """<!DOCTYPE html>
 <html lang="ja">
 <head>
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-KT19PT0DDG');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MOONLOG — 自分を知るための、静かな航海日誌</title>
@@ -2289,6 +2297,8 @@ _LEGAL_FOOTER = """
 @app.route("/legal/tokushoho")
 def legal_tokushoho():
     html = f"""<!DOCTYPE html><html lang="ja"><head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>特定商取引法に基づく表記 | MOONLOG</title>
 {_LEGAL_CSS}
@@ -2319,6 +2329,8 @@ def legal_tokushoho():
 @app.route("/legal/privacy")
 def legal_privacy():
     html = f"""<!DOCTYPE html><html lang="ja"><head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>プライバシーポリシー | MOONLOG</title>
 {_LEGAL_CSS}
@@ -2373,6 +2385,8 @@ def legal_privacy():
 @app.route("/legal/terms")
 def legal_terms():
     html = f"""<!DOCTYPE html><html lang="ja"><head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>利用規約 | MOONLOG</title>
 {_LEGAL_CSS}
@@ -2487,6 +2501,8 @@ _GLOSSARY_CSS_EXTRA = """
 @app.route("/glossary")
 def glossary_page():
     html = f"""<!DOCTYPE html><html lang="ja"><head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>用語解説 | MOONLOG</title>
 {_LEGAL_CSS}
@@ -2610,6 +2626,8 @@ def glossary_page():
 @app.route("/faq")
 def faq_page():
     html = f"""<!DOCTYPE html><html lang="ja"><head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>よくある質問 | MOONLOG</title>
 {_LEGAL_CSS}
