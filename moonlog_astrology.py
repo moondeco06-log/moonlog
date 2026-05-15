@@ -3692,8 +3692,14 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
 <div class="footer">
   ✦ Natal Chart Report　{esc(name)} さん　{esc(birth_info)}<br>
   星はあなたの可能性を輝かせるための地図です。<br>
-  <span style="display:inline-block;margin-top:14px;font-size:.68rem;color:var(--text-l);max-width:560px;line-height:1.8;">
-    本レポートは、出生時刻の天体配置を計算し、占星術データベースに基づいて自動生成されるものです。プロ占星術師による個別鑑定ではありません。
+  <span style="display:inline-block;margin-top:14px;font-size:.68rem;color:var(--text-l);max-width:580px;line-height:1.8;">
+    本レポートは、出生時刻の天体配置を計算し、占星術データベースに基づいて自動生成されるものです。プロ占星術師による個別鑑定ではありません。<br>
+    <br>
+    ご利用にあたって：本レポートの著作権は moonlog 運営者に帰属します。<br>
+    ご購入者の個人利用に限り使用可能です。<br>
+    無断転載・複製・SNS等での公開・第三者への譲渡・営利目的の二次利用はご遠慮ください。<br>
+    <br>
+    © moonlog ｜ <a href="https://moonlog.jp" style="color:var(--text-l);text-decoration:none;">moonlog.jp</a>
   </span>
 </div>
 </body>
@@ -5923,8 +5929,14 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
 <div class="footer">
   ✦ Solar Return Report　{esc(name)} さん　{target_year}年<br>
   太陽回帰日：{esc(sr_date_str)}　出生地：{esc(city)}<br>
-  <span style="display:inline-block;margin-top:14px;font-size:.68rem;color:var(--text-l);max-width:560px;line-height:1.8;">
-    本レポートは、出生時刻の天体配置を計算し、占星術データベースに基づいて自動生成されるものです。プロ占星術師による個別鑑定ではありません。
+  <span style="display:inline-block;margin-top:14px;font-size:.68rem;color:var(--text-l);max-width:580px;line-height:1.8;">
+    本レポートは、出生時刻の天体配置を計算し、占星術データベースに基づいて自動生成されるものです。プロ占星術師による個別鑑定ではありません。<br>
+    <br>
+    ご利用にあたって：本レポートの著作権は moonlog 運営者に帰属します。<br>
+    ご購入者の個人利用に限り使用可能です。<br>
+    無断転載・複製・SNS等での公開・第三者への譲渡・営利目的の二次利用はご遠慮ください。<br>
+    <br>
+    © moonlog ｜ <a href="https://moonlog.jp" style="color:var(--text-l);text-decoration:none;">moonlog.jp</a>
   </span>
 </div>
 </body>
