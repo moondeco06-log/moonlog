@@ -1744,6 +1744,43 @@ FEEDBACK_FORM_URL = os.environ.get("FEEDBACK_FORM_URL", "https://forms.gle/P82aW
 COUPON_CODE = os.environ.get("COUPON_CODE", "EARLYBIRD500")
 
 # ============================================================
+# SMTP メール送信（PDF添付）
+# ============================================================
+SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.gmail.com")
+SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
+SMTP_USER = os.environ.get("SMTP_USER", "")
+SMTP_PASS = os.environ.get("SMTP_PASS", "")
+SMTP_FROM = os.environ.get("SMTP_FROM", "info@moonlog.jp")
+SMTP_FROM_NAME = os.environ.get("SMTP_FROM_NAME", "moonlog")
+
+
+def send_pdf_email(to_email, subject, body_text, pdf_bytes, pdf_filename):
+    """SMTP 経由で PDF を添付してメール送信"""
+    if not (SMTP_USER and SMTP_PASS):
+        print("[send_pdf_email] SMTP未設定 — スキップ")
+        return False
+    import smtplib
+    from email.message import EmailMessage
+    msg = EmailMessage()
+    msg["Subject"] = subject
+    msg["From"] = f"{SMTP_FROM_NAME} <{SMTP_FROM}>"
+    msg["To"] = to_email
+    msg.set_content(body_text)
+    msg.add_attachment(pdf_bytes, maintype="application", subtype="pdf", filename=pdf_filename)
+    try:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=20) as s:
+            s.starttls()
+            s.login(SMTP_USER, SMTP_PASS)
+            s.send_message(msg)
+        print(f"[send_pdf_email] ✅ sent to {to_email}")
+        return True
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        print(f"[send_pdf_email] ❌ {e}")
+        return False
+
+
+# ============================================================
 # Stripe Checkout
 # ============================================================
 STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
@@ -1830,20 +1867,62 @@ def checkout_success():
             name, year, month, day, hour, minute, city,
             lat=lat, lng=lng, tz_str="Asia/Tokyo", light=False
         )
-        # 購入完了バナーを冒頭に挿入
-        banner = (
-            '<div style="background:#2C3E6B;color:#fff;padding:18px 20px;text-align:center;'
-            'font-family:\'Hiragino Mincho ProN\',serif;letter-spacing:.05em;">'
-            '🌙 ご購入ありがとうございました — 出生チャート診断レポート（フル版）</div>'
-        )
-        if "<body" in html:
-            i = html.find(">", html.find("<body")) + 1
-            html = html[:i] + banner + html[i:]
-        else:
-            html = banner + html
     except Exception as e:
         import traceback; traceback.print_exc()
         return f"<p style='color:red'>レポート生成エラー: {e}</p>", 500
+
+    # メール送信（非同期・1回限り）
+    customer_email = ""
+    try:
+        if sess.customer_details and sess.customer_details.email:
+            customer_email = sess.customer_details.email
+    except Exception:
+        pass
+
+    if customer_email and not (sess.metadata.get("emailed") == "1" if hasattr(sess.metadata, "get") else False):
+        def _send_async():
+            try:
+                pdf_bytes = html_to_pdf_bytes(html)
+                ok = send_pdf_email(
+                    to_email=customer_email,
+                    subject=f"【moonlog】{name}さんの出生チャート診断レポート",
+                    body_text=(
+                        f"{name}さま\n\n"
+                        f"このたびはmoonlogをご利用いただきありがとうございます。\n"
+                        f"出生チャート診断レポート（フル版）のPDFを添付しました。\n\n"
+                        f"ご感想やお気づきの点がございましたら、\n"
+                        f"ぜひフィードバックフォームよりお知らせください：\n"
+                        f"{FEEDBACK_FORM_URL}\n\n"
+                        f"あなたの星の地図が、これからの日々の道しるべになりますように。\n\n"
+                        f"moonlog ｜ 自分という地図\n"
+                        f"https://moonlog.jp\n"
+                    ),
+                    pdf_bytes=pdf_bytes,
+                    pdf_filename=f"moonlog_natal_{name}.pdf",
+                )
+                # 二重送信防止のためメタデータに記録
+                try:
+                    stripe.checkout.Session.modify(sid, metadata={**m, "emailed": "1" if ok else "0"})
+                except Exception:
+                    pass
+            except Exception as e:
+                import traceback; traceback.print_exc()
+                print(f"[checkout_success] メール送信失敗: {e}")
+        threading.Thread(target=_send_async, daemon=True).start()
+
+    # 購入完了バナーを冒頭に挿入
+    email_note = f"<br><small style='font-size:.85em;opacity:.9'>📧 PDFを {customer_email} にお送りしました（数分以内に届きます）</small>" if customer_email else ""
+    banner = (
+        '<div style="background:#2C3E6B;color:#fff;padding:18px 20px;text-align:center;'
+        'font-family:\'Hiragino Mincho ProN\',serif;letter-spacing:.05em;">'
+        f'🌙 ご購入ありがとうございました — 出生チャート診断レポート（フル版）{email_note}</div>'
+    )
+    if "<body" in html:
+        i = html.find(">", html.find("<body")) + 1
+        html = html[:i] + banner + html[i:]
+    else:
+        html = banner + html
+
     return Response(html, mimetype="text/html; charset=utf-8")
 
 def _free_cta_footer(name, year, month, day, hour, minute, city, lat, lng):
