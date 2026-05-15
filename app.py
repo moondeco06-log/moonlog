@@ -1377,18 +1377,18 @@ footer {
 
         <form id="form" method="post" action="/preview">
           <label class="field-label">お名前</label>
-          <input type="text" name="name" placeholder="例：山田 花子" value="なつ" required>
+          <input type="text" name="name" placeholder="例：山田 花子" required>
 
           <label class="field-label">生年月日</label>
           <div class="row3">
-            <div><input type="number" name="year"  placeholder="年（1900〜2025）" min="1900" max="2025" value="1972" required></div>
-            <div><input type="number" name="month" placeholder="月（1〜12）"      min="1" max="12" value="6" required></div>
-            <div><input type="number" name="day"   placeholder="日（1〜31）"      min="1" max="31" value="10" required></div>
+            <div><input type="number" name="year"  placeholder="年（1900〜2025）" min="1900" max="2025" required></div>
+            <div><input type="number" name="month" placeholder="月（1〜12）"      min="1" max="12" required></div>
+            <div><input type="number" name="day"   placeholder="日（1〜31）"      min="1" max="31" required></div>
           </div>
 
           <label class="field-label">出生時刻</label>
           <div class="row2">
-            <div><input type="number" name="hour"   placeholder="時（0〜23）" min="0" max="23" value="22" required></div>
+            <div><input type="number" name="hour"   placeholder="時（0〜23・不明なら12）" min="0" max="23" value="12" required></div>
             <div><input type="number" name="minute" placeholder="分（0〜59）" min="0" max="59" value="0"  required></div>
           </div>
           <p class="hint">※ 出生時刻が不明な場合は 12:00 のままでお進みください</p>
@@ -1404,7 +1404,7 @@ footer {
                 <option value="山形県">山形県</option><option value="福島県">福島県</option>
                 <option value="茨城県">茨城県</option><option value="栃木県">栃木県</option>
                 <option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option>
-                <option value="千葉県">千葉県</option><option value="東京都" selected>東京都</option>
+                <option value="千葉県">千葉県</option><option value="東京都">東京都</option>
                 <option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option>
                 <option value="富山県">富山県</option><option value="石川県">石川県</option>
                 <option value="福井県">福井県</option><option value="山梨県">山梨県</option>
