@@ -1811,7 +1811,7 @@ def checkout_success():
         sess = stripe.checkout.Session.retrieve(sid)
         if sess.payment_status != "paid":
             return "<p>決済が完了していません。お支払い後にこのページが表示されます。</p>", 402
-        m = sess.metadata or {}
+        m = sess.metadata.to_dict_recursive() if hasattr(sess.metadata, "to_dict_recursive") else (sess.metadata.to_dict() if hasattr(sess.metadata, "to_dict") else dict(sess.metadata or {}))
         if m.get("product") != "natal":
             return redirect("/", code=302)
         name   = m.get("name") or "あなた"
