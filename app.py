@@ -12,7 +12,7 @@ CONTACT_EMAIL = os.environ.get("MOONLOG_EMAIL", "info@moonlog.jp")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 warnings.filterwarnings("ignore")
 
-from flask import Flask, request, render_template_string, send_file, jsonify
+from flask import Flask, request, render_template_string, send_file, jsonify, redirect
 from moonlog_astrology import generate_report, generate_html_report, resolve_location, generate_solar_return_html, generate_lifecycle_html
 from moonlog_field_report import generate_field_report_html
 
@@ -1455,8 +1455,8 @@ footer {
             </div>
 
             <button class="btn btn-natal" type="submit"
-                    formaction="/preview" formtarget="_blank" id="btn-natal" disabled
-                    title="決済機能は5月中旬リリース予定">
+                    formaction="/checkout/natal" id="btn-natal"
+                    title="Stripeで決済 → ご購入後にレポート表示">
               🌟 &nbsp;出生チャート（フル版）　<span class="btn-price">¥980</span>
             </button>
             <p class="btn-note">7惑星すべて＋総合まとめ／<a href="/sample/natal" target="_blank">サンプルを見る</a></p>
@@ -1745,6 +1745,109 @@ def html_to_pdf_bytes(html_str):
 
 FEEDBACK_FORM_URL = os.environ.get("FEEDBACK_FORM_URL", "https://forms.gle/P82aWvS61fpN2X1J9")
 COUPON_CODE = os.environ.get("COUPON_CODE", "EARLYBIRD500")
+
+# ============================================================
+# Stripe Checkout
+# ============================================================
+STRIPE_PUBLISHABLE_KEY = os.environ.get("STRIPE_PUBLISHABLE_KEY", "")
+STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+STRIPE_PRICE_NATAL = os.environ.get("STRIPE_PRICE_NATAL", "price_1TXDOyAmhBJUjslZfONNA15h")
+SITE_URL = os.environ.get("SITE_URL", "https://moonlog.jp")
+
+try:
+    import stripe
+    if STRIPE_SECRET_KEY:
+        stripe.api_key = STRIPE_SECRET_KEY
+    _stripe_ready = bool(STRIPE_SECRET_KEY)
+except ImportError:
+    stripe = None
+    _stripe_ready = False
+
+
+@app.route("/checkout/natal", methods=["POST"])
+def checkout_natal():
+    """出生チャート購入: Stripe Checkout セッション作成 → リダイレクト"""
+    if not _stripe_ready:
+        return "<p>決済機能の準備中です。後ほどお試しください。</p>", 503
+    data = request.form
+    try:
+        meta = {
+            "product": "natal",
+            "name":   str(data.get("name", ""))[:80],
+            "year":   str(int(data["year"])),
+            "month":  str(int(data["month"])),
+            "day":    str(int(data["day"])),
+            "hour":   str(int(data.get("hour", 12))),
+            "minute": str(int(data.get("minute", 0))),
+            "city":   str(data.get("city", "東京"))[:60],
+            "lat":    str(float(data.get("lat") or 35.6762)),
+            "lng":    str(float(data.get("lng") or 139.6503)),
+        }
+    except (KeyError, ValueError) as e:
+        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+
+    try:
+        session = stripe.checkout.Session.create(
+            mode="payment",
+            line_items=[{"price": STRIPE_PRICE_NATAL, "quantity": 1}],
+            payment_method_types=["card"],
+            allow_promotion_codes=True,
+            success_url=f"{SITE_URL}/checkout/success?session_id={{CHECKOUT_SESSION_ID}}",
+            cancel_url=f"{SITE_URL}/#form-section",
+            metadata=meta,
+            locale="ja",
+        )
+        return redirect(session.url, code=303)
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>決済セッション作成に失敗しました: {e}</p>", 500
+
+
+@app.route("/checkout/success")
+def checkout_success():
+    """決済完了後: メタデータから出生情報を取り出して有料版レポート表示"""
+    from flask import Response
+    sid = request.args.get("session_id", "")
+    if not sid or not _stripe_ready:
+        return redirect("/", code=302)
+    try:
+        sess = stripe.checkout.Session.retrieve(sid)
+        if sess.payment_status != "paid":
+            return "<p>決済が完了していません。お支払い後にこのページが表示されます。</p>", 402
+        m = sess.metadata or {}
+        if m.get("product") != "natal":
+            return redirect("/", code=302)
+        name   = m.get("name") or "あなた"
+        year   = int(m["year"]); month = int(m["month"]); day = int(m["day"])
+        hour   = int(m["hour"]); minute = int(m["minute"])
+        city   = m.get("city", "東京")
+        lat    = float(m.get("lat", 35.6762))
+        lng    = float(m.get("lng", 139.6503))
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>購入情報の取得に失敗しました: {e}</p>", 500
+
+    try:
+        # 有料フル版（light=False）
+        html = generate_html_report(
+            name, year, month, day, hour, minute, city,
+            lat=lat, lng=lng, tz_str="Asia/Tokyo", light=False
+        )
+        # 購入完了バナーを冒頭に挿入
+        banner = (
+            '<div style="background:#2C3E6B;color:#fff;padding:18px 20px;text-align:center;'
+            'font-family:\'Hiragino Mincho ProN\',serif;letter-spacing:.05em;">'
+            '🌙 ご購入ありがとうございました — 出生チャート診断レポート（フル版）</div>'
+        )
+        if "<body" in html:
+            i = html.find(">", html.find("<body")) + 1
+            html = html[:i] + banner + html[i:]
+        else:
+            html = banner + html
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return f"<p style='color:red'>レポート生成エラー: {e}</p>", 500
+    return Response(html, mimetype="text/html; charset=utf-8")
 
 def _free_cta_footer(name, year, month, day, hour, minute, city, lat, lng):
     """無料ライト版の末尾に挿入するCTA：PDFダウンロード + フィードバック + クーポン"""
