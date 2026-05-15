@@ -1593,11 +1593,8 @@ function updateLatLng(sel) {
   }
 }
 
-// 初期値：新潟県・新潟市
+// 初期化：プルダウンは未選択のまま（ユーザーが選ぶ）
 window.addEventListener('DOMContentLoaded', () => {
-  const prefSel = document.getElementById('pref_select');
-  prefSel.value = '新潟県';
-  updateCities('新潟県');
 
   // SR年セレクターを動的生成（今年-1 〜 今年+3）
   const srYearSel = document.getElementById('sr_year');
