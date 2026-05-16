@@ -663,13 +663,13 @@ select option { background: var(--white); color: var(--text-d); }
 .btn-note a:hover { text-decoration-color: var(--gold-d); }
 /* ─── 出生チャート（有料）ボタン ─── */
 .btn-natal {
-  background: var(--rose);
-  border-color: var(--rose);
+  background: var(--gold-d);
+  border-color: var(--gold-d);
   color: #fff;
 }
 .btn-natal:hover:not(:disabled) {
-  background: var(--rose-l);
-  border-color: var(--rose-l);
+  background: var(--gold);
+  border-color: var(--gold);
 }
 #status {
   text-align: center;
