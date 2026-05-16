@@ -1818,7 +1818,7 @@ def checkout_natal():
             "lng":    str(float(data.get("lng") or 139.6503)),
         }
     except (KeyError, ValueError) as e:
-        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+        return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
 
     try:
         session = stripe.checkout.Session.create(
@@ -1834,7 +1834,7 @@ def checkout_natal():
         return redirect(session.url, code=303)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>決済セッション作成に失敗しました: {e}</p>", 500
+        return "<p style='color:red'>決済セッションの作成に失敗しました。時間をおいてお試しください。</p>", 500
 
 
 @app.route("/checkout/success")
@@ -1859,7 +1859,7 @@ def checkout_success():
         lng    = float(m.get("lng", 139.6503))
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>購入情報の取得に失敗しました: {e}</p>", 500
+        return "<p style='color:red'>購入情報の取得に失敗しました。お手数ですが info@moonlog.jp までお問い合わせください。</p>", 500
 
     try:
         # 有料フル版（light=False）
@@ -1869,7 +1869,7 @@ def checkout_success():
         )
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>レポート生成エラー: {e}</p>", 500
+        return "<p style='color:red'>レポートの生成中にエラーが発生しました。お手数ですが info@moonlog.jp までお問い合わせください。</p>", 500
 
     # メール送信（非同期・1回限り）
     customer_email = ""
@@ -1993,14 +1993,14 @@ def pdf_preview():
         lat    = float(data.get("lat") or 37.9161)
         lng    = float(data.get("lng") or 139.0364)
     except (KeyError, ValueError) as e:
-        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+        return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
     try:
         html = generate_html_report(name, year, month, day, hour, minute, city,
                                      lat=lat, lng=lng, tz_str="Asia/Tokyo", light=True)
         pdf  = html_to_pdf_bytes(html)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+        return "<p style='color:red'>PDF生成中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     from urllib.parse import quote
     fname = f"{name}_moonlog_無料ライト版.pdf"
     return Response(pdf, mimetype="application/pdf",
@@ -2023,7 +2023,7 @@ def preview():
         lng    = float(data.get("lng") or 139.0364)
         tz     = "Asia/Tokyo"
     except (KeyError, ValueError) as e:
-        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+        return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
 
     try:
         # 無料ライト版（太陽・月・水星のみ）
@@ -2039,7 +2039,7 @@ def preview():
             html = html + cta
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>エラーが発生しました: {e}</p>", 500
+        return "<p style='color:red'>エラーが発生しました。時間をおいてお試しください。</p>", 500
 
     return Response(html, mimetype="text/html; charset=utf-8")
 
@@ -2060,7 +2060,7 @@ def generate():
         lng    = float(data.get("lng") or 139.0364)
         tz     = "Asia/Tokyo"
     except (KeyError, ValueError) as e:
-        return jsonify({"error": f"入力値が正しくありません: {e}"}), 400
+        return jsonify({"error": "入力値が正しくありません。入力内容をご確認ください。"}), 400
 
     try:
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -2072,7 +2072,7 @@ def generate():
                 pptx_bytes = f.read()
     except Exception as e:
         import traceback; traceback.print_exc()
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": "レポート生成中にエラーが発生しました。時間をおいてお試しください。"}), 500
 
     return Response(
         pptx_bytes,
@@ -2099,7 +2099,7 @@ def solar_return():
         sr_year_raw = data.get("sr_year", "")
         sr_year  = int(sr_year_raw) if sr_year_raw.strip().isdigit() else None
     except (KeyError, ValueError) as e:
-        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+        return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
 
     try:
         html = generate_solar_return_html(
@@ -2109,7 +2109,7 @@ def solar_return():
         )
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>ソーラーリターン計算エラー: {e}</p>", 500
+        return "<p style='color:red'>星読みの計算中にエラーが発生しました。時間をおいてお試しください。</p>", 500
 
     return Response(html, mimetype="text/html; charset=utf-8")
 
@@ -2130,7 +2130,7 @@ def field_report():
         lat    = float(data.get("lat") or 37.9161)
         lng    = float(data.get("lng") or 139.0364)
     except (KeyError, ValueError) as e:
-        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+        return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
     try:
         html = generate_field_report_html(
             name, year, month, day, hour, minute, city,
@@ -2138,7 +2138,7 @@ def field_report():
         )
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>3分野レポート計算エラー: {e}</p>", 500
+        return "<p style='color:red'>3分野レポートの計算中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     return Response(html, mimetype="text/html; charset=utf-8")
 
 
@@ -2155,7 +2155,7 @@ def sample_field_report():
         )
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>サンプル生成エラー: {e}</p>", 500
+        return "<p style='color:red'>サンプル生成中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     return Response(html, mimetype="text/html; charset=utf-8")
 
 
@@ -2172,12 +2172,12 @@ def lifecycle():
         lat   = float(data.get("lat") or 35.6762)
         lng   = float(data.get("lng") or 139.6503)
     except (KeyError, ValueError) as e:
-        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+        return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
     try:
         html = generate_lifecycle_html(name, year, month, day, city, lat=lat, lng=lng)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>ライフサイクル計算エラー: {e}</p>", 500
+        return "<p style='color:red'>ライフサイクルの計算中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     return Response(html, mimetype="text/html; charset=utf-8")
 
 
@@ -2203,7 +2203,7 @@ def sample_natal():
                                      lat=s["lat"], lng=s["lng"], sample=True)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>サンプル生成エラー: {e}</p>", 500
+        return "<p style='color:red'>サンプル生成中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     return Response(html, mimetype="text/html; charset=utf-8")
 
 @app.route("/sample/sr")
@@ -2217,7 +2217,7 @@ def sample_sr():
                                            tz_str="Asia/Tokyo", target_year=2026, sample=True)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>サンプル生成エラー: {e}</p>", 500
+        return "<p style='color:red'>サンプル生成中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     return Response(html, mimetype="text/html; charset=utf-8")
 
 # ── PDFダウンロード（フォーム送信から）──
@@ -2233,14 +2233,14 @@ def pdf_natal():
         lat    = float(data.get("lat") or 37.9161)
         lng    = float(data.get("lng") or 139.0364)
     except (KeyError, ValueError) as e:
-        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+        return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
     try:
         html = generate_html_report(name, year, month, day, hour, minute, city,
                                      lat=lat, lng=lng, tz_str="Asia/Tokyo")
         pdf  = html_to_pdf_bytes(html)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+        return "<p style='color:red'>PDF生成中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     from urllib.parse import quote
     fname = f"{name}_出生チャート.pdf"
     return Response(pdf, mimetype="application/pdf",
@@ -2261,7 +2261,7 @@ def pdf_sr():
         sr_year_raw = data.get("sr_year", "")
         sr_year = int(sr_year_raw) if sr_year_raw.strip().isdigit() else None
     except (KeyError, ValueError) as e:
-        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+        return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
     try:
         html = generate_solar_return_html(name, year, month, day, hour, minute, city,
                                            lat=lat, lng=lng, tz_str="Asia/Tokyo",
@@ -2269,7 +2269,7 @@ def pdf_sr():
         pdf  = html_to_pdf_bytes(html)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+        return "<p style='color:red'>PDF生成中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     from urllib.parse import quote
     yr = sr_year if sr_year else 2026
     fname = f"{name}_{yr}年星読み.pdf"
@@ -2288,13 +2288,13 @@ def pdf_lifecycle():
         lat    = float(data.get("lat") or 37.9161)
         lng    = float(data.get("lng") or 139.0364)
     except (KeyError, ValueError) as e:
-        return f"<p style='color:red'>入力値が正しくありません: {e}</p>", 400
+        return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
     try:
         html = generate_lifecycle_html(name, year, month, day, city, lat=lat, lng=lng)
         pdf  = html_to_pdf_bytes(html)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+        return "<p style='color:red'>PDF生成中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     from urllib.parse import quote
     fname = f"{name}_ライフサイクル.pdf"
     return Response(pdf, mimetype="application/pdf",
@@ -2313,7 +2313,7 @@ def sample_natal_pdf():
         pdf  = html_to_pdf_bytes(html)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+        return "<p style='color:red'>PDF生成中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     from urllib.parse import quote
     return Response(pdf, mimetype="application/pdf",
                     headers={"Content-Disposition": f"attachment; filename=\"sample_natal.pdf\"; filename*=UTF-8''{quote('moonlog_出生チャート_サンプル.pdf')}"})
@@ -2331,7 +2331,7 @@ def sample_sr_pdf():
         pdf  = html_to_pdf_bytes(html)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+        return "<p style='color:red'>PDF生成中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     from urllib.parse import quote
     return Response(pdf, mimetype="application/pdf",
                     headers={"Content-Disposition": f"attachment; filename=\"sample_sr.pdf\"; filename*=UTF-8''{quote('moonlog_2026年星読み_サンプル.pdf')}"})
@@ -2347,7 +2347,7 @@ def sample_lifecycle_pdf():
         pdf  = html_to_pdf_bytes(html)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>PDF生成エラー: {e}</p>", 500
+        return "<p style='color:red'>PDF生成中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     from urllib.parse import quote
     return Response(pdf, mimetype="application/pdf",
                     headers={"Content-Disposition": f"attachment; filename=\"sample_lifecycle.pdf\"; filename*=UTF-8''{quote('moonlog_ライフサイクル_サンプル.pdf')}"})
@@ -2362,7 +2362,7 @@ def sample_lifecycle():
                                         s["city"], lat=s["lat"], lng=s["lng"], sample=True)
     except Exception as e:
         import traceback; traceback.print_exc()
-        return f"<p style='color:red'>サンプル生成エラー: {e}</p>", 500
+        return "<p style='color:red'>サンプル生成中にエラーが発生しました。時間をおいてお試しください。</p>", 500
     return Response(html, mimetype="text/html; charset=utf-8")
 
 
