@@ -2930,6 +2930,22 @@ def faq_page():
   </div>
 
   <div class="faq-item">
+    <div class="faq-q">支払い方法は何がありますか？</div>
+    <div class="faq-a">
+      クレジットカード決済のみご利用いただけます（Visa / Mastercard / American Express / JCB）。<br>
+      購入手続きの完了時にお支払いが確定します。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">クレジットカード情報はmoonlogに保存されますか？</div>
+    <div class="faq-a">
+      <strong>いいえ。moonlogがカード番号を受け取ったり保存したりすることは一切ありません。</strong><br>
+      カード決済は、世界中で広く使われている決済サービス <strong>Stripe</strong> を通じて行われます。カード番号の入力と処理はすべてStripeの安全な画面上で完結し、moonlog側にはカード情報が渡りません。安心してご利用ください。
+    </div>
+  </div>
+
+  <div class="faq-item">
     <div class="faq-q">返金はできますか？</div>
     <div class="faq-a">
       レポートの性質上、購入後の返金は原則お受けしていません。詳しくは <a href="/legal/tokushoho">特定商取引法に基づく表記</a> をご確認ください。<br>
