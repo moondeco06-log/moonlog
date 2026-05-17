@@ -2484,6 +2484,14 @@ _LEGAL_FOOTER = """
 # ============================================================
 ARTICLES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "articles")
 
+# ブログのカテゴリー（key, 表示ラベル）。記事のfrontmatterに category: key を書く。
+BLOG_CATEGORIES = [
+    ("basic", "基礎・調べ方"),
+    ("essay", "自己理解の読みもの"),
+    ("yearly", "星座別・年運"),
+]
+_CAT_LABEL = dict(BLOG_CATEGORIES)
+
 _BLOG_CSS_EXTRA = """
 <style>
   .legal-wrap h3 { font-family:var(--serif); font-size:0.9rem; font-weight:600;
@@ -2518,6 +2526,15 @@ _BLOG_CSS_EXTRA = """
   .blog-cta a { display:inline-block; background:var(--gold-d); color:white;
     text-decoration:none; padding:0.7rem 1.8rem; border-radius:4px;
     font-size:0.85rem; letter-spacing:0.08em; }
+  .cat-bar { display:flex; flex-wrap:wrap; gap:0.5rem; margin:0 0 2rem; }
+  .cat-chip { font-size:0.76rem; color:var(--text-m); text-decoration:none;
+    padding:0.3rem 0.9rem; border:1px solid var(--border); border-radius:999px;
+    letter-spacing:0.04em; }
+  .cat-chip:hover { border-color:var(--gold); color:var(--gold-d); }
+  .cat-chip.cat-on { background:var(--gold-d); color:#fff; border-color:var(--gold-d); }
+  .cat-tag { display:inline-block; font-size:0.68rem; color:var(--gold-d);
+    background:rgba(184,152,90,0.1); padding:0.15rem 0.6rem; border-radius:3px;
+    margin-bottom:0.4rem; letter-spacing:0.04em; }
 </style>
 """
 
@@ -2525,7 +2542,7 @@ def _parse_article(path):
     """Markdownファイルを frontmatter(メタ情報) と本文に分割して返す"""
     with open(path, encoding="utf-8") as f:
         raw = f.read()
-    meta = {"title": "", "description": "", "date": "", "thumbnail": ""}
+    meta = {"title": "", "description": "", "date": "", "thumbnail": "", "category": ""}
     body = raw
     if raw.startswith("---"):
         parts = raw.split("---", 2)
@@ -2539,14 +2556,25 @@ def _parse_article(path):
     meta["body_md"] = body.strip()
     return meta
 
-def _load_articles():
-    """全記事を読み込み、日付の新しい順で返す"""
+def _blog_today():
+    """日本時間の今日（YYYY-MM-DD）"""
+    import datetime as _dt
+    jst = _dt.timezone(_dt.timedelta(hours=9))
+    return _dt.datetime.now(jst).date().isoformat()
+
+def _load_articles(show_all=False):
+    """全記事を読み込み、日付の新しい順で返す。
+    公開日が未来の記事は、その日付になるまで非表示（毎日更新の自動化）。
+    show_all=True で未来記事も含める（プレビュー用）。"""
     import glob as _glob
+    today = _blog_today()
     arts = []
     if os.path.isdir(ARTICLES_DIR):
         for path in _glob.glob(os.path.join(ARTICLES_DIR, "*.md")):
             try:
-                arts.append(_parse_article(path))
+                a = _parse_article(path)
+                if show_all or a.get("date", "") <= today:
+                    arts.append(a)
             except Exception as e:
                 print(f"[blog] 記事読み込み失敗 {path}: {e}")
     arts.sort(key=lambda a: a.get("date", ""), reverse=True)
@@ -2554,7 +2582,17 @@ def _load_articles():
 
 @app.route("/blog")
 def blog_index():
-    arts = _load_articles()
+    cur = request.args.get("cat", "")
+    preview = request.args.get("preview") == "1"
+    all_arts = _load_articles(show_all=preview)
+    present = {a.get("category", "") for a in all_arts}
+    arts = [a for a in all_arts if a.get("category", "") == cur] if cur else all_arts
+    # カテゴリーフィルタバー（記事が存在するカテゴリーのみ表示）
+    cats_html = f'<a class="cat-chip{"" if cur else " cat-on"}" href="/blog">すべて</a>'
+    for key, label in BLOG_CATEGORIES:
+        if key in present:
+            on = " cat-on" if cur == key else ""
+            cats_html += f'<a class="cat-chip{on}" href="/blog?cat={key}">{_esc(label)}</a>'
     items = ""
     for a in arts:
         slug = _esc(a["slug"])
@@ -2563,10 +2601,13 @@ def blog_index():
             f'<a href="/blog/{slug}"><img class="blog-list-thumb" '
             f'src="{_esc(thumb)}" alt="{_esc(a.get("title",""))}"></a>'
         ) if thumb else ""
+        catlabel = _CAT_LABEL.get(a.get("category", ""), "")
+        cat_html = f'<span class="cat-tag">{_esc(catlabel)}</span>' if catlabel else ""
         items += (
             f'<div class="blog-list-item">'
             f'{thumb_html}'
             f'<div class="blog-list-body">'
+            f'{cat_html}'
             f'<div class="d">{_esc(a.get("date",""))}</div>'
             f'<a class="blog-list-title" href="/blog/{slug}">{_esc(a.get("title","(無題)"))}</a>'
             f'<div class="x">{_esc(a.get("description",""))}</div>'
@@ -2575,7 +2616,7 @@ def blog_index():
             f'</div>'
         )
     if not items:
-        items = '<p>記事は準備中です。</p>'
+        items = '<p>このカテゴリーの記事は準備中です。</p>'
     return f"""<!DOCTYPE html><html lang="ja"><head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
@@ -2589,6 +2630,7 @@ def blog_index():
 {_LEGAL_HEADER.format(title="ブログ")}
 <div class="legal-wrap">
   <h1>星と自己理解のはなし</h1>
+  <div class="cat-bar">{cats_html}</div>
   {items}
 </div>
 {_LEGAL_FOOTER}
@@ -2603,9 +2645,14 @@ def blog_article(slug):
     if not safe or not os.path.isfile(path):
         abort(404)
     a = _parse_article(path)
+    if request.args.get("preview") != "1" and a.get("date", "") > _blog_today():
+        abort(404)
     import markdown as _md
     body_html = _md.markdown(a["body_md"], extensions=["extra"])
     title = a.get("title", "") or "記事"
+    catkey = a.get("category", "")
+    catlabel = _CAT_LABEL.get(catkey, "")
+    cat_meta = (f'<a href="/blog?cat={_esc(catkey)}" style="color:var(--gold-d);">{_esc(catlabel)}</a>　｜　') if catlabel else ""
     return f"""<!DOCTYPE html><html lang="ja"><head>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
@@ -2619,7 +2666,7 @@ def blog_article(slug):
 {_LEGAL_HEADER.format(title="ブログ")}
 <div class="legal-wrap">
   <h1>{_esc(title)}</h1>
-  <div class="blog-meta">{_esc(a.get("date",""))}　｜　<a href="/blog" style="color:var(--text-l);">ブログ一覧</a></div>
+  <div class="blog-meta">{cat_meta}{_esc(a.get("date",""))}　｜　<a href="/blog" style="color:var(--text-l);">ブログ一覧</a></div>
   {body_html}
   <div class="blog-cta">
     <p>moonlogでは、あなたの星の配置から「自分という地図」を読み解くレポートを無料でお試しいただけます。</p>
