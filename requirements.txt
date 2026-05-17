@@ -12,3 +12,4 @@ openai==1.82.0
 python-dotenv==1.1.0
 weasyprint==63.0
 stripe==11.4.1
+markdown==3.9

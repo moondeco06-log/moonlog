@@ -879,6 +879,7 @@ footer {
   <ul class="nav-links">
     <li><a href="#about">このサービスについて</a></li>
     <li><a href="#profile">運営者について</a></li>
+    <li><a href="/blog">ブログ</a></li>
     <li><a href="/glossary">用語解説</a></li>
     <li><a href="/faq">よくある質問</a></li>
     <li><a href="#form-section">星読みをはじめる</a></li>
@@ -1508,6 +1509,7 @@ footer {
     本サービスのレポートは、出生時刻の天体配置を計算し、占星術データベースに基づいて自動生成されるものです。プロ占星術師による個別鑑定ではありません。
   </p>
   <div class="footer-links">
+    <a href="/blog">ブログ</a>
     <a href="/glossary">用語解説</a>
     <a href="/faq">よくある質問</a>
     <a href="/legal/tokushoho">特定商取引法に基づく表記</a>
@@ -1659,6 +1661,8 @@ def robots_txt():
     from flask import Response
     content = """# MOONLOG robots.txt
 # AI crawlers and scrapers are not permitted
+
+Sitemap: https://moonlog.jp/sitemap.xml
 
 User-agent: GPTBot
 Disallow: /
@@ -2464,6 +2468,7 @@ _LEGAL_HEADER = """
 
 _LEGAL_FOOTER = """
 <footer class="legal-footer">
+  <a href="/blog" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">ブログ</a>
   <a href="/glossary" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">用語解説</a>
   <a href="/faq" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">よくある質問</a>
   <a href="/legal/tokushoho" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">特定商取引法</a>
@@ -2472,6 +2477,155 @@ _LEGAL_FOOTER = """
   <p style="margin-top:1rem;">© 2026 MOONLOG. All rights reserved.</p>
 </footer>
 """
+
+# ============================================================
+# ブログ（SEO集客用）— articles/*.md を Markdown で配信
+# DB・管理画面なし。articles/ に .md ファイルを置くだけで記事が増える。
+# ============================================================
+ARTICLES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "articles")
+
+_BLOG_CSS_EXTRA = """
+<style>
+  .legal-wrap h3 { font-family:var(--serif); font-size:0.9rem; font-weight:600;
+    color:var(--text-d); letter-spacing:0.08em; margin:1.8rem 0 0.6rem; }
+  .legal-wrap a { color:var(--gold-d); }
+  .legal-wrap blockquote {
+    border-left:3px solid var(--gold); background:#F4EFE6;
+    padding:0.8rem 1.2rem; margin:1.2rem 0; color:var(--text-m); font-size:0.85rem;
+  }
+  .legal-wrap blockquote p { margin:0; }
+  .legal-wrap img { max-width:100%; height:auto; border-radius:4px; margin:1rem 0; }
+  .legal-wrap strong { color:var(--text-d); }
+  .legal-wrap ol { padding-left:1.4rem; }
+  .blog-meta { font-size:0.75rem; color:var(--text-l); margin-bottom:2rem;
+    letter-spacing:0.06em; }
+  .blog-list-item { padding:1.4rem 0; border-bottom:1px solid var(--border); }
+  .blog-list-item .d { font-size:0.72rem; color:var(--text-l); margin-bottom:0.3rem; }
+  .blog-list-item a { font-family:var(--serif); font-size:1.02rem; color:var(--text-d);
+    text-decoration:none; letter-spacing:0.04em; }
+  .blog-list-item a:hover { color:var(--gold-d); }
+  .blog-list-item .x { font-size:0.82rem; color:var(--text-m); margin-top:0.4rem; }
+  .blog-cta { margin-top:3rem; padding:1.8rem; background:white;
+    border:1px solid var(--gold); border-radius:6px; text-align:center; }
+  .blog-cta p { font-size:0.86rem; color:var(--text-m); margin-bottom:1rem; }
+  .blog-cta a { display:inline-block; background:var(--gold-d); color:white;
+    text-decoration:none; padding:0.7rem 1.8rem; border-radius:4px;
+    font-size:0.85rem; letter-spacing:0.08em; }
+</style>
+"""
+
+def _parse_article(path):
+    """Markdownファイルを frontmatter(メタ情報) と本文に分割して返す"""
+    with open(path, encoding="utf-8") as f:
+        raw = f.read()
+    meta = {"title": "", "description": "", "date": ""}
+    body = raw
+    if raw.startswith("---"):
+        parts = raw.split("---", 2)
+        if len(parts) >= 3:
+            fm, body = parts[1], parts[2]
+            for line in fm.strip().splitlines():
+                if ":" in line:
+                    k, v = line.split(":", 1)
+                    meta[k.strip()] = v.strip()
+    meta["slug"] = os.path.splitext(os.path.basename(path))[0]
+    meta["body_md"] = body.strip()
+    return meta
+
+def _load_articles():
+    """全記事を読み込み、日付の新しい順で返す"""
+    import glob as _glob
+    arts = []
+    if os.path.isdir(ARTICLES_DIR):
+        for path in _glob.glob(os.path.join(ARTICLES_DIR, "*.md")):
+            try:
+                arts.append(_parse_article(path))
+            except Exception as e:
+                print(f"[blog] 記事読み込み失敗 {path}: {e}")
+    arts.sort(key=lambda a: a.get("date", ""), reverse=True)
+    return arts
+
+@app.route("/blog")
+def blog_index():
+    arts = _load_articles()
+    items = ""
+    for a in arts:
+        items += (
+            f'<div class="blog-list-item">'
+            f'<div class="d">{_esc(a.get("date",""))}</div>'
+            f'<a href="/blog/{_esc(a["slug"])}">{_esc(a.get("title","(無題)"))}</a>'
+            f'<div class="x">{_esc(a.get("description",""))}</div>'
+            f'</div>'
+        )
+    if not items:
+        items = '<p>記事は準備中です。</p>'
+    return f"""<!DOCTYPE html><html lang="ja"><head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ブログ｜星と自己理解のはなし | moonlog</title>
+<meta name="description" content="星読み・占星術を「自己理解の地図」として使うためのヒントを綴る moonlog のブログです。">
+<link rel="canonical" href="https://moonlog.jp/blog">
+{_LEGAL_CSS}
+{_BLOG_CSS_EXTRA}
+</head><body>
+{_LEGAL_HEADER.format(title="ブログ")}
+<div class="legal-wrap">
+  <h1>星と自己理解のはなし</h1>
+  {items}
+</div>
+{_LEGAL_FOOTER}
+</body></html>"""
+
+@app.route("/blog/<slug>")
+def blog_article(slug):
+    from flask import abort
+    # slugを英数字・ハイフン・アンダースコアのみに制限（ディレクトリトラバーサル防止）
+    safe = "".join(c for c in slug if c.isalnum() or c in "-_")
+    path = os.path.join(ARTICLES_DIR, safe + ".md")
+    if not safe or not os.path.isfile(path):
+        abort(404)
+    a = _parse_article(path)
+    import markdown as _md
+    body_html = _md.markdown(a["body_md"], extensions=["extra"])
+    title = a.get("title", "") or "記事"
+    return f"""<!DOCTYPE html><html lang="ja"><head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>{_esc(title)} | moonlog</title>
+<meta name="description" content="{_esc(a.get('description',''))}">
+<link rel="canonical" href="https://moonlog.jp/blog/{_esc(safe)}">
+{_LEGAL_CSS}
+{_BLOG_CSS_EXTRA}
+</head><body>
+{_LEGAL_HEADER.format(title="ブログ")}
+<div class="legal-wrap">
+  <h1>{_esc(title)}</h1>
+  <div class="blog-meta">{_esc(a.get("date",""))}　｜　<a href="/blog" style="color:var(--text-l);">ブログ一覧</a></div>
+  {body_html}
+  <div class="blog-cta">
+    <p>moonlogでは、あなたの星の配置から「自分という地図」を読み解くレポートを無料でお試しいただけます。</p>
+    <a href="/#form-section">無料ライト版をためす</a>
+  </div>
+</div>
+{_LEGAL_FOOTER}
+</body></html>"""
+
+@app.route("/sitemap.xml")
+def sitemap_xml():
+    from flask import Response
+    base = "https://moonlog.jp"
+    urls = ["/", "/blog", "/glossary", "/faq",
+            "/legal/tokushoho", "/legal/privacy", "/legal/terms"]
+    for a in _load_articles():
+        urls.append(f"/blog/{a['slug']}")
+    body = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    body += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    for u in urls:
+        body += f"  <url><loc>{base}{u}</loc></url>\n"
+    body += '</urlset>\n'
+    return Response(body, mimetype="application/xml")
 
 @app.route("/legal/tokushoho")
 def legal_tokushoho():
