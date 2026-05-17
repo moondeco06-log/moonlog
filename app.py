@@ -2499,12 +2499,19 @@ _BLOG_CSS_EXTRA = """
   .legal-wrap ol { padding-left:1.4rem; }
   .blog-meta { font-size:0.75rem; color:var(--text-l); margin-bottom:2rem;
     letter-spacing:0.06em; }
-  .blog-list-item { padding:1.4rem 0; border-bottom:1px solid var(--border); }
+  .blog-list-item { display:flex; gap:1.2rem; align-items:flex-start;
+    padding:1.4rem 0; border-bottom:1px solid var(--border); }
+  .blog-list-thumb { flex-shrink:0; width:128px; height:86px;
+    object-fit:cover; border-radius:5px; display:block; }
+  .blog-list-body { flex:1; min-width:0; }
   .blog-list-item .d { font-size:0.72rem; color:var(--text-l); margin-bottom:0.3rem; }
-  .blog-list-item a { font-family:var(--serif); font-size:1.02rem; color:var(--text-d);
-    text-decoration:none; letter-spacing:0.04em; }
-  .blog-list-item a:hover { color:var(--gold-d); }
+  .blog-list-item .blog-list-title { font-family:var(--serif); font-size:1.02rem;
+    color:var(--text-d); text-decoration:none; letter-spacing:0.04em; }
+  .blog-list-item .blog-list-title:hover { color:var(--gold-d); }
   .blog-list-item .x { font-size:0.82rem; color:var(--text-m); margin-top:0.4rem; }
+  .blog-list-item .read-more { display:inline-block; margin-top:0.7rem;
+    font-size:0.8rem; color:var(--gold-d); text-decoration:none; letter-spacing:0.06em; }
+  .blog-list-item .read-more:hover { text-decoration:underline; }
   .blog-cta { margin-top:3rem; padding:1.8rem; background:white;
     border:1px solid var(--gold); border-radius:6px; text-align:center; }
   .blog-cta p { font-size:0.86rem; color:var(--text-m); margin-bottom:1rem; }
@@ -2518,7 +2525,7 @@ def _parse_article(path):
     """Markdownファイルを frontmatter(メタ情報) と本文に分割して返す"""
     with open(path, encoding="utf-8") as f:
         raw = f.read()
-    meta = {"title": "", "description": "", "date": ""}
+    meta = {"title": "", "description": "", "date": "", "thumbnail": ""}
     body = raw
     if raw.startswith("---"):
         parts = raw.split("---", 2)
@@ -2550,11 +2557,21 @@ def blog_index():
     arts = _load_articles()
     items = ""
     for a in arts:
+        slug = _esc(a["slug"])
+        thumb = a.get("thumbnail", "")
+        thumb_html = (
+            f'<a href="/blog/{slug}"><img class="blog-list-thumb" '
+            f'src="{_esc(thumb)}" alt="{_esc(a.get("title",""))}"></a>'
+        ) if thumb else ""
         items += (
             f'<div class="blog-list-item">'
+            f'{thumb_html}'
+            f'<div class="blog-list-body">'
             f'<div class="d">{_esc(a.get("date",""))}</div>'
-            f'<a href="/blog/{_esc(a["slug"])}">{_esc(a.get("title","(無題)"))}</a>'
+            f'<a class="blog-list-title" href="/blog/{slug}">{_esc(a.get("title","(無題)"))}</a>'
             f'<div class="x">{_esc(a.get("description",""))}</div>'
+            f'<a class="read-more" href="/blog/{slug}">続きを読む →</a>'
+            f'</div>'
             f'</div>'
         )
     if not items:
