@@ -2632,7 +2632,7 @@ SATURN_HOSHI = {
 def generate_html_report(name, year, month, day, hour, minute, city,
                          lat=None, lng=None, tz_str="Asia/Tokyo", light=False, sample=False):
     """出生チャートHTMLレポート
-    light=True : 太陽・月・水星のみの無料ライト版
+    light=True : 太陽・月のみの 出生チャート 無料体験版
     sample=True: 太陽セクションのみ全文＋他項目はプレビューカード（販売用サンプル）
     """
     import base64
@@ -2872,7 +2872,7 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
   .sec-planet,.sec-intro,.p-deg{color:#5A5870 !important;}
   .section,.chart-card{page-break-inside:avoid;break-inside:avoid;}
 }
-/* ── 無料ライト版アップグレードCTA ── */
+/* ── 出生チャート 無料体験版アップグレードCTA ── */
 .upgrade-section{border:2px solid var(--rose);background:linear-gradient(180deg,#fff 0%,#FDF8F3 100%);}
 .upgrade-section .sec-title{color:var(--rose-d)}
 .upgrade-cta{display:inline-block;padding:14px 36px;background:var(--gold-d);color:#fff;
@@ -2996,10 +2996,9 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
             ("chart",   "🔮 チャート"),
             ("Sun",     "☉ 太陽"),
             ("Moon",    "☽ 月"),
-            ("Mercury", "✦ 水星"),
             ("upgrade", "✦ 続きを読む"),
         ]
-        _nav_label = f'✦ {esc(name)} さんの無料ライト版'
+        _nav_label = f'✦ {esc(name)} さんの 出生チャート 無料体験版'
     else:
         NAT_SECTIONS = [
             ("summary", "🌟 まとめ"),
@@ -3068,8 +3067,8 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
         )
     elif light:
         overview_text = (
-            f"{esc(name)}さんの<strong>無料ライト版</strong>レポートへようこそ。"
-            f"このライト版では、あなたの核となる3つの星——<strong>太陽・月・水星</strong>——を読み解きます。"
+            f"{esc(name)}さんの<strong>出生チャート 無料体験版</strong>レポートへようこそ。"
+            f"この体験版では、あなたの核となる2つの星——<strong>太陽・月</strong>——を読み解きます。"
             f"残りの惑星（金星・火星・木星・土星）と総合まとめは、有料の出生チャート（¥980）でお楽しみください。"
         )
     else:
@@ -3083,8 +3082,10 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
     overview_html = f'<div class="overview"><div class="overview-inner">{overview_text}</div></div>{time_warning_html}'
 
     # ── チャート画像カード ──
+    # light（体験版）は 太陽・月のみ。フル版は7天体＋ASC（MCは説明なしのため非表示）
+    _chart_planets = ["Sun","Moon"] if light else ["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn"]
     p_list_html = ""
-    for pn in ["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn"]:
+    for pn in _chart_planets:
         d    = planets_data[pn]
         sym  = PLANET_SYMBOL[pn]
         jp   = PLANET_JP[pn]
@@ -3098,19 +3099,15 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
             f'<span class="p-deg">{d["position"]:.1f}°{esc(retro)}</span>'
             f'</div>'
         )
-    # ASC・MC を最後に追加
-    asc_sign_jp = SIGN_MAP.get(asc_data["sign"], asc_data["sign"])
-    mc_sign_jp  = SIGN_MAP.get(mc_data["sign"],  mc_data["sign"])
-    p_list_html += (
-        f'<div class="p-item p-axis"><span class="p-sym">ASC</span>'
-        f'<span class="p-jp">上昇点</span>'
-        f'<span class="p-sign">{esc(asc_sign_jp)}</span>'
-        f'<span class="p-deg">{asc_data["position"]:.1f}°</span></div>'
-        f'<div class="p-item p-axis"><span class="p-sym">MC</span>'
-        f'<span class="p-jp">天頂</span>'
-        f'<span class="p-sign">{esc(mc_sign_jp)}</span>'
-        f'<span class="p-deg">{mc_data["position"]:.1f}°</span></div>'
-    )
+    # ASC をフル版のみ追加（MC は説明していないので非表示）
+    if not light:
+        asc_sign_jp = SIGN_MAP.get(asc_data["sign"], asc_data["sign"])
+        p_list_html += (
+            f'<div class="p-item p-axis"><span class="p-sym">ASC</span>'
+            f'<span class="p-jp">上昇点</span>'
+            f'<span class="p-sign">{esc(asc_sign_jp)}</span>'
+            f'<span class="p-deg">{asc_data["position"]:.1f}°</span></div>'
+        )
 
     # ── 詳細テーブル（旧版形式：天体・サイン・度数・ハウス・備考） ──
     PLANET_THEME_SHORT = {
@@ -3120,7 +3117,9 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
         "Saturn":"人生の課題・成熟",
     }
     table_rows = ""
-    for pn in ["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn"]:
+    # light（体験版）は 太陽・月のみ。フル版は7天体
+    _table_planets = ["Sun","Moon"] if light else ["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn"]
+    for pn in _table_planets:
         d    = planets_data[pn]
         sym  = PLANET_SYMBOL[pn]
         jp   = PLANET_JP[pn]
@@ -3137,23 +3136,17 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
             f'<td class="t-body t-note">{esc(theme)}</td>'
             f'</tr>'
         )
-    # ASC・MC 行
-    table_rows += (
-        f'<tr class="t-axis-row">'
-        f'<td class="t-body t-name">ASC</td>'
-        f'<td class="t-body">{esc(SIGN_SHORT.get(asc_data["sign"], asc_data["sign"]))}</td>'
-        f'<td class="t-body t-deg">{asc_data["position"]:.1f}°</td>'
-        f'<td class="t-body t-housecell">—</td>'
-        f'<td class="t-body t-note">外の顔・第一印象</td>'
-        f'</tr>'
-        f'<tr class="t-axis-row">'
-        f'<td class="t-body t-name">MC</td>'
-        f'<td class="t-body">{esc(SIGN_SHORT.get(mc_data["sign"], mc_data["sign"]))}</td>'
-        f'<td class="t-body t-deg">{mc_data["position"]:.1f}°</td>'
-        f'<td class="t-body t-housecell">—</td>'
-        f'<td class="t-body t-note">社会的方向性・天職</td>'
-        f'</tr>'
-    )
+    # ASC 行（フル版のみ。MC は非表示）
+    if not light:
+        table_rows += (
+            f'<tr class="t-axis-row">'
+            f'<td class="t-body t-name">ASC</td>'
+            f'<td class="t-body">{esc(SIGN_SHORT.get(asc_data["sign"], asc_data["sign"]))}</td>'
+            f'<td class="t-body t-deg">{asc_data["position"]:.1f}°</td>'
+            f'<td class="t-body t-housecell">—</td>'
+            f'<td class="t-body t-note">外の顔・第一印象</td>'
+            f'</tr>'
+        )
     detail_table_html = f"""
     <div class="chart-table-wrap">
       <div class="chart-table-title">🪐 惑星サイン・ハウス一覧</div>
@@ -3302,8 +3295,7 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
         _planet_list = [("Sun", SUN_PERSONALITY)]
     elif light:
         _planet_list = [("Sun",     SUN_PERSONALITY),
-                        ("Moon",    MOON_PERSONALITY),
-                        ("Mercury", MERCURY_PERSONALITY)]
+                        ("Moon",    MOON_PERSONALITY)]
     else:
         _planet_list = [("Sun",     SUN_PERSONALITY),
                         ("Moon",    MOON_PERSONALITY),
@@ -3488,17 +3480,35 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
     elif light:
         # ライト版：総合まとめは「続きは有料版」CTA に置き換え
         sample_preview_section_ref = ""
+        # 購入ボタン：本番モード（SHOW_PAID_PRODUCTS=1）では直接 Stripe Checkout へ
+        # （生年月日データを引き継いで再入力不要）。ソフトローンチ中はトップへリンク
+        _show_paid = os.environ.get("SHOW_PAID_PRODUCTS", "0") == "1"
+        if _show_paid:
+            _upgrade_cta_html = f"""<form method="post" action="/checkout/natal" style="margin:0;">
+        <input type="hidden" name="name" value="{esc(name)}">
+        <input type="hidden" name="year" value="{year}">
+        <input type="hidden" name="month" value="{month}">
+        <input type="hidden" name="day" value="{day}">
+        <input type="hidden" name="hour" value="{hour}">
+        <input type="hidden" name="minute" value="{minute}">
+        <input type="hidden" name="city" value="{esc(city)}">
+        <input type="hidden" name="lat" value="{lat if lat is not None else ''}">
+        <input type="hidden" name="lng" value="{lng if lng is not None else ''}">
+        <button type="submit" class="upgrade-cta" style="border:0;cursor:pointer;font:inherit;">出生チャート（フル版）を購入する</button>
+      </form>"""
+        else:
+            _upgrade_cta_html = '<a href="/" class="upgrade-cta">トップに戻って購入する</a>'
         summary_section = f"""<div class="section upgrade-section" id="upgrade">
   <div class="sec-head">
     <div class="sec-icon">✦</div>
     <div>
-      <div class="sec-title">ここまでが無料ライト版です</div>
+      <div class="sec-title">ここまでが出生チャート 無料体験版です</div>
       <div class="sec-planet">続きは「出生チャート」レポートで読めます</div>
     </div>
   </div>
   <div class="sec-body">
     <p style="font-size:.95rem;line-height:2;color:var(--text-d);margin-bottom:18px;">
-      無料ライト版では、あなたの<strong>太陽・月・水星</strong>——核となる3つの星をご覧いただきました。<br>
+      出生チャート 無料体験版では、あなたの<strong>太陽・月</strong>——核となる2つの星をご覧いただきました。<br>
       残りの惑星と統合解釈は、有料の出生チャートレポートに収録されています。
     </p>
     <ul style="list-style:none;padding:0;margin:0 0 22px;font-size:.88rem;line-height:2.1;color:var(--text-m);">
@@ -3514,7 +3524,7 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
       <div style="font-family:var(--serif);font-size:1.1rem;color:var(--text-d);margin-bottom:4px;">出生チャート（フル版）</div>
       <div style="font-size:1.6rem;color:var(--gold-d);font-weight:500;letter-spacing:.05em;margin-bottom:4px;">¥980</div>
       <div style="font-size:.72rem;color:var(--text-l);margin-bottom:14px;">通常価格 ¥3,980 を予定 / オープン記念価格</div>
-      <a href="/" class="upgrade-cta">トップに戻って購入する</a>
+      {_upgrade_cta_html}
     </div>
   </div>
 </div>"""
@@ -3627,8 +3637,7 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
             ("chart",   "🔮", "ネイタルチャート", "星の配置図"),
             ("Sun",     "☉",  "太陽　" + SIGN_SHORT.get(planets_data["Sun"]["sign"], ""), "個性・自己表現・人生テーマ"),
             ("Moon",    "☽",  "月　" + SIGN_SHORT.get(planets_data["Moon"]["sign"], ""), "感情・内面・心の安らぎ"),
-            ("Mercury", "✦",  "水星　" + SIGN_SHORT.get(planets_data["Mercury"]["sign"], ""), "思考・言葉・コミュニケーション"),
-            ("upgrade", "✦",  "続きを読むには", "金星・火星・木星・土星・統合まとめ"),
+            ("upgrade", "✦",  "続きを読むには", "水星・金星・火星・木星・土星・統合まとめ"),
         ]
     else:
         toc_items = [
