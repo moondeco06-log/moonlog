@@ -1667,7 +1667,7 @@ document.getElementById('btn-pptx').addEventListener('click', async () => {
   }
 });
 
-// 有料ボタン（natal/sr/fr）押下時：メアド入力チェック（インライン表示・画面遷移なし）
+// 有料ボタン（natal/sr/fr）押下時：必須項目チェック（インライン表示・画面遷移なし）
 (function(){
   const PAID_IDS = ['btn-natal', 'btn-sr', 'btn-fr'];
   const emailField = document.getElementById('paid_email');
@@ -1678,39 +1678,66 @@ document.getElementById('btn-pptx').addEventListener('click', async () => {
     errorBox.textContent = '⚠ ' + msg;
     errorBox.style.display = 'block';
     emailField.style.borderColor = '#c0392b';
-    emailField.focus();
-    emailField.scrollIntoView({behavior:'smooth', block:'center'});
+    errorBox.scrollIntoView({behavior:'smooth', block:'center'});
   }
   function clearErr(){
     errorBox.style.display = 'none';
     errorBox.textContent = '';
     emailField.style.borderColor = '#d5c5a3';
   }
-  // 入力したら自動で赤を消す
-  emailField.addEventListener('input', clearErr);
 
-  // フォームの submit 全てを捕捉（Enterキー送信もカバー）
-  const forms = document.querySelectorAll('form');
-  forms.forEach(function(form){
-    form.addEventListener('submit', function(ev){
-      const submitter = ev.submitter;
-      if (!submitter || !PAID_IDS.includes(submitter.id)) return;  // 無料ボタンは素通り
+  function validatePaid(){
+    const name  = (document.querySelector('input[name="name"]')?.value || '').trim();
+    const year  = (document.querySelector('input[name="year"]')?.value || '').trim();
+    const month = (document.querySelector('input[name="month"]')?.value || '').trim();
+    const day   = (document.querySelector('input[name="day"]')?.value || '').trim();
+    const pref  = (document.getElementById('pref_select')?.value || '').trim();
+    const city  = (document.querySelector('select[name="city"]')?.value || '').trim();
+    const mail  = (emailField.value || '').trim();
+    if (!name)  return 'お名前を入力してください。';
+    if (!year || !month || !day) return '生年月日を入力してください。';
+    if (!pref || !city) return '出生地（都道府県・市区町村）を選択してください。';
+    if (!mail)  return 'PDF送付先のメールアドレスを入力してください。';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) return 'メールアドレスの形式が正しくないようです。';
+    return null;
+  }
 
-      const val = (emailField.value || '').trim();
-      if (!val) {
+  // 入力すると自動でエラー消去
+  ['paid_email'].forEach(function(id){
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', clearErr);
+  });
+
+  // 各有料ボタンに直接 click イベント（最確実）
+  PAID_IDS.forEach(function(id){
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.addEventListener('click', function(ev){
+      const err = validatePaid();
+      if (err) {
         ev.preventDefault();
         ev.stopPropagation();
-        showErr('PDF送付先のメールアドレスを入力してください。');
-        return false;
-      }
-      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
-        ev.preventDefault();
-        ev.stopPropagation();
-        showErr('メールアドレスの形式が正しくないようです。');
+        ev.stopImmediatePropagation();
+        showErr(err);
         return false;
       }
       clearErr();
-    }, true);  // capture phase で先に捕捉
+    }, true); // capture phase
+  });
+
+  // submit イベントも保険として捕捉（Enterキー対策）
+  document.querySelectorAll('form').forEach(function(form){
+    form.addEventListener('submit', function(ev){
+      const submitter = ev.submitter;
+      if (!submitter || !PAID_IDS.includes(submitter.id)) return;
+      const err = validatePaid();
+      if (err) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        showErr(err);
+        return false;
+      }
+    }, true);
   });
 })();
 </script>
