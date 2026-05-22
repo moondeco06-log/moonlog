@@ -1243,6 +1243,7 @@ footer {
                      placeholder="your-name@example.com"
                      style="width:100%;padding:10px 12px;font-size:1rem;border:1px solid #d5c5a3;border-radius:6px;background:#fff;color:#3a2818;">
               <p style="margin:6px 0 0;font-size:0.75rem;color:#8c7858;">購入後、このアドレスにPDFをお届けします。</p>
+              <div id="paid_email_error" style="display:none;margin-top:8px;padding:8px 12px;background:#fdecea;border-left:3px solid #c0392b;border-radius:4px;color:#a02818;font-size:0.85rem;font-weight:600;"></div>
             </div>
 
             <button class="btn btn-natal" type="submit"
@@ -1666,36 +1667,50 @@ document.getElementById('btn-pptx').addEventListener('click', async () => {
   }
 });
 
-// 有料ボタン（natal/sr/fr）押下時：メアド入力チェック
+// 有料ボタン（natal/sr/fr）押下時：メアド入力チェック（インライン表示・画面遷移なし）
 (function(){
-  const paidIds = ['btn-natal', 'btn-sr', 'btn-fr'];
-  paidIds.forEach(function(id){
-    const btn = document.getElementById(id);
-    if (!btn) return;
-    btn.addEventListener('click', function(ev){
-      const emailField = document.getElementById('paid_email');
-      if (!emailField) return;
+  const PAID_IDS = ['btn-natal', 'btn-sr', 'btn-fr'];
+  const emailField = document.getElementById('paid_email');
+  const errorBox   = document.getElementById('paid_email_error');
+  if (!emailField || !errorBox) return;
+
+  function showErr(msg){
+    errorBox.textContent = '⚠ ' + msg;
+    errorBox.style.display = 'block';
+    emailField.style.borderColor = '#c0392b';
+    emailField.focus();
+    emailField.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  function clearErr(){
+    errorBox.style.display = 'none';
+    errorBox.textContent = '';
+    emailField.style.borderColor = '#d5c5a3';
+  }
+  // 入力したら自動で赤を消す
+  emailField.addEventListener('input', clearErr);
+
+  // フォームの submit 全てを捕捉（Enterキー送信もカバー）
+  const forms = document.querySelectorAll('form');
+  forms.forEach(function(form){
+    form.addEventListener('submit', function(ev){
+      const submitter = ev.submitter;
+      if (!submitter || !PAID_IDS.includes(submitter.id)) return;  // 無料ボタンは素通り
+
       const val = (emailField.value || '').trim();
       if (!val) {
         ev.preventDefault();
         ev.stopPropagation();
-        emailField.focus();
-        emailField.style.borderColor = '#c0392b';
-        emailField.scrollIntoView({behavior:'smooth', block:'center'});
-        alert('PDF送付先のメールアドレスを入力してください。');
+        showErr('PDF送付先のメールアドレスを入力してください。');
         return false;
       }
-      // 簡易メアドチェック
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
         ev.preventDefault();
         ev.stopPropagation();
-        emailField.focus();
-        emailField.style.borderColor = '#c0392b';
-        alert('メールアドレスの形式が正しくないようです。');
+        showErr('メールアドレスの形式が正しくないようです。');
         return false;
       }
-      emailField.style.borderColor = '#d5c5a3';
-    });
+      clearErr();
+    }, true);  // capture phase で先に捕捉
   });
 })();
 </script>
@@ -1954,7 +1969,24 @@ def checkout_natal():
     # 簡易バリデーション
     import re as _re
     if not paid_email or not _re.match(r"^[^\s@]+@[^\s@]+\.[^\s@]+$", paid_email):
-        return "<p style='color:red'>PDF送付先のメールアドレスを入力してください。<br><a href='/#form-section'>戻る</a></p>", 400
+        # JS側で防げなかった場合のフォールバック。ブラウザ戻るで入力データを保持
+        return """<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<title>moonlog | メールアドレスを入力してください</title>
+<style>
+body{font-family:-apple-system,'Hiragino Kaku Gothic ProN',sans-serif;background:#F5F2EC;color:#3a2818;margin:0;padding:40px 20px;display:flex;align-items:center;justify-content:center;min-height:100vh;}
+.box{background:#fff;max-width:480px;padding:32px 28px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.08);text-align:center;}
+.icon{font-size:48px;margin-bottom:12px;}
+h1{font-size:1.15rem;color:#5A3818;margin:0 0 16px;}
+p{font-size:0.95rem;line-height:1.7;color:#8c7858;margin:0 0 24px;}
+.btn{display:inline-block;background:#1a2740;color:#fff;padding:12px 32px;border-radius:6px;text-decoration:none;font-weight:600;font-size:0.95rem;}
+.btn:hover{background:#2a3a55;}
+</style></head><body>
+<div class="box">
+<div class="icon">📧</div>
+<h1>PDF送付先のメールアドレスが未入力です</h1>
+<p>有料レポートの購入には、PDFをお届けするメールアドレスが必要です。<br>戻ってメールアドレスをご入力ください。</p>
+<a href="javascript:history.back()" class="btn">← 入力画面に戻る</a>
+</div></body></html>""", 400
 
     try:
         checkout_kwargs = dict(
