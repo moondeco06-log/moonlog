@@ -1235,6 +1235,16 @@ footer {
               <span>有料レポート（各¥980）</span>
             </div>
 
+            <div class="email-field" style="margin:14px 0 18px;padding:14px 16px;background:#fffbf3;border:1px solid #e7d4a5;border-radius:8px;">
+              <label for="paid_email" style="display:block;font-size:0.85rem;color:#5A3818;font-weight:600;margin-bottom:6px;">
+                📧 PDF送付先メールアドレス <span style="color:#bd9a48;font-size:0.78rem;font-weight:500;">（有料レポート購入時のみ必須）</span>
+              </label>
+              <input type="email" name="email" id="paid_email" inputmode="email" autocomplete="email"
+                     placeholder="your-name@example.com"
+                     style="width:100%;padding:10px 12px;font-size:1rem;border:1px solid #d5c5a3;border-radius:6px;background:#fff;color:#3a2818;">
+              <p style="margin:6px 0 0;font-size:0.75rem;color:#8c7858;">購入後、このアドレスにPDFをお届けします。決済画面でも確認できます。</p>
+            </div>
+
             <button class="btn btn-natal" type="submit"
                     formaction="/checkout/natal" id="btn-natal"
                     title="Stripeで決済 → ご購入後にレポート表示">
@@ -1655,6 +1665,39 @@ document.getElementById('btn-pptx').addEventListener('click', async () => {
     btn.disabled = false;
   }
 });
+
+// 有料ボタン（natal/sr/fr）押下時：メアド入力チェック
+(function(){
+  const paidIds = ['btn-natal', 'btn-sr', 'btn-fr'];
+  paidIds.forEach(function(id){
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    btn.addEventListener('click', function(ev){
+      const emailField = document.getElementById('paid_email');
+      if (!emailField) return;
+      const val = (emailField.value || '').trim();
+      if (!val) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        emailField.focus();
+        emailField.style.borderColor = '#c0392b';
+        emailField.scrollIntoView({behavior:'smooth', block:'center'});
+        alert('PDF送付先のメールアドレスを入力してください。');
+        return false;
+      }
+      // 簡易メアドチェック
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        emailField.focus();
+        emailField.style.borderColor = '#c0392b';
+        alert('メールアドレスの形式が正しくないようです。');
+        return false;
+      }
+      emailField.style.borderColor = '#d5c5a3';
+    });
+  });
+})();
 </script>
 </body>
 </html>"""
@@ -1906,8 +1949,15 @@ def checkout_natal():
     except (KeyError, ValueError) as e:
         return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
 
+    # PDF送付先メアド取得（フォームから）
+    paid_email = str(data.get("email", "")).strip()
+    # 簡易バリデーション
+    import re as _re
+    if not paid_email or not _re.match(r"^[^\s@]+@[^\s@]+\.[^\s@]+$", paid_email):
+        return "<p style='color:red'>PDF送付先のメールアドレスを入力してください。<br><a href='/#form-section'>戻る</a></p>", 400
+
     try:
-        session = stripe.checkout.Session.create(
+        checkout_kwargs = dict(
             mode="payment",
             line_items=[{"price": STRIPE_PRICE_NATAL, "quantity": 1}],
             payment_method_types=["card"],
@@ -1916,7 +1966,9 @@ def checkout_natal():
             cancel_url=f"{SITE_URL}/#form-section",
             metadata=meta,
             locale="ja",
+            customer_email=paid_email,  # Stripe画面に事前入力＆PDF送付先として使用
         )
+        session = stripe.checkout.Session.create(**checkout_kwargs)
         return redirect(session.url, code=303)
     except Exception as e:
         import traceback; traceback.print_exc()
