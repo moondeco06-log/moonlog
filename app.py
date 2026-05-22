@@ -1667,12 +1667,13 @@ document.getElementById('btn-pptx').addEventListener('click', async () => {
   }
 });
 
-// 有料ボタン（natal/sr/fr）押下時：必須項目チェック（インライン表示・画面遷移なし）
+// === 有料ボタン押下時の必須チェック v3 (2026-05-23) ===
+console.log('[moonlog] paid-button validator v3 loaded');
 (function(){
   const PAID_IDS = ['btn-natal', 'btn-sr', 'btn-fr'];
   const emailField = document.getElementById('paid_email');
   const errorBox   = document.getElementById('paid_email_error');
-  if (!emailField || !errorBox) return;
+  if (!emailField || !errorBox) { console.warn('[moonlog] emailField or errorBox not found'); return; }
 
   function showErr(msg){
     errorBox.textContent = '⚠ ' + msg;
@@ -1711,16 +1712,20 @@ document.getElementById('btn-pptx').addEventListener('click', async () => {
   // 各有料ボタンに直接 click イベント（最確実）
   PAID_IDS.forEach(function(id){
     const btn = document.getElementById(id);
-    if (!btn) return;
+    if (!btn) { console.warn('[moonlog] button not found:', id); return; }
+    console.log('[moonlog] attaching click handler to:', id);
     btn.addEventListener('click', function(ev){
+      console.log('[moonlog] paid button clicked:', id);
       const err = validatePaid();
       if (err) {
+        console.log('[moonlog] validation error:', err);
         ev.preventDefault();
         ev.stopPropagation();
         ev.stopImmediatePropagation();
         showErr(err);
         return false;
       }
+      console.log('[moonlog] validation passed');
       clearErr();
     }, true); // capture phase
   });
