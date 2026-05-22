@@ -1242,7 +1242,7 @@ footer {
               <input type="email" name="email" id="paid_email" inputmode="email" autocomplete="email"
                      placeholder="your-name@example.com"
                      style="width:100%;padding:10px 12px;font-size:1rem;border:1px solid #d5c5a3;border-radius:6px;background:#fff;color:#3a2818;">
-              <p style="margin:6px 0 0;font-size:0.75rem;color:#8c7858;">購入後、このアドレスにPDFをお届けします。決済画面でも確認できます。</p>
+              <p style="margin:6px 0 0;font-size:0.75rem;color:#8c7858;">購入後、このアドレスにPDFをお届けします。</p>
             </div>
 
             <button class="btn btn-natal" type="submit"
