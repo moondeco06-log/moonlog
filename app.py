@@ -1678,8 +1678,17 @@ console.log('[moonlog] paid-button validator v3 loaded');
   const errorBox   = document.getElementById('paid_email_error');
   if (!emailField || !errorBox) { console.warn('[moonlog] emailField or errorBox not found'); return; }
 
-  function showErr(msg){
-    errorBox.textContent = '⚠ ' + msg;
+  function showErr(msgs){
+    // msgs は配列。1件なら通常表示、複数ならリスト表示
+    const arr = Array.isArray(msgs) ? msgs : [msgs];
+    if (arr.length === 1) {
+      errorBox.innerHTML = '⚠ ' + arr[0];
+    } else {
+      let html = '<div style="font-weight:700;margin-bottom:6px;">⚠ 入力に不足があります：</div><ul style="margin:0;padding-left:22px;font-weight:500;">';
+      arr.forEach(function(m){ html += '<li>' + m + '</li>'; });
+      html += '</ul>';
+      errorBox.innerHTML = html;
+    }
     errorBox.style.display = 'block';
     emailField.style.borderColor = '#c0392b';
     errorBox.scrollIntoView({behavior:'smooth', block:'center'});
@@ -1691,6 +1700,7 @@ console.log('[moonlog] paid-button validator v3 loaded');
   }
 
   function validatePaid(){
+    const errs = [];
     const name  = (document.querySelector('input[name="name"]')?.value || '').trim();
     const year  = (document.querySelector('input[name="year"]')?.value || '').trim();
     const month = (document.querySelector('input[name="month"]')?.value || '').trim();
@@ -1698,12 +1708,12 @@ console.log('[moonlog] paid-button validator v3 loaded');
     const pref  = (document.getElementById('pref_select')?.value || '').trim();
     const city  = (document.querySelector('select[name="city"]')?.value || '').trim();
     const mail  = (emailField.value || '').trim();
-    if (!name)  return 'お名前を入力してください。';
-    if (!year || !month || !day) return '生年月日を入力してください。';
-    if (!pref || !city) return '出生地（都道府県・市区町村）を選択してください。';
-    if (!mail)  return 'PDF送付先のメールアドレスを入力してください。';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) return 'メールアドレスの形式が正しくないようです。';
-    return null;
+    if (!name)  errs.push('お名前を入力してください。');
+    if (!year || !month || !day) errs.push('生年月日を入力してください。');
+    if (!pref || !city) errs.push('出生地（都道府県・市区町村）を選択してください。');
+    if (!mail)  errs.push('PDF送付先のメールアドレスを入力してください。');
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail)) errs.push('メールアドレスの形式が正しくないようです。');
+    return errs;  // 空配列ならOK
   }
 
   // 入力すると自動でエラー消去
@@ -1719,13 +1729,13 @@ console.log('[moonlog] paid-button validator v3 loaded');
     console.log('[moonlog] attaching click handler to:', id);
     btn.addEventListener('click', function(ev){
       console.log('[moonlog] paid button clicked:', id);
-      const err = validatePaid();
-      if (err) {
-        console.log('[moonlog] validation error:', err);
+      const errs = validatePaid();
+      if (errs.length > 0) {
+        console.log('[moonlog] validation errors:', errs);
         ev.preventDefault();
         ev.stopPropagation();
         ev.stopImmediatePropagation();
-        showErr(err);
+        showErr(errs);
         return false;
       }
       console.log('[moonlog] validation passed');
@@ -1738,11 +1748,11 @@ console.log('[moonlog] paid-button validator v3 loaded');
     form.addEventListener('submit', function(ev){
       const submitter = ev.submitter;
       if (!submitter || !PAID_IDS.includes(submitter.id)) return;
-      const err = validatePaid();
-      if (err) {
+      const errs = validatePaid();
+      if (errs.length > 0) {
         ev.preventDefault();
         ev.stopPropagation();
-        showErr(err);
+        showErr(errs);
         return false;
       }
     }, true);
