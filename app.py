@@ -2826,8 +2826,28 @@ def blog_article(slug):
     qs = "?preview=1" if pv else ""
     if not pv and a.get("date", "") > _blog_today():
         abort(404)
+
+    # 「あわせて読みたい」内の未公開記事へのリンクを削除（preview時はそのまま）
+    body_md = a["body_md"]
+    if not pv:
+        _today = _blog_today()
+        _published_slugs = set()
+        for _fn in os.listdir(ARTICLES_DIR):
+            if _fn.endswith(".md"):
+                _meta = _parse_article(os.path.join(ARTICLES_DIR, _fn))
+                if _meta.get("date", "") <= _today:
+                    _published_slugs.add(_fn[:-3])
+        import re as _re
+        _filtered_lines = []
+        for _line in body_md.split("\n"):
+            _m = _re.search(r"/blog/([a-zA-Z0-9_-]+)", _line)
+            if _m and _m.group(1) not in _published_slugs:
+                continue  # 未公開記事へのリンク行は削除
+            _filtered_lines.append(_line)
+        body_md = "\n".join(_filtered_lines)
+
     import markdown as _md
-    body_html = _md.markdown(a["body_md"], extensions=["extra"])
+    body_html = _md.markdown(body_md, extensions=["extra"])
     title = a.get("title", "") or "記事"
     catkey = a.get("category", "")
     catlabel = _CAT_LABEL.get(catkey, "")
