@@ -1151,7 +1151,8 @@ footer {
 
         <form id="form" method="post" action="/preview">
           <label class="field-label">お名前</label>
-          <input type="text" name="name" placeholder="例：山田 花子" required>
+          <input type="text" name="name" placeholder="例：はなこ / Hana" required>
+          <p class="hint" style="margin:4px 0 12px;font-size:0.78rem;color:#8c7858;">※ ニックネームでも構いません。レポートの冒頭に表示される呼び方です。本名でなくても大丈夫です。</p>
 
           <label class="field-label">生年月日</label>
           <div class="row3">
@@ -2033,6 +2034,10 @@ p{font-size:0.95rem;line-height:1.7;color:#8c7858;margin:0 0 24px;}
 <a href="javascript:history.back()" class="btn">← 入力画面に戻る</a>
 </div></body></html>""", 400
 
+    # PDF送付先メアドはmetadataにのみ保存（Stripe Checkout画面には引き継がない）
+    # 理由：customer_email を渡すとStripe Linkが自動ログインを要求してUXが悪化するため
+    meta["paid_email"] = paid_email
+
     try:
         checkout_kwargs = dict(
             mode="payment",
@@ -2043,7 +2048,7 @@ p{font-size:0.95rem;line-height:1.7;color:#8c7858;margin:0 0 24px;}
             cancel_url=f"{SITE_URL}/#form-section",
             metadata=meta,
             locale="ja",
-            customer_email=paid_email,  # Stripe画面に事前入力＆PDF送付先として使用
+            # customer_email は意図的に渡さない（Link自動ログイン回避のため）
         )
         session = stripe.checkout.Session.create(**checkout_kwargs)
         return redirect(session.url, code=303)
@@ -2087,9 +2092,14 @@ def checkout_success():
         return "<p style='color:red'>レポートの生成中にエラーが発生しました。お手数ですが info@moonlog.jp までお問い合わせください。</p>", 500
 
     # メール送信（非同期・1回限り）
+    # PDF送付先は metadata["paid_email"]（moonlogフォームで入力されたもの）を優先
+    # フォールバックとして Stripe決済時のメアドも参照
     customer_email = ""
     try:
-        if sess.customer_details and sess.customer_details.email:
+        meta_obj = sess.metadata if hasattr(sess, "metadata") else None
+        if meta_obj and meta_obj.get("paid_email"):
+            customer_email = meta_obj.get("paid_email")
+        elif sess.customer_details and sess.customer_details.email:
             customer_email = sess.customer_details.email
     except Exception:
         pass
