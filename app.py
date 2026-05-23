@@ -1628,7 +1628,9 @@ window.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-document.getElementById('btn-pptx').addEventListener('click', async () => {
+{
+const _btnPptx = document.getElementById('btn-pptx');
+if (_btnPptx) _btnPptx.addEventListener('click', async () => {
   const form   = document.getElementById('form');
   const btn    = document.getElementById('btn-pptx');
   const status = document.getElementById('status');
@@ -1666,6 +1668,7 @@ document.getElementById('btn-pptx').addEventListener('click', async () => {
     btn.disabled = false;
   }
 });
+}
 
 // === 有料ボタン押下時の必須チェック v3 (2026-05-23) ===
 console.log('[moonlog] paid-button validator v3 loaded');
