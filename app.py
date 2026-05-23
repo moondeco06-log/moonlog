@@ -1168,7 +1168,7 @@ footer {
           </div>
           <p class="hint">※ 出生時刻が不明な場合は 12:00 のままでお進みください</p>
 
-          <label class="field-label">出生地</label>
+          <label class="field-label">出生地 <span style="font-weight:400;font-size:0.78rem;color:#8c7858;">（※日本国内のみ対応）</span></label>
           <div class="row2" style="margin-bottom:0;">
             <div>
               <select id="pref_select" onchange="updateCities(this.value)">
@@ -3247,6 +3247,16 @@ def faq_page():
       <strong>月タイプ診断（無料）</strong> は「月」だけにフォーカスして、動物のタイプとひとことで「素のあなた」を伝えるもの。気軽に・すぐ・シェアできる入口です。<br><br>
       <strong>出生チャート（有料・¥980）</strong> は、月を含めた <strong>7天体＋アセンダント</strong>（太陽・月・水星・金星・火星・木星・土星・ASC）を文章でじっくり読み解く、あなたという地図の全体像です。<br><br>
       同じ「月」も、診断では動物のタイプとして、出生チャートでは7つの星のひとつとして——別の角度から味わえます。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">無料診断と有料レポートで、月星座（月のサイン）が違っていることがあります。どちらが正しいのですか？</div>
+    <div class="faq-a">
+      生まれた瞬間に <strong>月がサインの境目付近にいた方</strong> に、ごくまれに起こります。月は約2.5日で次のサインへ移動するため、出生時刻や出生地によって判定が変わることがあるのです。<br><br>
+      ・<strong>月タイプ診断・出生チャート 無料体験版</strong>：出生地を入れなくても気軽に試せるよう、東京を基準に計算しています。<br>
+      ・<strong>出生チャート（有料）</strong>：ご入力いただいた出生時刻・出生地で厳密に計算します。<br><br>
+      したがって、月がサインの境目近くにいた方は、有料レポートのほうが <strong>正確</strong> です。境目から離れている方（多くの方）はどちらも同じ結果になります。
     </div>
   </div>
 
