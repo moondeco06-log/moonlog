@@ -1247,37 +1247,44 @@ def generate_synthesis_html(planets_data, name):
     # 太陽と月が同じ星座かどうかで文章を調整
     if sn == mn:
         sun_moon_note = (
-            f"太陽も月も同じ<strong>{esc(sun_sign)}</strong>にあります。"
-            f"社会的な顔としての太陽は「{esc(sun_kw)}」というあり方で外に表れ、"
-            f"内側の心としての月も同じ星座にあるため「{esc(moon_kw)}」という形で動きます。"
-            f"外と内が同じ方向を向いている分、ぶれにくく一貫した個性が育ちやすいタイプです。"
+            f"<strong>{esc(sun_sign)}の太陽</strong>と<strong>{esc(moon_sign)}の月</strong>が、同じ星座にあります。<br>"
+            f"あなたの表の顔も、内側の心も、同じ方向を向いている人。"
+            f"「{esc(sun_kw)}」——これが、外でも内でもあなたらしさです。<br>"
+            f"ぶれない一本の芯が、あなたを支えています。"
         )
     else:
         sun_moon_note = (
-            f"<strong>{esc(sun_sign)}の太陽</strong>はあなたの社会的な顔をつくり、「{esc(sun_kw)}」というあり方で外に表れます。"
-            f"一方、<strong>{esc(moon_sign)}の月</strong>はあなたの内側にあって、「{esc(moon_kw)}」という形で感情や無意識の反応をつくっています。"
-            f"外で見せる顔と内側で感じている自分。違って見えるこの2つを、あなたは1日のなかで自然に行き来しています。"
-            f"どちらも本物のあなたで、その両方があるからこそ、あなたという人がかたちづくられています。"
+            f"<strong>{esc(sun_sign)}の太陽</strong>は、あなたの表の顔。<br>"
+            f"あなたは「{esc(sun_kw)}」です。<br><br>"
+            f"<strong>{esc(moon_sign)}の月</strong>は、あなたの内側。<br>"
+            f"「{esc(moon_kw)}」——そこにいるとき、心が落ち着きます。<br><br>"
+            f"外で見せる顔と、内側で感じている自分。<br>"
+            f"違って見える2つを、あなたは1日のなかで自然に行き来しています。<br>"
+            f"どちらも本物のあなた。両方があるから、あなたというひとりの人がいます。"
         )
 
     # 3段落の総合プロフィール
     para1 = (
-        f"<strong>{esc(name)}さん</strong>の星のプロフィールを総合すると、"
+        f"<strong>{esc(name)}さん</strong>のチャートを開いてみます。<br><br>"
         + sun_moon_note
     )
     para2 = (
-        f"思考と言葉の面では、<strong>{esc(me_sign)}の水星</strong>が「{esc(me_kw)}」という知性の使い方をかたちづくっています。"
-        f"人を好きになるとき・美しいと感じるとき、その感性は<strong>{esc(ve_sign)}の金星</strong>の「{esc(ve_kw)}」に根ざしています。"
-        f"そして<strong>{esc(ma_sign)}の火星</strong>が、「{esc(ma_kw)}」という形であなたの行動の原動力を担っています。"
-        f"これら3つの星が組み合わさり、あなた独自の<strong>思考・感性・行動スタイル</strong>が生まれています。"
+        f"考え方や言葉の使い方は、<strong>{esc(me_sign)}の水星</strong>。<br>"
+        f"「{esc(me_kw)}」、それがあなたの知性のかたちです。<br><br>"
+        f"何を好きになり、何に心地よさを感じるか。それを決めるのは<strong>{esc(ve_sign)}の金星</strong>。<br>"
+        f"「{esc(ve_kw)}」——あなたの「好き」の根っこには、ここがあります。<br><br>"
+        f"動くときの勢いを担うのは、<strong>{esc(ma_sign)}の火星</strong>。<br>"
+        f"「{esc(ma_kw)}」、それがあなたの行動のスタイル。<br><br>"
+        f"この3つが組み合わさって、あなたにしかない<strong>考え方・感じ方・動き方</strong>ができあがっています。"
     )
     para3 = (
-        f"人生の流れに目を向けると、<strong>{esc(ju_sign)}の木星</strong>はあなたに幸運と発展をもたらす星。"
-        f"『{esc(ju_kw)}』——ここがあなたにとって運が開く入り口です。"
-        f"一方、<strong>{esc(sa_sign)}の土星</strong>はあなたの本物の強さを育てる星。"
-        f"あなたの今世のテーマは『{esc(sa_kw)}』——時間をかけてここに向き合うほど、"
-        f"他の誰も持ちえない<strong>揺るぎない深みと成熟</strong>があなたに宿っていきます。"
-        f"星はあなたを縛るものではなく、あなたの可能性を照らす地図です。"
+        f"運や恵みが流れこむ場所は、<strong>{esc(ju_sign)}の木星</strong>。<br>"
+        f"「{esc(ju_kw)}」——ここがあなたにとって、運が開く入り口です。<br><br>"
+        f"本物の強さを育てるのは、<strong>{esc(sa_sign)}の土星</strong>。<br>"
+        f"今世のテーマは「{esc(sa_kw)}」。<br>"
+        f"時間をかけてここに向き合うほど、あなたにしかない深みと成熟が宿っていきます。<br><br>"
+        f"星はあなたを縛るものではなく、あなたの可能性を照らす地図。<br>"
+        f"——あなたというひとりの人が、ここに、ちゃんといます。"
     )
 
     strengths = get_top_strengths(planets_data, n=6)
