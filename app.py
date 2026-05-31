@@ -1134,10 +1134,6 @@ footer {
             ただいま最終仕上げ中です。<br>
             まずは「出生チャート」をお楽しみください。
           </p>
-          <p style="margin-top:1rem;font-size:0.85rem;color:var(--text-l);">
-            <a href="/sample/sr" target="_blank" style="color:var(--gold-d);text-decoration:underline;margin:0 0.5rem;">2026年 星読み サンプル</a>
-            <a href="/sample/field_report" target="_blank" style="color:var(--gold-d);text-decoration:underline;margin:0 0.5rem;">3分野レポート サンプル</a>
-          </p>
         </div>
       </div>
       {% endif %}
@@ -2338,6 +2334,8 @@ def generate():
 @app.route("/solar_return", methods=["POST"])
 def solar_return():
     from flask import Response
+    if not _sr_field_enabled():
+        return Response(_coming_soon_html("2026年 星読み"), mimetype="text/html; charset=utf-8")
     data = request.form
     try:
         name     = str(data.get("name", "")).strip() or "あなた"
@@ -2372,6 +2370,8 @@ def solar_return():
 def field_report():
     """3分野レポート（仕事・お金・恋愛）"""
     from flask import Response
+    if not _sr_field_enabled():
+        return Response(_coming_soon_html("仕事・お金・恋愛 3分野レポート"), mimetype="text/html; charset=utf-8")
     data = request.form
     try:
         name   = str(data.get("name", "")).strip() or "あなた"
@@ -2396,10 +2396,32 @@ def field_report():
     return Response(html, mimetype="text/html; charset=utf-8")
 
 
+def _sr_field_enabled():
+    return os.environ.get("SHOW_SR_FIELD", "0") == "1"
+
+
+def _coming_soon_html(title):
+    return f"""<!DOCTYPE html><html lang="ja"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>{title}（近日公開） | MOONLOG</title>
+{_LEGAL_CSS}
+</head><body>
+{_LEGAL_HEADER.format(title=title)}
+<div class="legal-wrap" style="text-align:center;">
+  <h1 style="border:none;">✨ {title} は近日公開です</h1>
+  <p>ただいま最終仕上げ中です。<br>まずは「出生チャート」をお楽しみください。</p>
+  <p style="margin-top:2rem;"><a href="/" style="color:var(--gold-d);text-decoration:none;">&larr; トップにもどる</a></p>
+</div>
+{_LEGAL_FOOTER}
+</body></html>"""
+
+
 @app.route("/sample/field_report")
 def sample_field_report():
     """3分野レポート サンプル"""
     from flask import Response
+    if not _sr_field_enabled():
+        return Response(_coming_soon_html("仕事・お金・恋愛 3分野レポート"), mimetype="text/html; charset=utf-8")
     s = SAMPLE_DATA
     try:
         html = generate_field_report_html(
@@ -2463,6 +2485,8 @@ def sample_natal():
 @app.route("/sample/sr")
 def sample_sr():
     from flask import Response
+    if not _sr_field_enabled():
+        return Response(_coming_soon_html("2026年 星読み"), mimetype="text/html; charset=utf-8")
     s = SAMPLE_DATA
     try:
         html = generate_solar_return_html(s["name"], s["year"], s["month"], s["day"],
@@ -2576,6 +2600,8 @@ def sample_natal_pdf():
 @app.route("/sample/sr/pdf")
 def sample_sr_pdf():
     from flask import Response
+    if not _sr_field_enabled():
+        return Response(_coming_soon_html("2026年 星読み"), mimetype="text/html; charset=utf-8")
     s = SAMPLE_DATA
     try:
         html = generate_solar_return_html(s["name"], s["year"], s["month"], s["day"],
@@ -3680,10 +3706,9 @@ def faq_page():
   <div class="faq-item">
     <div class="faq-q">サンプルを見たいです。</div>
     <div class="faq-a">
-      各レポートのサンプルをご用意しています。<br>
+      出生チャートのサンプルをご用意しています。<br>
       ・<a href="/sample/natal">出生チャート サンプル</a><br>
-      ・<a href="/sample/sr">2026年 星読み サンプル</a><br>
-      ・<a href="/sample/field_report">仕事・お金・恋愛 3分野レポート サンプル</a>
+      <small style="color:var(--text-l);">※ 2026年 星読み・3分野レポートのサンプルは、近日公開にあわせてご用意します。</small>
     </div>
   </div>
 
