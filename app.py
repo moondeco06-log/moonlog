@@ -1552,6 +1552,7 @@ footer {
     <a href="/blog">ブログ</a>
     <a href="/glossary">用語解説</a>
     <a href="/faq">よくある質問</a>
+    <a href="/contact">お問い合わせ</a>
     <a href="/legal/tokushoho">特定商取引法に基づく表記</a>
     <a href="/legal/privacy">プライバシーポリシー</a>
     <a href="/legal/terms">利用規約</a>
@@ -1990,6 +1991,57 @@ def send_pdf_email(to_email, subject, body_text, pdf_bytes, pdf_filename):
     except Exception as e:
         import traceback; traceback.print_exc()
         print(f"[send_pdf_email] ❌ {e}")
+        return False
+
+
+def _log_inquiry(name, email, category, body):
+    """問い合わせ内容をサーバーログに残す（メール送信が失敗しても取りこぼさない用）"""
+    import datetime
+    ts = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    print(f"[inquiry] {ts} | 種類={category} | 名前={name} | メール={email}\n{body}\n---")
+    try:
+        log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
+        os.makedirs(log_dir, exist_ok=True)
+        with open(os.path.join(log_dir, "inquiries.log"), "a", encoding="utf-8") as f:
+            f.write(f"{ts}\t{category}\t{name}\t{email}\t{body}\n")
+    except Exception as e:
+        print(f"[_log_inquiry] file write skipped: {e}")
+
+
+def send_inquiry_email(name, email, category, body):
+    """お問い合わせフォームの内容を運営アドレス(info@moonlog.jp)に送信"""
+    _log_inquiry(name, email, category, body)
+    if not (SMTP_USER and SMTP_PASS):
+        print("[send_inquiry_email] SMTP未設定 — ログ記録のみ")
+        return False
+    import smtplib
+    from email.message import EmailMessage
+    msg = EmailMessage()
+    msg["Subject"] = f"【moonlog お問い合わせ】{category}"
+    msg["From"] = f"{SMTP_FROM_NAME} <{SMTP_FROM}>"
+    msg["To"] = CONTACT_EMAIL
+    if email:
+        msg["Reply-To"] = email
+    msg.set_content(
+        f"moonlog のお問い合わせフォームから届きました。\n\n"
+        f"種類　：{category}\n"
+        f"お名前：{name or '（未記入）'}\n"
+        f"返信先：{email}\n"
+        f"───────────────\n"
+        f"{body}\n"
+        f"───────────────\n"
+        f"※ このメールに返信すると、お客様の返信先アドレスに返信できます。"
+    )
+    try:
+        with smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=20) as s:
+            s.starttls()
+            s.login(SMTP_USER, SMTP_PASS)
+            s.send_message(msg)
+        print(f"[send_inquiry_email] ✅ sent to {CONTACT_EMAIL}")
+        return True
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        print(f"[send_inquiry_email] ❌ {e}")
         return False
 
 
@@ -2669,6 +2721,7 @@ _LEGAL_FOOTER = """
   <a href="/blog" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">ブログ</a>
   <a href="/glossary" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">用語解説</a>
   <a href="/faq" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">よくある質問</a>
+  <a href="/contact" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">お問い合わせ</a>
   <a href="/legal/tokushoho" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">特定商取引法</a>
   <a href="/legal/privacy" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">プライバシーポリシー</a>
   <a href="/legal/terms" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">利用規約</a>
@@ -3050,6 +3103,111 @@ def legal_terms():
   <p>本規約は日本法に準拠し、東京地方裁判所を第一審の専属的合意管轄裁判所とします。</p>
 
   <p class="legal-updated">最終更新日：2026年4月30日</p>
+</div>
+{_LEGAL_FOOTER}
+</body></html>"""
+    return html
+
+
+@app.route("/contact", methods=["GET", "POST"])
+def contact():
+    sent = False
+    error = ""
+    name = email = body = ""
+    category = "一般のお問い合わせ"
+    if request.method == "POST":
+        # ハニーポット（人間には見えない項目。ボットが埋めたら無視）
+        if request.form.get("website", "").strip():
+            return redirect("/contact?sent=1")
+        name = request.form.get("name", "").strip()
+        email = request.form.get("email", "").strip()
+        category = request.form.get("category", "一般のお問い合わせ").strip()
+        body = request.form.get("message", "").strip()
+        import re as _re
+        if not email or not _re.match(r"^[^\s@]+@[^\s@]+\.[^\s@]+$", email):
+            error = "返信先のメールアドレスを正しくご入力ください。"
+        elif not body:
+            error = "お問い合わせ内容をご入力ください。"
+        else:
+            send_inquiry_email(name, email, category, body)
+            return redirect("/contact?sent=1")
+
+    if request.args.get("sent") == "1":
+        sent = True
+
+    cats = ["一般のお問い合わせ", "購入・お支払いについて", "レポートが届かない・不具合", "その他"]
+    options = "".join(
+        f'<option value="{_esc(c)}"{" selected" if c == category else ""}>{_esc(c)}</option>'
+        for c in cats
+    )
+
+    if sent:
+        inner = """
+  <h1>お問い合わせ ありがとうございます</h1>
+  <p>内容を受け付けました。<br>
+  ご記入いただいた返信先アドレスあてに、担当より順次ご返信いたします。</p>
+  <p style="margin-top:1.5rem;">数日経っても返信が届かない場合は、お手数ですが迷惑メールフォルダをご確認のうえ、再度お送りください。</p>
+  <p style="margin-top:2rem;"><a href="/" style="color:var(--gold-d);text-decoration:none;">&larr; トップにもどる</a></p>
+"""
+    else:
+        err_html = f'<p style="color:#C0392B;font-size:0.85rem;margin-bottom:1rem;">{_esc(error)}</p>' if error else ""
+        inner = f"""
+  <h1>お問い合わせ</h1>
+  <p>moonlog についてのご質問・ご購入に関するお問い合わせは、こちらのフォームからお送りください。<br>
+  ご記入いただいた返信先アドレスあてにご返信いたします。</p>
+  {err_html}
+  <form method="POST" action="/contact" style="margin-top:1.8rem;">
+    <div style="position:absolute;left:-9999px;" aria-hidden="true">
+      <label>このフィールドは入力しないでください<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+    </div>
+    <label class="cf-label">お名前（任意）</label>
+    <input class="cf-input" type="text" name="name" value="{_esc(name)}" placeholder="ニックネーム可">
+
+    <label class="cf-label">返信先メールアドレス <span style="color:#C0392B;">必須</span></label>
+    <input class="cf-input" type="email" name="email" value="{_esc(email)}" placeholder="you@example.com" required>
+
+    <label class="cf-label">お問い合わせの種類</label>
+    <select class="cf-input" name="category">{options}</select>
+
+    <label class="cf-label">お問い合わせ内容 <span style="color:#C0392B;">必須</span></label>
+    <textarea class="cf-input" name="message" rows="7" placeholder="ご質問・ご相談の内容をご記入ください" required>{_esc(body)}</textarea>
+
+    <button class="cf-submit" type="submit">送信する</button>
+  </form>
+  <p style="font-size:0.78rem;color:var(--text-l);margin-top:1.4rem;line-height:1.8;">
+  ご入力いただいた情報は、お問い合わせへの対応のみに使用します。<br>
+  詳しくは<a href="/legal/privacy" style="color:var(--gold-d);">プライバシーポリシー</a>をご覧ください。</p>
+"""
+
+    contact_css = """
+<style>
+  .cf-label { display:block; font-size:0.82rem; color:var(--text-d); margin:1.2rem 0 0.4rem; font-weight:500; }
+  .cf-input {
+    width:100%; padding:0.7rem 0.9rem; font-size:0.9rem; font-family:var(--sans);
+    color:var(--text-d); background:#fff; border:1px solid var(--border); border-radius:6px;
+  }
+  .cf-input:focus { outline:none; border-color:var(--gold); }
+  textarea.cf-input { resize:vertical; line-height:1.7; }
+  .cf-submit {
+    margin-top:1.6rem; width:100%; padding:0.85rem; font-size:0.95rem; font-family:var(--serif);
+    letter-spacing:0.1em; color:#fff; background:var(--gold-d); border:none; border-radius:6px;
+    cursor:pointer; transition:background .2s;
+  }
+  .cf-submit:hover { background:var(--gold); }
+</style>
+"""
+
+    html = f"""<!DOCTYPE html><html lang="ja"><head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>お問い合わせ | MOONLOG</title>
+{_LEGAL_CSS}
+{contact_css}
+</head><body>
+{_LEGAL_HEADER.format(title="お問い合わせ")}
+<div class="legal-wrap">
+{inner}
 </div>
 {_LEGAL_FOOTER}
 </body></html>"""
