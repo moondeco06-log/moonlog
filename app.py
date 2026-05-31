@@ -2234,7 +2234,7 @@ def _free_cta_footer(name, year, month, day, hour, minute, city, lat, lng):
       <h3 style="font-family:'Hiragino Mincho ProN',serif;color:#5A3818;margin:0 0 8px;font-size:1.2rem;text-align:center;">🌹 もう少しだけ、お時間をいただけますか？</h3>
       <p style="color:#1C1A2E;line-height:1.85;margin:8px 0;font-size:.95rem;">
         読んでみての感想・違和感・「これは私だ」と感じた箇所、ぜひ教えてください。<br>
-        moonlog はまだ磨いている最中で、あなたの声が、リリース時の品質を作ります。
+        moonlog はこれからも磨き続けます。あなたの声が、これからの品質を作ります。
       </p>
       <p style="text-align:center;margin:16px 0 8px;">
         <a href="{FEEDBACK_FORM_URL}" target="_blank" rel="noopener" style="display:inline-block;background:#B89858;color:#fff;text-decoration:none;padding:12px 28px;border-radius:4px;font-size:.95rem;letter-spacing:.04em;">
@@ -2242,9 +2242,9 @@ def _free_cta_footer(name, year, month, day, hour, minute, city, lat, lng):
         </a>
       </p>
       <p style="text-align:center;color:#6B607A;font-size:.85rem;margin:8px 0 0;">
-        フィードバックをくれた方には、{RELEASE_DATE_JP}リリース時に使える<br>
+        フィードバックをくれた方には、<br>
         <strong style="color:#5A3818;font-size:1.05rem;">¥500 OFF クーポン</strong> をお届けします<br>
-        <small>（出生チャート/2026年 星読み/3分野レポート ¥980 → ¥480）</small><br>
+        <small>（出生チャート ¥980 → ¥480）</small><br>
         <small style="color:#9A8870;">※ クーポンコードは、フォーム送信後の完了画面に表示されます。</small>
       </p>
     </div>
@@ -3417,9 +3417,9 @@ def faq_page():
     用語については <a href="/glossary" style="color:var(--gold-d);">用語解説ページ</a> もあわせてご覧ください。</p>
 
   <div style="background:rgba(184,152,88,.08);border:1px dashed var(--gold);border-radius:4px;padding:1rem 1.4rem;margin-bottom:2.5rem;line-height:1.85;">
-    <strong style="color:var(--gold-d);">🌙 現在ソフトローンチ期間中</strong><br>
-    <span style="font-size:.92rem;">現在は <strong>出生チャート 無料体験版</strong> のみご利用いただけます。<br>
-    有料レポート（出生チャート・2026年星読み・3分野レポート）は <strong>{RELEASE_DATE_JP}</strong> リリース予定です。</span>
+    <strong style="color:var(--gold-d);">🌙 出生チャート レポート 販売開始しました</strong><br>
+    <span style="font-size:.92rem;"><strong>出生チャート（フル版・¥980）</strong>と<strong>無料体験版</strong>がご利用いただけます。<br>
+    2026年 星読みレポート・仕事・お金・恋愛 3分野レポートは <strong>近日公開</strong> です（サンプルは今すぐご覧いただけます）。</span>
   </div>
 
   <h2>月タイプ診断について</h2>
@@ -3468,7 +3468,7 @@ def faq_page():
     <div class="faq-a">
       作成可能ですが、精度に違いがあります。<br>
       ・<strong>出生チャート 無料体験版</strong>：生年月日のみで作成可能です（太陽・月のサインを読みます）。<br>
-      ・<strong>有料レポート（{RELEASE_DATE_MD}リリース予定）</strong>：出生時刻が必要です。不明な場合は12:00で計算しますが、ハウスや天頂（MC）の精度は下がります。<br>
+      ・<strong>有料レポート（出生チャート フル版など）</strong>：出生時刻が必要です。不明な場合は12:00で計算しますが、ハウスや天頂（MC）の精度は下がります。<br>
       母子手帳・親に確認・病院への問い合わせなどで分かることが多いので、可能なら確認をおすすめします。
     </div>
   </div>
@@ -3528,10 +3528,10 @@ def faq_page():
     <div class="faq-a">
       <strong>切り口</strong>で違います。<br>
       ・<strong>出生チャート 無料体験版</strong>：太陽・月のさわり（今すぐ読める）<br>
-      ・<strong>出生チャート</strong>（{RELEASE_DATE_MD}〜）：あなたが何者か——7惑星すべての完全版<br>
-      ・<strong>2026年 星読み</strong>（{RELEASE_DATE_MD}〜）：今年のテーマと流れ<br>
-      ・<strong>仕事・お金・恋愛 3分野レポート</strong>（{RELEASE_DATE_MD}〜）：関心の高い3分野を一冊で<br>
-      まずは出生チャート 無料体験版から試して、リリース後に興味のあるレポートへどうぞ。
+      ・<strong>出生チャート</strong>（販売中）：あなたが何者か——7惑星すべての完全版<br>
+      ・<strong>2026年 星読み</strong>（近日公開）：今年のテーマと流れ<br>
+      ・<strong>仕事・お金・恋愛 3分野レポート</strong>（近日公開）：関心の高い3分野を一冊で<br>
+      まずは出生チャート 無料体験版から試して、出生チャート（フル版）へどうぞ。星読み・3分野レポートは近日公開です。
     </div>
   </div>
 
@@ -3539,7 +3539,7 @@ def faq_page():
     <div class="faq-q">出生チャート 無料体験版と有料の出生チャートはどう違いますか？</div>
     <div class="faq-a">
       <strong>出生チャート 無料体験版</strong>は太陽・月の2天体のみ。あなたの核となる部分のさわりが読めます。<br>
-      <strong>有料の出生チャート（¥980・{RELEASE_DATE_MD}リリース予定）</strong>は7惑星すべて＋総合まとめ＋ホロスコープチャートの完全版。A4換算 約20ページのボリュームです。
+      <strong>有料の出生チャート（¥980）</strong>は7惑星すべて＋総合まとめ＋ホロスコープチャートの完全版。A4換算 約20ページのボリュームです。
     </div>
   </div>
 
