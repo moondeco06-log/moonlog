@@ -869,6 +869,9 @@ footer {
   .form-card { padding: 2rem 1.4rem; }
   .btn-group { flex-direction: column; }
   .row3 { flex-wrap: wrap; }
+  /* スマホでは1列に固定（span 2の横はみ出し・空白枠を防ぐ） */
+  .report-grid { grid-template-columns: 1fr; }
+  .report-grid > div[style*="grid-column"] { grid-column: 1 / -1 !important; }
 }
   </style>
 </head>
