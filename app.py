@@ -1140,6 +1140,16 @@ footer {
 
     </div>
 
+    {% if show_paid %}
+    <!-- ¥500 OFF クーポン案内（感想 → 割引） -->
+    <div style="max-width:560px;margin:3rem auto 0;background:rgba(184,152,88,.08);border:1px dashed var(--gold);border-radius:6px;padding:1.6rem 1.8rem;text-align:center;line-height:1.9;">
+      <p style="font-size:1.02rem;color:var(--gold-d);margin:0 0 .4rem;">🌹 無料体験の感想を送ると <strong>¥500 OFF</strong></p>
+      <p style="font-size:.92rem;color:var(--text-m);margin:0 0 1rem;">出生チャート <span style="text-decoration:line-through;color:var(--text-l);">¥980</span> → <strong style="color:var(--gold-d);">¥480</strong></p>
+      <a href="{{ feedback_url }}" target="_blank" rel="noopener" style="display:inline-block;background:var(--gold-d);color:#fff;text-decoration:none;padding:.7rem 1.8rem;border-radius:4px;font-size:.92rem;letter-spacing:.04em;">感想を送る（1分で完了）</a>
+      <p style="font-size:.76rem;color:var(--text-l);margin:.9rem 0 0;">※ クーポンコードは送信後の完了画面に表示されます ／ {{ coupon_range }} 限定</p>
+    </div>
+    {% endif %}
+
     <p style="text-align:center;margin-top:3rem;font-size:0.78rem;color:var(--text-l);letter-spacing:0.08em;">
       ※ オープン記念価格は予告なく変更となる場合があります。価格は順次改定予定です。
     </p>
@@ -1845,6 +1855,7 @@ def index():
         release_date_md=RELEASE_DATE_MD,
         coupon_end_jp=COUPON_END_JP,
         coupon_range=COUPON_RANGE,
+        feedback_url=FEEDBACK_FORM_URL,
     )
 
 
