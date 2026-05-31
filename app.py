@@ -1353,6 +1353,7 @@ footer {
     </div>
     -->
 
+    {% if show_sr_field %}
     <!-- 2026年星読み -->
     <div class="report-detail">
       <div class="report-detail-head">
@@ -1378,6 +1379,7 @@ footer {
         </ul>
       </div>
     </div>
+    {% endif %}
 
   </div>
 </section>
@@ -3445,7 +3447,7 @@ def faq_page():
   <div style="background:rgba(184,152,88,.08);border:1px dashed var(--gold);border-radius:4px;padding:1rem 1.4rem;margin-bottom:2.5rem;line-height:1.85;">
     <strong style="color:var(--gold-d);">🌙 出生チャート レポート 販売開始しました</strong><br>
     <span style="font-size:.92rem;"><strong>出生チャート（フル版・¥980）</strong>と<strong>無料体験版</strong>がご利用いただけます。<br>
-    2026年 星読みレポート・仕事・お金・恋愛 3分野レポートは <strong>近日公開</strong> です（サンプルは今すぐご覧いただけます）。</span>
+    2026年 星読みレポート・仕事・お金・恋愛 3分野レポートは <strong>近日公開</strong> です。</span>
   </div>
 
   <h2>月タイプ診断について</h2>
