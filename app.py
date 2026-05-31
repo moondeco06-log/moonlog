@@ -1024,7 +1024,7 @@ footer {
           </div>
           <div class="price-box">
             <div class="price-main">¥980</div>
-            <div class="price-sub">通常価格 ¥3,980 を予定</div>
+            <div class="price-sub">オープン記念価格 / リリース後 価格改定予定</div>
           </div>
           <p class="report-desc">
             自分が何者なのか——普段当たり前にやっていること、繰り返し起こるパターン。その「なぜ」が、生まれた瞬間の星の配置から見えてきます。欠点ではなく、生まれ持ったあなたの形を知る。
@@ -1039,7 +1039,9 @@ footer {
           <a href="/sample/natal" target="_blank" class="sample-link" onclick="event.stopPropagation()">サンプルを見る</a>
         </div>
       </div>
+      {% endif %}
 
+      {% if show_sr_field %}
       <!-- ソーラーリターン（有料）-->
       <div class="report-card sr" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
         <div class="report-accent"></div>
@@ -1053,7 +1055,7 @@ footer {
           </div>
           <div class="price-box">
             <div class="price-main">¥980</div>
-            <div class="price-sub">通常価格 ¥3,980 を予定</div>
+            <div class="price-sub">オープン記念価格 / リリース後 価格改定予定</div>
           </div>
           <p class="report-desc">
             毎年変わる星の配置。2026年のあなたのテーマ、チャレンジに向く時期、休むべき時期——1年の流れを知れば、毎日の選択がぐっと楽になります。
@@ -1088,7 +1090,7 @@ footer {
           </div>
           <div class="price-box">
             <div class="price-main">¥980</div>
-            <div class="price-sub">通常価格 ¥3,980 を予定</div>
+            <div class="price-sub">オープン記念価格 / リリース後 価格改定予定</div>
           </div>
           <p class="report-desc">
             仕事には仕事を司る星、お金にはお金を司る星、愛には愛を司る星があります。同じ「あなた」の中でも、分野ごとに使われている星が違う——その3つを一冊にまとめた読みもの。
@@ -1111,12 +1113,27 @@ footer {
         <div class="report-info">
           <h3 style="color:var(--gold-d);">✨ 有料レポートは {{ release_date_dot }} リリース</h3>
           <p style="margin-top:1rem;font-size:0.95rem;color:var(--text-m);line-height:1.9;">
-            出生チャート・年間星読み・仕事/お金/恋愛 3分野レポート——<br>
+            出生チャート・2026年 星読み・仕事/お金/恋愛 3分野レポート——<br>
             ただいま最終仕上げ中です。リリース日まで、出生チャート 無料体験版でお楽しみください。
           </p>
           <p style="margin-top:1rem;font-size:0.85rem;color:var(--text-l);">
             <a href="/sample/natal" target="_blank" style="color:var(--gold-d);text-decoration:underline;margin:0 0.5rem;">出生チャート サンプル</a>
-            <a href="/sample/sr" target="_blank" style="color:var(--gold-d);text-decoration:underline;margin:0 0.5rem;">年間星読み サンプル</a>
+            <a href="/sample/sr" target="_blank" style="color:var(--gold-d);text-decoration:underline;margin:0 0.5rem;">2026年 星読み サンプル</a>
+            <a href="/sample/field_report" target="_blank" style="color:var(--gold-d);text-decoration:underline;margin:0 0.5rem;">3分野レポート サンプル</a>
+          </p>
+        </div>
+      </div>
+      {% elif not show_sr_field %}
+      <!-- 出生チャート公開後・星読み/3分野は近日公開 -->
+      <div class="report-card" style="grid-column: span 2; background:rgba(184,152,88,.06); border:2px dashed var(--gold); padding:2.5rem 2rem; text-align:center;">
+        <div class="report-info">
+          <h3 style="color:var(--gold-d);">✨ 2026年 星読み・3分野レポートは近日公開</h3>
+          <p style="margin-top:1rem;font-size:0.95rem;color:var(--text-m);line-height:1.9;">
+            ただいま最終仕上げ中です。<br>
+            まずは「出生チャート」をお楽しみください。
+          </p>
+          <p style="margin-top:1rem;font-size:0.85rem;color:var(--text-l);">
+            <a href="/sample/sr" target="_blank" style="color:var(--gold-d);text-decoration:underline;margin:0 0.5rem;">2026年 星読み サンプル</a>
             <a href="/sample/field_report" target="_blank" style="color:var(--gold-d);text-decoration:underline;margin:0 0.5rem;">3分野レポート サンプル</a>
           </p>
         </div>
@@ -1254,6 +1271,7 @@ footer {
             </button>
             <p class="btn-note">7惑星すべて＋総合まとめ／<a href="/sample/natal" target="_blank">サンプルを見る</a></p>
 
+            {% if show_sr_field %}
             <div class="sr-row">
               <div class="sr-year-wrap">
                 <label class="sr-year-label">何年の星読み？</label>
@@ -1271,13 +1289,14 @@ footer {
               💼 &nbsp;仕事・お金・恋愛　<span class="btn-price">¥980</span>
             </button>
             <p class="btn-note">3つの分野を一冊で／<a href="/sample/field_report" target="_blank">サンプルを見る</a></p>
+            {% endif %}
             {% else %}
             <!-- ソフトローンチ期間：有料導線なし -->
             <div class="form-plan-divider paid">
               <span>有料レポート（{{ release_date_dot }} リリース予定）</span>
             </div>
             <p style="text-align:center;color:var(--text-l);font-size:0.88rem;padding:1.5rem 1rem;background:rgba(184,152,88,.05);border:1px dashed var(--gold);border-radius:4px;line-height:1.85;">
-              出生チャート・年間星読み・3分野レポートは<br>
+              出生チャート・2026年 星読み・3分野レポートは<br>
               <strong style="color:var(--gold-d);">{{ release_date_jp }}</strong> よりご購入いただけます。<br>
               <small>※ サンプルレポートは上のリンクからご覧いただけます。</small>
             </p>
@@ -1347,7 +1366,7 @@ footer {
       </div>
       <div class="report-detail-body">
         <p class="report-detail-lead">
-          誕生日を起点にした1年間のテーマと流れを、8つの惑星から読み解く年間レポート。
+          誕生日を起点にした1年間のテーマと流れを、7つの惑星から読み解く年間レポート。
         </p>
         <ul class="report-detail-list">
           <li>☀️ <strong>今年のあなた</strong>：太陽が照らす今年のメインテーマ</li>
@@ -1816,8 +1835,10 @@ def index():
     # 環境変数 SHOW_PAID_PRODUCTS=1 で有料商品カードを表示
     # 未設定または "0" の場合は「Coming Soon」モード（ソフトローンチ用）
     show_paid = os.environ.get("SHOW_PAID_PRODUCTS", "0") == "1"
+    # 星読み・3分野レポートは中身の最終確認＋Stripe登録が済んでから公開する
+    show_sr_field = os.environ.get("SHOW_SR_FIELD", "0") == "1"
     return render_template_string(
-        HTML, show_paid=show_paid,
+        HTML, show_paid=show_paid, show_sr_field=show_sr_field,
         release_date_jp=RELEASE_DATE_JP,
         release_date_dot=RELEASE_DATE_DOT,
         release_date_md=RELEASE_DATE_MD,
@@ -2169,7 +2190,7 @@ def _free_cta_footer(name, year, month, day, hour, minute, city, lat, lng):
       <p style="text-align:center;color:#6B607A;font-size:.85rem;margin:8px 0 0;">
         フィードバックをくれた方には、{RELEASE_DATE_JP}リリース時に使える<br>
         <strong style="color:#5A3818;font-size:1.05rem;">¥500 OFF クーポン</strong> をお届けします<br>
-        <small>（出生チャート/年間星読み/3分野レポート ¥980 → ¥480）</small><br>
+        <small>（出生チャート/2026年 星読み/3分野レポート ¥980 → ¥480）</small><br>
         <small style="color:#9A8870;">※ クーポンコードは、フォーム送信後の完了画面に表示されます。</small>
       </p>
     </div>
@@ -2908,7 +2929,7 @@ def legal_tokushoho():
     <tr><th>電話番号</th><td>請求があった場合に遅滞なく開示いたします</td></tr>
     <tr><th>メールアドレス</th><td>{CONTACT_EMAIL}</td></tr>
     <tr><th>販売URL</th><td>https://moonlog.jp</td></tr>
-    <tr><th>販売価格</th><td>各レポートページに表示の価格（税込）<br>出生チャート（ホロスコープ鑑定）レポート ¥980 / 2026年 星読みレポート ¥980 / 仕事・お金・恋愛 3分野レポート ¥980<br><small style="color:#9A8870;">※ 有料レポートは{RELEASE_DATE_JP}リリース予定</small></td></tr>
+    <tr><th>販売価格</th><td>各レポートページに表示の価格（税込）<br>出生チャート（ホロスコープ鑑定）レポート ¥980 / 2026年 星読みレポート ¥980 / 仕事・お金・恋愛 3分野レポート ¥980<br><small style="color:#9A8870;">※ 出生チャート（ホロスコープ鑑定）レポートは{RELEASE_DATE_JP}販売開始。2026年 星読みレポート・仕事・お金・恋愛 3分野レポートは順次公開予定</small></td></tr>
     <tr><th>販売価格以外の費用</th><td>なし（インターネット接続料・通信料はお客様のご負担となります）</td></tr>
     <tr><th>支払方法</th><td>クレジットカード（Visa / Mastercard / American Express / JCB）</td></tr>
     <tr><th>支払時期</th><td>購入手続き完了時にお支払いが確定します</td></tr>
@@ -2916,7 +2937,7 @@ def legal_tokushoho():
     <tr><th>返品・キャンセル</th><td>デジタルコンテンツの性質上、購入完了後の返金・キャンセルはお受けできません。ご不明な点はご購入前にお問い合わせください</td></tr>
     <tr><th>動作環境</th><td>最新版の主要ブラウザ（Chrome / Safari / Firefox / Edge）推奨</td></tr>
   </table>
-  <p class="legal-updated">最終更新日：2026年5月13日</p>
+  <p class="legal-updated">最終更新日：2026年5月31日</p>
 </div>
 {_LEGAL_FOOTER}
 </body></html>"""
