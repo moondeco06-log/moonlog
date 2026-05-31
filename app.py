@@ -1007,7 +1007,6 @@ footer {
           <ul class="report-includes">
             <li>✦ 太陽：人生のテーマ</li>
             <li>✦ 月：感情と内面</li>
-            <li>✦ 水星：思考とコミュニケーション</li>
           </ul>
           <div class="report-cta">無料ではじめる</div>
         </div>
