@@ -959,6 +959,15 @@ footer {
     <div class="sec-rule"></div>
     <p class="sec-lead">何者か、どう生きるか、今年は何が来るか。<br>3つの視点から、自分という地図を読む。</p>
 
+    {% if show_paid %}
+    <div style="margin:0 0 2.5rem;background:linear-gradient(90deg, rgba(184,152,88,.16), rgba(184,152,88,.06));border:1px solid var(--gold);border-radius:14px;padding:1.6rem 1.8rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.6rem 1.4rem;text-align:center;">
+      <span style="font-size:1.15rem;font-weight:600;color:var(--gold);">🌹 オープン記念 ¥500 OFF</span>
+      <span style="font-size:1rem;opacity:.9;">無料体験の感想を送ると 出生チャート <s style="opacity:.7;">¥980</s> → <strong>¥480</strong></span>
+      <a href="{{ feedback_url }}" target="_blank" rel="noopener" style="display:inline-block;background:var(--gold);color:#1a1a1a;font-weight:600;text-decoration:none;padding:.55rem 1.4rem;border-radius:999px;white-space:nowrap;">感想を送ってコードを受け取る</a>
+      <span style="flex-basis:100%;font-size:.8rem;opacity:.6;">※ コード「EARLYBIRD500」{{ coupon_range }}限定</span>
+    </div>
+    {% endif %}
+
     <div class="report-grid">
 
       <!-- タイプ診断（無料・入口） -->
@@ -1139,16 +1148,6 @@ footer {
       {% endif %}
 
     </div>
-
-    {% if show_paid %}
-    <!-- ¥500 OFF クーポン案内（感想 → 割引） -->
-    <div style="max-width:560px;margin:3rem auto 0;background:rgba(184,152,88,.08);border:1px dashed var(--gold);border-radius:6px;padding:1.6rem 1.8rem;text-align:center;line-height:1.9;">
-      <p style="font-size:1.02rem;color:var(--gold-d);margin:0 0 .4rem;">🌹 無料体験の感想を送ると <strong>¥500 OFF</strong></p>
-      <p style="font-size:.92rem;color:var(--text-m);margin:0 0 1rem;">出生チャート <span style="text-decoration:line-through;color:var(--text-l);">¥980</span> → <strong style="color:var(--gold-d);">¥480</strong></p>
-      <a href="{{ feedback_url }}" target="_blank" rel="noopener" style="display:inline-block;background:var(--gold-d);color:#fff;text-decoration:none;padding:.7rem 1.8rem;border-radius:4px;font-size:.92rem;letter-spacing:.04em;">感想を送る（1分で完了）</a>
-      <p style="font-size:.76rem;color:var(--text-l);margin:.9rem 0 0;">※ クーポンコードは送信後の完了画面に表示されます ／ {{ coupon_range }} 限定</p>
-    </div>
-    {% endif %}
 
     <p style="text-align:center;margin-top:3rem;font-size:0.78rem;color:var(--text-l);letter-spacing:0.08em;">
       ※ オープン記念価格は予告なく変更となる場合があります。価格は順次改定予定です。
