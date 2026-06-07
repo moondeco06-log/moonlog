@@ -86,9 +86,9 @@ def build_silent(out):
                   f"fade=t=out:st={d-FADE:.3f}:d={FADE}:alpha=1,setpts=PTS-STARTPTS+{s}/TB[s{i}]")
         fc.append(f"[{prev}][s{i}]overlay=0:0:enable='between(t,{s},{e})'[v{i}]")
         prev = f"v{i}"
-    # 最初と最後を黒からフェード（白い開幕・ループ継ぎ目の白フラッシュを消す）
-    fc.append(f"[{prev}]fade=t=in:st=0:d=0.4:color=black,"
-              f"fade=t=out:st={DUR-0.5}:d=0.5:color=black[outv]")
+    # 冒頭は黒フェードなし＝最初から背景が出る（背景は正規化済みで白フラッシュ無し・サムネも絵になる）。
+    # 末尾だけ軽く黒へ落として締める。
+    fc.append(f"[{prev}]fade=t=out:st={DUR-0.5}:d=0.5:color=black[outv]")
     prev = "outv"
     cmd = [FF,"-y",*inputs,"-filter_complex",";".join(fc),"-map",f"[{prev}]",
            "-t",str(DUR),"-c:v","libx264","-pix_fmt","yuv420p","-r","30",
