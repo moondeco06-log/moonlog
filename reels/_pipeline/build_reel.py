@@ -112,9 +112,17 @@ def bake_bgm(silent, bgm, out):
 def main():
     date = datetime.date.fromisoformat(sys.argv[1]) if len(sys.argv) > 1 else datetime.date.today()
     ds = date.isoformat()
-    # 背景選択
+    # 背景選択（日付指定オーバーライドがあれば優先。揺れる11.mp4を避けて安定背景を割当）
+    BG_OVERRIDE = {
+        "2026-06-13": "02.mp4",  # 揺れる庭(11)→夕暮れの海（落ち着き・整えに合う）
+        "2026-06-21": "13.mp4",  # 揺れる庭(11)→雲海（夏至・折り返しに合う）
+    }
     bgs = sorted(glob.glob(os.path.join(BG_DIR, "*.mp4")))
-    src = pick_by_date(bgs, date) or (BG_FALLBACK if os.path.exists(BG_FALLBACK) else None)
+    ov = BG_OVERRIDE.get(ds)
+    if ov and os.path.exists(os.path.join(BG_DIR, ov)):
+        src = os.path.join(BG_DIR, ov)
+    else:
+        src = pick_by_date(bgs, date) or (BG_FALLBACK if os.path.exists(BG_FALLBACK) else None)
     if not src:
         print("背景動画がありません（backgrounds/ も canva も無し）"); sys.exit(1)
     print(f"背景: {os.path.basename(src)}  （候補{len(bgs)}枚）")
