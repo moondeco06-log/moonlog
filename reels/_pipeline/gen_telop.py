@@ -54,9 +54,13 @@ def draw_text(img, text, size, cy, fill=WHITE):
 # 日付（引数 YYYY-MM-DD があればその日、なければ今日）。タイトルの月日に反映。
 today = datetime.date.fromisoformat(sys.argv[1]) if len(sys.argv) > 1 else datetime.date.today()
 date_jp = f"{today.month}月{today.day}日"
+# タイトル：月が主役の日＝「月のメッセージ」、月以外(金星/太陽/木星など)が主役＝「星のメッセージ」
+# （新月・満月は月相なので「月のメッセージ」のまま）
+TITLE_STAR = {"2026-06-14", "2026-06-21"}  # 星のメッセージにする日（金星獅子IN・夏至）
+title_text = "星のメッセージ" if today.isoformat() in TITLE_STAR else "月のメッセージ"
 title = Image.new("RGBA", (W, H), (0, 0, 0, 0))
 draw_text(title, date_jp, 64, 235)
-draw_text(title, "月のメッセージ", 86, 365)
+draw_text(title, title_text, 86, 365)
 title.save(f"{OUT}/title.png")
 
 # 日替わりテロップ（主役＝その夜22時東京の月の星座）。固定：5枚目=キャプション誘導／7-9=訴求・CTA・締め
