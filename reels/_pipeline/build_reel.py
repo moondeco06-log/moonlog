@@ -33,12 +33,18 @@ BGM_POOL = [
 ]
 ONGAKU = os.path.expanduser("~/Documents/ongaku")
 
-DUR = 20.3
 FADE = 0.22
-# 7シーン構成（フック/今日の星/行動/許可/後押し/キャプション誘導/moonlog）
-windows = [(0.0,2.9),(2.9,5.8),(5.8,8.7),(8.7,11.5),(11.5,14.3),
-           (14.3,17.2),(17.2,20.3)]
-N_SCENES = 7
+# シーン数に応じた尺と窓割り。/tmp のscene枚数で自動選択
+# 7枚=旧型（フック/星/行動/許可/後押し/誘導/moonlog）
+# 6枚=新型・共感ファースト（共感フック/星=免罪符/情景/余韻の一行/誘導/moonlog）2026-06-10〜
+SCENE_LAYOUTS = {
+    7: (20.3, [(0.0,2.9),(2.9,5.8),(5.8,8.7),(8.7,11.5),(11.5,14.3),
+               (14.3,17.2),(17.2,20.3)]),
+    6: (17.8, [(0.0,3.0),(3.0,6.2),(6.2,9.8),(9.8,12.8),(12.8,15.2),
+               (15.2,17.8)]),
+}
+DUR = 20.3       # main()でシーン数に合わせて上書き
+windows = SCENE_LAYOUTS[7][1]
 
 
 def pick_by_date(items, date):
@@ -74,7 +80,7 @@ def build_silent(out):
     inputs = ["-i",BOOM,
               "-loop","1","-t",str(DUR),"-i",f"{FR}/scrim.png",
               "-loop","1","-t",str(DUR),"-i",f"{FR}/title.png"]
-    for i in range(N_SCENES):
+    for i in range(len(windows)):
         inputs += ["-loop","1","-t",str(DUR),"-i",f"{FR}/scene{i}.png"]
     fc = [f"[0:v]scale=1080:1920,fps=30,trim=0:{DUR},setpts=PTS-STARTPTS[bgraw]",
           "[bgraw][1:v]overlay=0:0[bg]",
@@ -110,8 +116,15 @@ def bake_bgm(silent, bgm, out):
 
 
 def main():
+    global DUR, windows
     date = datetime.date.fromisoformat(sys.argv[1]) if len(sys.argv) > 1 else datetime.date.today()
     ds = date.isoformat()
+    # シーン枚数（gen_telopの出力）でレイアウト自動選択
+    n = len(glob.glob(os.path.join(FR, "scene*.png")))
+    if n not in SCENE_LAYOUTS:
+        print(f"sceneが{n}枚：対応レイアウトがありません（6か7枚で）"); sys.exit(1)
+    DUR, windows = SCENE_LAYOUTS[n]
+    print(f"構成: {n}枚 / {DUR}秒")
     # 背景選択（日付指定オーバーライドがあれば優先。揺れる11.mp4を避けて安定背景を割当）
     BG_OVERRIDE = {
         "2026-06-13": "02.mp4",  # 揺れる庭(11)→夕暮れの海（落ち着き・整えに合う）
