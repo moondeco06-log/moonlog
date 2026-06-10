@@ -884,6 +884,10 @@ footer {
   /* スマホでは1列に固定（span 2の横はみ出し・空白枠を防ぐ） */
   .report-grid { grid-template-columns: 1fr; }
   .report-grid > div[style*="grid-column"] { grid-column: 1 / -1 !important; }
+  /* MOON/LOGカードは縦積み（2列だと1行2〜5文字のガタガタ折返しになる） */
+  .def-grid { grid-template-columns: 1fr !important; gap: 1.2rem !important; }
+  /* 詩文・カード内の<br>を無効化して自然に折り返す（「き、」「の。」だけの行を防ぐ） */
+  .def-poem br, .def-grid p br { display: none; }
 }
   </style>
 </head>
@@ -934,7 +938,7 @@ footer {
     <p class="sec-eyebrow">What is MOONLOG</p>
     <h2 class="sec-title">MOONLOGとは</h2>
     <div class="sec-rule"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-bottom:3rem;">
+    <div class="def-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;margin-bottom:3rem;">
       <div style="text-align:center;padding:2rem 1.5rem;background:var(--white);border:1px solid var(--border);border-radius:2px;box-shadow:0 2px 12px rgba(58,52,80,0.04);">
         <div style="font-family:var(--en);font-size:2.2rem;font-style:italic;color:var(--gold-d);margin-bottom:1rem;letter-spacing:0.1em;">MOON</div>
         <p style="font-size:0.84rem;color:var(--text-m);line-height:2;letter-spacing:0.04em;">
@@ -953,7 +957,7 @@ footer {
       </div>
     </div>
     <div style="text-align:center;border-top:1px solid var(--border);padding-top:2.5rem;">
-      <p style="font-family:var(--serif);font-size:1.05rem;color:var(--gold-d);letter-spacing:0.1em;line-height:2.2;">
+      <p class="def-poem" style="font-family:var(--serif);font-size:1.05rem;color:var(--gold-d);letter-spacing:0.1em;line-height:2.2;">
         生まれた瞬間の天体データを読み解き、<br>
         自分でも気づいていなかった傾向に光を当てる。<br>
         月が海を動かすように、言葉が自分の内側を静かに動かす。<br>
@@ -1192,9 +1196,9 @@ footer {
 
           <label class="field-label">生年月日</label>
           <div class="row3">
-            <div><input type="number" name="year"  placeholder="年（1900〜2026）" min="1900" max="2026" required></div>
-            <div><input type="number" name="month" placeholder="月（1〜12）"      min="1" max="12" required></div>
-            <div><input type="number" name="day"   placeholder="日（1〜31）"      min="1" max="31" required></div>
+            <div><input type="number" name="year"  placeholder="年" min="1900" max="2026" required></div>
+            <div><input type="number" name="month" placeholder="月" min="1" max="12" required></div>
+            <div><input type="number" name="day"   placeholder="日" min="1" max="31" required></div>
           </div>
 
           <label class="field-label">出生時刻</label>
@@ -2843,6 +2847,11 @@ _BLOG_CSS_EXTRA = """
   .cat-tag { display:inline-block; font-size:0.68rem; color:var(--gold-d);
     background:rgba(184,152,90,0.1); padding:0.15rem 0.6rem; border-radius:3px;
     margin-bottom:0.4rem; letter-spacing:0.04em; }
+  @media (max-width: 660px) {
+    /* スマホは縦積み：サムネを全幅にして読みやすく */
+    .blog-list-item { flex-direction: column; gap: 0.8rem; }
+    .blog-list-thumb { width: 100%; height: auto; aspect-ratio: 1200 / 630; }
+  }
 </style>
 """
 
