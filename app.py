@@ -140,6 +140,10 @@ nav {
   transition: color 0.25s;
 }
 .nav-links a:hover { color: var(--gold-d); }
+.nav-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  font-size: 1.25rem; color: var(--gold-d); line-height: 1; padding: 0.4rem;
+}
 
 /* ─── ヒーロー（明け方の空：藤色→生成り）─── */
 #hero {
@@ -874,10 +878,38 @@ footer {
 .report-card:hover .report-cta { opacity:1; }
 .report-cta::after { content:" →"; }
 
+/* ─── 最新の記事 ─── */
+.journal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+.journal-card {
+  background: #fff; border: 1px solid rgba(184,152,90,0.25); border-radius: 6px;
+  overflow: hidden; text-decoration: none; display: block;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.journal-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(58,52,80,0.10); }
+.journal-card img { width: 100%; aspect-ratio: 1200 / 630; object-fit: cover; display: block; }
+.journal-body { padding: 0.9rem 1rem 1.1rem; }
+.journal-date { font-size: 0.7rem; color: var(--text-l); margin-bottom: 0.35rem; letter-spacing: 0.06em; }
+.journal-title { font-family: var(--serif); font-size: 0.92rem; color: var(--text-d); line-height: 1.7; letter-spacing: 0.03em; }
+
+/* ─── カードのホバー（ふわっと浮く） ─── */
+.report-card { transition: transform 0.25s, box-shadow 0.25s; }
+.report-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(58,52,80,0.10); }
+
 /* ─── レスポンシブ ─── */
 @media (max-width: 660px) {
+  .journal-grid { grid-template-columns: 1fr; }
   nav { padding: 0 1.4rem; }
   .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  nav.nav-open .nav-links {
+    display: flex; flex-direction: column; gap: 1.1rem;
+    position: absolute; top: 64px; left: 0; right: 0;
+    background: rgba(250,246,238,0.97);
+    backdrop-filter: blur(16px);
+    padding: 1.4rem 1.6rem 1.8rem;
+    border-bottom: 1px solid rgba(184,152,90,0.18);
+  }
+  nav.nav-open .nav-links a { font-size: 0.88rem; }
   .form-card { padding: 2rem 1.4rem; }
   .btn-group { flex-direction: column; }
   .row3 { flex-wrap: wrap; }
@@ -896,7 +928,8 @@ footer {
 <!-- ナビゲーション -->
 <nav>
   <a class="nav-logo" href="#hero">MOONLOG</a>
-  <ul class="nav-links">
+  <button class="nav-toggle" aria-label="メニュー" onclick="this.closest('nav').classList.toggle('nav-open')">☰</button>
+  <ul class="nav-links" onclick="this.closest('nav').classList.remove('nav-open')">
     <li><a href="#about">このサービスについて</a></li>
     <li><a href="#profile">運営者について</a></li>
     <li><a href="/blog">ブログ</a></li>
@@ -1003,6 +1036,12 @@ footer {
           <p class="report-desc">
             「あなたは◯◯」。生まれた瞬間の月から、素のあなたを動物のタイプでひと目で。いちばん身軽な、自分を知る入口です。
           </p>
+          <div style="display:flex;justify-content:center;align-items:center;gap:0.7rem;margin:0.2rem 0 1rem;">
+            <img src="/static/images/types/final/cancer.png" alt="うさぎタイプ" loading="lazy" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:1px solid rgba(184,152,90,0.35);background:#fffdf7;">
+            <img src="/static/images/types/final/leo.png" alt="ライオンタイプ" loading="lazy" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:1px solid rgba(184,152,90,0.35);background:#fffdf7;">
+            <img src="/static/images/types/final/sagittarius.png" alt="こうまタイプ" loading="lazy" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:1px solid rgba(184,152,90,0.35);background:#fffdf7;">
+            <span style="font-size:0.72rem;color:var(--text-l);letter-spacing:0.04em;">…全12タイプ</span>
+          </div>
           <ul class="report-includes">
             <li>✦ あなたのタイプ（動物＋ひとこと）</li>
             <li>✦ 月星座からの性格の読み解き</li>
@@ -1462,7 +1501,36 @@ footer {
         <span class="planet-en">Saturn</span>
         <div class="planet-desc">課題・成長・魂のテーマ。時間をかけて向き合うことで本物の強さが生まれる場所を示します。</div>
       </div>
+      <div class="planet-card">
+        <span class="planet-sym" style="color:#8898B8;font-family:var(--serif);font-style:italic;font-size:1.15rem;letter-spacing:0.06em;">Asc</span>
+        <div class="planet-name">アセンダント</div>
+        <span class="planet-en">Ascendant</span>
+        <div class="planet-desc">第一印象・世界への入り口。出生時刻がわかると読める、あなたのもうひとつの鍵です。</div>
+      </div>
     </div>
+  </div>
+</section>
+
+<!-- 最新の記事 -->
+<section id="journal" class="sec-mid">
+  <div class="inner" style="max-width:980px;">
+    <p class="sec-eyebrow">Journal</p>
+    <h2 class="sec-title">最新の記事</h2>
+    <div class="sec-rule"></div>
+    <div class="journal-grid">
+      {% for a in latest_articles %}
+      <a class="journal-card" href="/blog/{{ a.slug }}">
+        <img src="{{ a.thumbnail }}" alt="{{ a.title }}" loading="lazy">
+        <div class="journal-body">
+          <div class="journal-date">{{ a.date }}</div>
+          <div class="journal-title">{{ a.title }}</div>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+    <p style="text-align:center;margin-top:2.4rem;">
+      <a href="/blog" style="font-size:0.82rem;color:var(--gold-d);letter-spacing:0.08em;text-decoration:none;border-bottom:1px solid rgba(184,152,90,0.5);padding-bottom:2px;">すべての記事を見る →</a>
+    </p>
   </div>
 </section>
 
@@ -1863,8 +1931,13 @@ def index():
     show_paid = os.environ.get("SHOW_PAID_PRODUCTS", "0") == "1"
     # 星読み・3分野レポートは中身の最終確認＋Stripe登録が済んでから公開する
     show_sr_field = os.environ.get("SHOW_SR_FIELD", "0") == "1"
+    try:
+        latest_articles = _load_articles()[:3]
+    except Exception:
+        latest_articles = []
     return render_template_string(
         HTML, show_paid=show_paid, show_sr_field=show_sr_field,
+        latest_articles=latest_articles,
         release_date_jp=RELEASE_DATE_JP,
         release_date_dot=RELEASE_DATE_DOT,
         release_date_md=RELEASE_DATE_MD,
@@ -2808,6 +2881,8 @@ _BLOG_CSS_EXTRA = """
 <style>
   .legal-wrap h3 { font-family:var(--serif); font-size:0.9rem; font-weight:600;
     color:var(--text-d); letter-spacing:0.08em; margin:1.8rem 0 0.6rem; }
+  .legal-wrap h2::after { content:""; display:block; width:28px; height:2px;
+    background:var(--gold); border-radius:1px; margin-top:0.5rem; }
   .legal-wrap a { color:var(--gold-d); }
   .legal-wrap blockquote {
     border-left:3px solid var(--gold); background:#F4EFE6;
