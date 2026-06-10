@@ -19,6 +19,13 @@ from moonlog_field_report import generate_field_report_html
 
 app = Flask(__name__)
 
+def _check_birth_date(year, month, day, hour=12, minute=0):
+    """実在する生年月日かを検証（2/30等は ValueError を送出して各ルートの except に拾わせる）"""
+    import datetime as _dt
+    _dt.date(int(year), int(month), int(day))
+    if not (0 <= int(hour) <= 23 and 0 <= int(minute) <= 59):
+        raise ValueError("invalid time")
+
 def _preload():
     try:
         import matplotlib
@@ -1185,7 +1192,7 @@ footer {
 
           <label class="field-label">生年月日</label>
           <div class="row3">
-            <div><input type="number" name="year"  placeholder="年（1900〜2025）" min="1900" max="2025" required></div>
+            <div><input type="number" name="year"  placeholder="年（1900〜2026）" min="1900" max="2026" required></div>
             <div><input type="number" name="month" placeholder="月（1〜12）"      min="1" max="12" required></div>
             <div><input type="number" name="day"   placeholder="日（1〜31）"      min="1" max="31" required></div>
           </div>
@@ -1896,6 +1903,7 @@ def type_result():
                 lat = float(data["lat"])
             if data.get("lng"):
                 lng = float(data["lng"])
+        _check_birth_date(y, mo, d, h, mi)
     except Exception:
         return Response(moonlog_types._err_page("生年月日を正しく入力してください。"),
                         mimetype="text/html; charset=utf-8", status=400)
@@ -2095,6 +2103,7 @@ def checkout_natal():
             "lat":    str(float(data.get("lat") or 35.6762)),
             "lng":    str(float(data.get("lng") or 139.6503)),
         }
+        _check_birth_date(meta["year"], meta["month"], meta["day"], meta["hour"], meta["minute"])
     except (KeyError, ValueError) as e:
         return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
 
@@ -2224,7 +2233,7 @@ def checkout_success():
         threading.Thread(target=_send_async, daemon=True).start()
 
     # 購入完了バナーを冒頭に挿入
-    email_note = f"<br><small style='font-size:.85em;opacity:.9'>📧 PDFを {customer_email} にお送りしました（数分以内に届きます）</small>" if customer_email else ""
+    email_note = f"<br><small style='font-size:.85em;opacity:.9'>📧 PDFを {_esc(customer_email)} にお送りしました（数分以内に届きます）</small>" if customer_email else ""
     banner = (
         '<div style="background:#2C3E6B;color:#fff;padding:18px 20px;text-align:center;'
         'font-family:\'Hiragino Mincho ProN\',serif;letter-spacing:.05em;">'
@@ -2289,6 +2298,7 @@ def preview():
         lat    = float(data.get("lat") or 37.9161)
         lng    = float(data.get("lng") or 139.0364)
         tz     = "Asia/Tokyo"
+        _check_birth_date(year, month, day, hour, minute)
     except (KeyError, ValueError) as e:
         return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
 
@@ -2326,6 +2336,7 @@ def generate():
         lat    = float(data.get("lat") or 37.9161)
         lng    = float(data.get("lng") or 139.0364)
         tz     = "Asia/Tokyo"
+        _check_birth_date(year, month, day, hour, minute)
     except (KeyError, ValueError) as e:
         return jsonify({"error": "入力値が正しくありません。入力内容をご確認ください。"}), 400
 
@@ -2367,6 +2378,7 @@ def solar_return():
         tz       = "Asia/Tokyo"
         sr_year_raw = data.get("sr_year", "")
         sr_year  = int(sr_year_raw) if sr_year_raw.strip().isdigit() else None
+        _check_birth_date(year, month, day, hour, minute)
     except (KeyError, ValueError) as e:
         return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
 
@@ -2400,6 +2412,7 @@ def field_report():
         city   = str(data.get("city", "新潟市")).strip()
         lat    = float(data.get("lat") or 37.9161)
         lng    = float(data.get("lng") or 139.0364)
+        _check_birth_date(year, month, day, hour, minute)
     except (KeyError, ValueError) as e:
         return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
     try:
@@ -2464,6 +2477,7 @@ def lifecycle():
         city  = str(data.get("city","")).strip()
         lat   = float(data.get("lat") or 35.6762)
         lng   = float(data.get("lng") or 139.6503)
+        _check_birth_date(year, month, day)
     except (KeyError, ValueError) as e:
         return "<p style='color:red'>入力値が正しくありません。入力内容をご確認ください。</p>", 400
     try:
@@ -2673,8 +2687,8 @@ def my_reading():
     try:
         with open(filepath, "r", encoding="utf-8") as f:
             return f.read()
-    except Exception as e:
-        return f"<p>読み込みエラー: {e}</p>", 500
+    except Exception:
+        return "<p>ページが見つかりません</p>", 404
 
 @app.route("/hayate_reading")
 def hayate_reading():
@@ -2682,8 +2696,8 @@ def hayate_reading():
     try:
         with open(filepath, "r", encoding="utf-8") as f:
             return f.read()
-    except Exception as e:
-        return f"<p>読み込みエラー: {e}</p>", 500
+    except Exception:
+        return "<p>ページが見つかりません</p>", 404
 
 @app.route("/fuuki_reading")
 def fuuki_reading():
@@ -2691,8 +2705,8 @@ def fuuki_reading():
     try:
         with open(filepath, "r", encoding="utf-8") as f:
             return f.read()
-    except Exception as e:
-        return f"<p>読み込みエラー: {e}</p>", 500
+    except Exception:
+        return "<p>ページが見つかりません</p>", 404
 
 # ============================================================
 # 法的ページ（特商法・プライバシーポリシー・利用規約）
