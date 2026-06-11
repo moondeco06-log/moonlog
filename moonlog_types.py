@@ -311,7 +311,7 @@ def render_result_page(moon_key, sun_key, birth_data=None):
   <a href="#" onclick="event.preventDefault();document.getElementById('to-preview').submit();return false;"
      style="display:block;background:#fff8e7;border:1.5px solid #bd9a48;border-radius:14px;padding:20px 22px;text-align:center;text-decoration:none;color:#1a2740;margin-bottom:26px;">
     <div style="font-family:'Hiragino Mincho ProN','Yu Mincho',serif;font-size:16px;color:#1a2740;margin-bottom:4px;">続けて、太陽・月のレポートを読む</div>
-    <div style="font-size:12px;color:#7b7a72;">あなたの2天体を文章でじっくり ／ 無料・再入力不要</div>
+    <div style="font-size:12px;color:#7b7a72;">あなたの太陽と月を文章でじっくり ／ 無料・再入力不要</div>
     <div style="font-size:13px;color:#bd9a48;margin-top:8px;font-weight:600;">→ 体験版を読む</div>
   </a>'''
 
@@ -344,7 +344,7 @@ def render_result_page(moon_key, sun_key, birth_data=None):
   <div class="divider">― 次の世界へ ―</div>
   <div class="more-box">
     <div class="more-title">あなたの全体像を、7つの星で</div>
-    <p class="more-lead">月タイプ診断は、生まれた瞬間の月を動物のタイプで。出生チャートは7天体＋アセンダントを文章でじっくり読む、もう一つの“あなたという地図”です。同じ月も、別の角度から読みます。</p>
+    <p class="more-lead">月タイプ診断は、生まれた瞬間の月を動物のタイプで。出生チャートは7つの星と第一印象の星（アセンダント）を文章でじっくり読む、もう一つの“あなたという地図”です。同じ月も、別の角度から読みます。</p>
     <ul class="more-list">
       <li>太陽 ― 社会で見せる、あなたの顔</li>
       <li>月 ― 感情と内面（チャート全体の中で）</li>

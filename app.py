@@ -1022,7 +1022,7 @@ footer {
     </div>
     <div style="text-align:center;border-top:1px solid var(--border);padding-top:2.5rem;">
       <p class="def-poem" style="font-family:var(--serif);font-size:1.05rem;color:var(--gold-d);letter-spacing:0.1em;line-height:2.2;">
-        生まれた瞬間の天体データを読み解き、<br>
+        生まれた瞬間の星の配置を読み解き、<br>
         自分でも気づいていなかった傾向に光を当てる。<br>
         月が海を動かすように、言葉が自分の内側を静かに動かす。<br>
         それが、MOONLOGです。
@@ -1115,12 +1115,12 @@ footer {
             <span class="price-note">オープン記念価格・A4換算 約20ページ</span>
           </div>
           <p class="report-desc">
-            7天体＋アセンダントをぜんぶ読み解く一冊。普段当たり前にやっていること、繰り返し起こるパターン——その「なぜ」が、生まれた瞬間の星の配置から見えてきます。
+            7つの星と、第一印象の星（アセンダント）をぜんぶ読み解く一冊。普段当たり前にやっていること、繰り返し起こるパターン——その「なぜ」が、生まれた瞬間の星の配置から見えてきます。
           </p>
           <ul class="report-includes">
             <li>✦ 各惑星の詳細プロフィール</li>
             <li>✦ 強みと成長のヒント</li>
-            <li>✦ 天体間のアスペクト</li>
+            <li>✦ 星どうしの関係（アスペクト）</li>
             <li>✦ 総合プロフィール</li>
           </ul>
           <div class="report-cta report-cta-fill">レポートを購入する</div>
@@ -1321,7 +1321,7 @@ footer {
                     formaction="/preview" formtarget="_blank" id="btn-html">
               出生チャート 無料体験版を見る<span class="pill-free-inline">無料</span>
             </button>
-            <p class="btn-note">太陽・月の2天体のみ／登録不要</p>
+            <p class="btn-note">太陽と月、2つの星だけ／登録不要</p>
 
             {% if show_paid %}
             <!-- 有料 -->
@@ -1418,8 +1418,8 @@ footer {
           <li>♂ <strong>火星</strong>：行動力と情熱の向け方</li>
           <li>♃ <strong>木星</strong>：成長の方向と幸運の領域</li>
           <li>♄ <strong>土星</strong>：人生の課題と魂の成熟テーマ</li>
-          <li>🌟 <strong>総合プロフィール</strong>：7惑星を統合した「あなたという人」</li>
-          <li>🔮 <strong>ホロスコープチャート</strong>：生まれた瞬間の天体配置図</li>
+          <li>🌟 <strong>総合プロフィール</strong>：7つの星を統合した「あなたという人」</li>
+          <li>🔮 <strong>ホロスコープチャート</strong>：生まれた瞬間の星の配置図</li>
         </ul>
       </div>
     </div>
@@ -1470,7 +1470,7 @@ footer {
     <div class="sec-rule"></div>
     <p class="sec-lead">
       西洋占星術では、7つの惑星がそれぞれ人生の異なる側面を象徴します。<br>
-      生まれた瞬間の天体配置から、すべての星のメッセージを読み解きます。
+      生まれた瞬間の星の配置から、すべての星のメッセージを読み解きます。
     </p>
     <div class="planet-grid">
       <div class="planet-card">
@@ -1569,7 +1569,7 @@ footer {
     <div style="margin-bottom:3rem;">
       <h3 style="font-family:var(--serif);font-size:1.15rem;font-weight:400;color:var(--text-d);letter-spacing:0.06em;margin-bottom:1.2rem;">星読みは、占いではなくフレームワークです。</h3>
       <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;margin-bottom:1rem;">
-        生まれた瞬間の天体配置は、その人の「傾向」を読むためのデータです。<br>
+        生まれた瞬間の星の配置は、その人の「傾向」を読むためのデータです。<br>
         「当たる・当たらない」ではなく、「こういう資質を持って生まれた人は、こういう環境で力を発揮しやすい」という読み方をします。
       </p>
       <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;">
@@ -1625,7 +1625,7 @@ footer {
       <h3 style="font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--text-d);letter-spacing:0.06em;margin-bottom:1.2rem;">星読みが、自分を取り戻すきっかけになった。</h3>
       <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;margin-bottom:1rem;">
         もともとIT畑でデータや数字が好きだったわたしにとって、<br>
-        「天体配置というデータから、生まれ持った傾向を読む」という星読みのアプローチは、とても腑に落ちるものでした。
+        「星の配置というデータから、生まれ持った傾向を読む」という星読みのアプローチは、とても腑に落ちるものでした。
       </p>
       <p style="font-size:0.88rem;color:var(--text-m);line-height:2.2;">
         「こうあるべき」という外側の基準ではなく、<br>
@@ -1651,7 +1651,7 @@ footer {
   <div class="footer-logo">MOONLOG</div>
   <p class="footer-copy" style="margin-bottom:0.4rem;">自分を知るための、静かな航海日誌。</p>
   <p class="footer-copy" style="margin-bottom:0.6rem;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.7;">
-    本サービスのレポートは、出生時刻の天体配置を計算し、占星術データベースに基づいて自動生成されるものです。プロ占星術師による個別鑑定ではありません。
+    本サービスのレポートは、生まれた瞬間の星の配置を計算し、占星術データベースに基づいて自動生成されるものです。プロ占星術師による個別鑑定ではありません。
   </p>
   <div class="footer-links">
     <a href="/blog">ブログ</a>
@@ -3601,7 +3601,7 @@ def faq_page():
     <div class="faq-q">月タイプ診断と「出生チャート」はどう違うんですか？</div>
     <div class="faq-a">
       <strong>月タイプ診断（無料）</strong> は「月」だけにフォーカスして、動物のタイプとひとことで「素のあなた」を伝えるもの。気軽に・すぐ・シェアできる入口です。<br><br>
-      <strong>出生チャート（有料・¥980）</strong> は、月を含めた <strong>7天体＋アセンダント</strong>（太陽・月・水星・金星・火星・木星・土星・ASC）を文章でじっくり読み解く、あなたという地図の全体像です。<br><br>
+      <strong>出生チャート（有料・¥980）</strong> は、月を含めた <strong>7つの星＋第一印象の星（アセンダント）</strong>を文章でじっくり読み解く、あなたという地図の全体像です。<br><br>
       同じ「月」も、診断では動物のタイプとして、出生チャートでは7つの星のひとつとして——別の角度から味わえます。
     </div>
   </div>
@@ -3609,10 +3609,10 @@ def faq_page():
   <div class="faq-item">
     <div class="faq-q">無料診断と有料レポートで、月星座（月のサイン）が違っていることがあります。どちらが正しいのですか？</div>
     <div class="faq-a">
-      生まれた瞬間に <strong>月がサインの境目付近にいた方</strong> に、ごくまれに起こります。月は約2.5日で次のサインへ移動するため、出生時刻や出生地によって判定が変わることがあるのです。<br><br>
+      生まれた瞬間に <strong>月が星座の境目付近にいた方</strong> に、ごくまれに起こります。月は約2.5日で次の星座へ移動するため、出生時刻や出生地によって判定が変わることがあるのです。<br><br>
       ・<strong>月タイプ診断・出生チャート 無料体験版</strong>：出生地を入れなくても気軽に試せるよう、東京を基準に計算しています。<br>
       ・<strong>出生チャート（有料）</strong>：ご入力いただいた出生時刻・出生地で厳密に計算します。<br><br>
-      したがって、月がサインの境目近くにいた方は、有料レポートのほうが <strong>正確</strong> です。境目から離れている方（多くの方）はどちらも同じ結果になります。
+      したがって、月が星座の境目近くにいた方は、有料レポートのほうが <strong>正確</strong> です。境目から離れている方（多くの方）はどちらも同じ結果になります。
     </div>
   </div>
 
@@ -3622,7 +3622,7 @@ def faq_page():
     <div class="faq-q">出生時刻が正確にわからないのですが、レポートは作れますか？</div>
     <div class="faq-a">
       作成可能ですが、精度に違いがあります。<br>
-      ・<strong>出生チャート 無料体験版</strong>：生年月日のみで作成可能です（太陽・月のサインを読みます）。<br>
+      ・<strong>出生チャート 無料体験版</strong>：生年月日のみで作成可能です（太陽と月の星座を読みます）。<br>
       ・<strong>有料レポート（出生チャート フル版など）</strong>：出生時刻が必要です。不明な場合は12:00で計算しますが、ハウスや天頂（MC）の精度は下がります。<br>
       母子手帳・親に確認・病院への問い合わせなどで分かることが多いので、可能なら確認をおすすめします。
     </div>
@@ -3632,7 +3632,7 @@ def faq_page():
     <div class="faq-q">星読みは「占い」ですか？当たるんですか？</div>
     <div class="faq-a">
       moonlogは「占い」ではなく <strong>「自己理解のためのフレームワーク」</strong> として星読みを使っています。「当たる・当たらない」ではなく、<strong>「こういう傾向を持って生まれた人は、こういう環境で力を発揮しやすい」</strong> という読み方です。<br>
-      占い師による個別鑑定ではなく、出生時刻の天体配置を計算してデータベースから自動生成するレポートです。
+      占い師による個別鑑定ではなく、生まれた瞬間の星の配置を計算してデータベースから自動生成するレポートです。
     </div>
   </div>
 
@@ -3683,7 +3683,7 @@ def faq_page():
     <div class="faq-a">
       <strong>切り口</strong>で違います。<br>
       ・<strong>出生チャート 無料体験版</strong>：太陽・月のさわり（今すぐ読める）<br>
-      ・<strong>出生チャート</strong>（販売中）：あなたが何者か——7惑星すべての完全版<br>
+      ・<strong>出生チャート</strong>（販売中）：あなたが何者か——7つの星すべての完全版<br>
       ・<strong>2026年 星読み</strong>（近日公開）：今年のテーマと流れ<br>
       ・<strong>仕事・お金・恋愛 3分野レポート</strong>（近日公開）：関心の高い3分野を一冊で<br>
       まずは出生チャート 無料体験版から試して、出生チャート（フル版）へどうぞ。星読み・3分野レポートは近日公開です。
@@ -3693,8 +3693,8 @@ def faq_page():
   <div class="faq-item">
     <div class="faq-q">出生チャート 無料体験版と有料の出生チャートはどう違いますか？</div>
     <div class="faq-a">
-      <strong>出生チャート 無料体験版</strong>は太陽・月の2天体のみ。あなたの核となる部分のさわりが読めます。<br>
-      <strong>有料の出生チャート（¥980）</strong>は7惑星すべて＋総合まとめ＋ホロスコープチャートの完全版。A4換算 約20ページのボリュームです。
+      <strong>出生チャート 無料体験版</strong>は太陽と月、2つの星だけ。あなたの核となる部分のさわりが読めます。<br>
+      <strong>有料の出生チャート（¥980）</strong>は7つの星すべて＋総合まとめ＋星の配置図（ホロスコープチャート）の完全版。A4換算 約20ページのボリュームです。
     </div>
   </div>
 
@@ -3768,7 +3768,7 @@ def faq_page():
   <div class="faq-item">
     <div class="faq-q">レポートはどうやって作られていますか？</div>
     <div class="faq-a">
-      生年月日・出生時刻・出生地から <strong>swisseph（スイス天文暦）</strong> という標準的な天文計算ライブラリを使って、生まれた瞬間の天体配置を正確に算出しています。
+      生年月日・出生時刻・出生地から <strong>swisseph（スイス天文暦）</strong> という標準的な天文計算ライブラリを使って、生まれた瞬間の星の配置を正確に算出しています。
       その配置（惑星のサイン・ハウス）を、moonlog独自の解説データベースと突き合わせて、自動で文章を組み立てています。<br>
       <strong>占い師による個別鑑定ではなく、データに基づく自動生成</strong>のレポートです。
     </div>
@@ -3778,7 +3778,7 @@ def faq_page():
     <div class="faq-q">プロの占星術師の鑑定とは何が違いますか？</div>
     <div class="faq-a">
       moonlogは <strong>「自己理解の入口」</strong> として設計されています。プロ鑑定との主な違い：<br>
-      ・<strong>アスペクト（惑星間の角度）の解釈</strong>：moonlogではコンジャンクション（重なり）など主要なものに限定。複雑な角度の組み合わせは扱いません<br>
+      ・<strong>星どうしの角度（アスペクト）の解釈</strong>：moonlogではコンジャンクション（重なり）など主要なものに限定。複雑な角度の組み合わせは扱いません<br>
       ・<strong>ディグニティ（惑星の品位）</strong>：簡略化しています<br>
       ・<strong>逆行</strong>：チャート図に表示しますが、解釈には深く反映していません<br>
       より深い分析や個別の悩み相談には、信頼できる占星術師への対面鑑定をおすすめします。<br>
