@@ -843,7 +843,7 @@ footer {
   color:var(--text-d); letter-spacing:0.06em; margin-bottom:0.3rem;
 }
 .report-step {
-  font-size: 0.66rem; letter-spacing: 0.22em; color: var(--gold-d);
+  font-size: 0.7rem; letter-spacing: 0.14em; color: var(--gold-d);
   margin-bottom: 0.55rem; font-weight: 500;
 }
 .price-row { display: flex; align-items: center; gap: 0.7rem; margin: 0.3rem 0 1.1rem; flex-wrap: wrap; }
@@ -1037,7 +1037,7 @@ footer {
       <div class="report-card free" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
         <div class="report-accent" style="background: linear-gradient(90deg, #E89C5A, #F4C28B);"></div>
         <div class="report-info">
-          <p class="report-step">STEP 1 — まず遊ぶ</p>
+          <p class="report-step">まずは、ひと目で</p>
           <h3>月タイプ診断</h3>
           <p class="report-sub">Your Moon Type — 月星座でわかる12タイプ</p>
           <div class="price-row">
@@ -1066,7 +1066,7 @@ footer {
       <div class="report-card free" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
         <div class="report-accent"></div>
         <div class="report-info">
-          <p class="report-step">STEP 2 — ためし読み</p>
+          <p class="report-step">まずは、文章でじっくり</p>
           <h3>出生チャート 無料体験版</h3>
           <p class="report-sub">Free Light Reading</p>
           <div class="price-row">
@@ -1090,7 +1090,7 @@ footer {
         <div class="report-accent"></div>
         <div class="promo-ribbon">オープン記念</div>
         <div class="report-info">
-          <p class="report-step">STEP 3 — ぜんぶ読む</p>
+          <p class="report-step">無料体験版の、その先へ</p>
           <h3>出生チャート（フル版）</h3>
           <p class="report-sub">あなたが何者かを知る</p>
           <div class="price-row">
