@@ -1296,7 +1296,7 @@ footer {
               <span>まず無料でためす</span>
             </div>
             <button class="btn" type="submit"
-                    formaction="/type/result" formtarget="_blank" id="btn-type"
+                    formaction="/type/result" id="btn-type"
                     style="background:#1a2740 !important;color:#ffffff !important;border:1px solid #1a2740;font-weight:700;font-size:0.95rem;">
               🌙&nbsp;<span style="background:#bd9a48;color:#1a2740;padding:3px 10px;border-radius:10px;font-size:0.72rem;margin-right:8px;font-weight:700;letter-spacing:0.05em;display:inline-block;">おすすめ</span><span style="color:#ffffff;font-weight:700;">月タイプ診断（動物でわかる）</span>&nbsp;<span style="background:#bd9a48;color:#1a2740;font-weight:700;padding:3px 10px;border-radius:10px;font-size:0.78rem;display:inline-block;">無料</span>
             </button>
