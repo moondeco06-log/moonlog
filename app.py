@@ -842,6 +842,20 @@ footer {
   font-family:var(--serif); font-size:1.15rem; font-weight:500;
   color:var(--text-d); letter-spacing:0.06em; margin-bottom:0.3rem;
 }
+.report-step {
+  font-size: 0.66rem; letter-spacing: 0.22em; color: var(--gold-d);
+  margin-bottom: 0.55rem; font-weight: 500;
+}
+.price-row { display: flex; align-items: center; gap: 0.7rem; margin: 0.3rem 0 1.1rem; flex-wrap: wrap; }
+.pill-free {
+  font-size: 0.8rem; font-weight: 500; color: #2C3E6B;
+  border: 1.5px solid #2C3E6B; border-radius: 999px; padding: 0.12rem 0.9rem;
+}
+.pill-paid {
+  font-size: 0.85rem; font-weight: 500; color: #fff;
+  background: #2C3E6B; border-radius: 999px; padding: 0.16rem 0.95rem;
+}
+.price-note { font-size: 0.72rem; color: var(--text-l); letter-spacing: 0.04em; }
 .report-sub {
   font-family:var(--en); font-style:italic; font-size:0.74rem;
   color:var(--gold-d); letter-spacing:0.14em; margin-bottom:1rem;
@@ -865,17 +879,17 @@ footer {
 .report-includes { list-style:none; padding:0; display:flex; flex-direction:column; gap:0.4rem; flex:1; }
 .report-includes li { font-size:0.78rem; color:var(--text-m); letter-spacing:0.03em; }
 .report-cta {
-  margin-top:1.4rem; padding-top:1.1rem;
-  border-top:1px solid var(--border);
-  font-size:0.78rem; letter-spacing:0.12em;
+  margin-top:1.4rem; padding:0.7rem 0;
+  border:1.5px solid #2C3E6B; border-radius:999px;
+  font-size:0.8rem; letter-spacing:0.12em;
   text-align:center;
   font-weight: 500;
-  transition: color 0.2s;
+  color:#2C3E6B;
+  transition: background 0.2s, color 0.2s;
 }
-.natal     .report-cta { color:#9A6B72; }
-.sr        .report-cta { color:var(--gold-d); }
-.lifecycle .report-cta { color:var(--lav-d); }
-.report-card:hover .report-cta { opacity:1; }
+.report-card:hover .report-cta { background:#2C3E6B; color:#fff; }
+.report-cta-fill { background:#2C3E6B; color:#fff; }
+.report-card:hover .report-cta-fill { background:#1A2740; color:#fff; }
 .report-cta::after { content:" →"; }
 
 /* ─── 最新の記事 ─── */
@@ -1006,7 +1020,7 @@ footer {
     <p class="sec-eyebrow">Reports & Pricing</p>
     <h2 class="sec-title">レポートの種類と料金</h2>
     <div class="sec-rule"></div>
-    <p class="sec-lead">何者か、どう生きるか、今年は何が来るか。<br>3つの視点から、自分という地図を読む。</p>
+    <p class="sec-lead">ふだんの星占いで見ているのは、太陽星座。<br>moonlog はそこに <strong>月</strong> を足して、「素の自分」まで読みます。</p>
 
     {% if show_paid %}
     <div style="margin:0 0 2.5rem;background:var(--white);border:1px solid var(--gold);border-radius:14px;padding:1.6rem 1.8rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.6rem 1.4rem;text-align:center;">
@@ -1023,24 +1037,21 @@ footer {
       <div class="report-card free" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
         <div class="report-accent" style="background: linear-gradient(90deg, #E89C5A, #F4C28B);"></div>
         <div class="report-info">
+          <p class="report-step">STEP 1 — まず遊ぶ</p>
           <h3>月タイプ診断</h3>
           <p class="report-sub">Your Moon Type — 月星座でわかる12タイプ</p>
-          <div class="report-meta">
-            <span class="report-badge free-badge">月・動物タイプ</span>
-            <span class="report-pages">すぐにわかる</span>
-          </div>
-          <div class="price-box price-free">
-            <div class="price-main">無料</div>
-            <div class="price-sub">登録不要・ぱっとわかる</div>
+          <div class="price-row">
+            <span class="pill-free">無料</span>
+            <span class="price-note">登録不要・ぱっとわかる</span>
           </div>
           <p class="report-desc">
-            「あなたは◯◯」。生まれた瞬間の月から、素のあなたを動物のタイプでひと目で。いちばん身軽な、自分を知る入口です。
+            いつもの星占いで見ているのは、太陽。こちらは <strong>月</strong>——あなたもまだ知らない「素の自分」を、動物のタイプでひと目で。
           </p>
           <div style="display:flex;justify-content:center;align-items:center;gap:0.7rem;margin:0.2rem 0 1rem;">
             <img src="/static/images/types/final/cancer.png" alt="うさぎタイプ" loading="lazy" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:1px solid rgba(184,152,90,0.35);background:#fffdf7;">
             <img src="/static/images/types/final/leo.png" alt="ライオンタイプ" loading="lazy" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:1px solid rgba(184,152,90,0.35);background:#fffdf7;">
             <img src="/static/images/types/final/sagittarius.png" alt="こうまタイプ" loading="lazy" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:1px solid rgba(184,152,90,0.35);background:#fffdf7;">
-            <span style="font-size:0.72rem;color:var(--text-l);letter-spacing:0.04em;">…全12タイプ</span>
+            <span style="font-size:0.72rem;color:var(--text-l);letter-spacing:0.04em;white-space:nowrap;">…全12タイプ</span>
           </div>
           <ul class="report-includes">
             <li>✦ あなたのタイプ（動物＋ひとこと）</li>
@@ -1055,18 +1066,15 @@ footer {
       <div class="report-card free" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
         <div class="report-accent"></div>
         <div class="report-info">
+          <p class="report-step">STEP 2 — ためし読み</p>
           <h3>出生チャート 無料体験版</h3>
           <p class="report-sub">Free Light Reading</p>
-          <div class="report-meta">
-            <span class="report-badge free-badge">☉ ☽ の2天体</span>
-            <span class="report-pages">A4換算 約8ページ</span>
-          </div>
-          <div class="price-box price-free">
-            <div class="price-main">無料</div>
-            <div class="price-sub">登録不要・すぐに読めます</div>
+          <div class="price-row">
+            <span class="pill-free">無料</span>
+            <span class="price-note">登録不要・A4換算 約8ページ</span>
           </div>
           <p class="report-desc">
-            まず、あなたの太陽星座から。生まれ持った気質のさわりを読んで、星読みの世界をのぞいてみてください。
+            知っている自分（太陽）と、素の自分（月）。2つのあなたを、こんどは文章でじっくり読みくらべてみてください。
           </p>
           <ul class="report-includes">
             <li>✦ 太陽：人生のテーマ</li>
@@ -1082,18 +1090,15 @@ footer {
         <div class="report-accent"></div>
         <div class="promo-ribbon">オープン記念</div>
         <div class="report-info">
-          <h3>出生チャート</h3>
+          <p class="report-step">STEP 3 — ぜんぶ読む</p>
+          <h3>出生チャート（フル版）</h3>
           <p class="report-sub">あなたが何者かを知る</p>
-          <div class="report-meta">
-            <span class="report-badge natal-badge">基本 / いつでも</span>
-            <span class="report-pages">A4換算 約20ページ</span>
-          </div>
-          <div class="price-box">
-            <div class="price-main">¥980</div>
-            <div class="price-sub">オープン記念価格 / リリース後 価格改定予定</div>
+          <div class="price-row">
+            <span class="pill-paid">¥980</span>
+            <span class="price-note">オープン記念価格・A4換算 約20ページ</span>
           </div>
           <p class="report-desc">
-            自分が何者なのか——普段当たり前にやっていること、繰り返し起こるパターン。その「なぜ」が、生まれた瞬間の星の配置から見えてきます。欠点ではなく、生まれ持ったあなたの形を知る。
+            7天体＋アセンダント＋ハウス。普段当たり前にやっていること、繰り返し起こるパターン——その「なぜ」が、生まれた瞬間の星の配置から見えてきます。
           </p>
           <ul class="report-includes">
             <li>✦ 各惑星の詳細プロフィール</li>
@@ -1101,7 +1106,7 @@ footer {
             <li>✦ 天体間のアスペクト</li>
             <li>✦ 総合プロフィール</li>
           </ul>
-          <div class="report-cta">レポートを購入する</div>
+          <div class="report-cta report-cta-fill">レポートを購入する</div>
           <a href="/sample/natal" target="_blank" class="sample-link" onclick="event.stopPropagation()">サンプルを見る</a>
         </div>
       </div>
@@ -1190,16 +1195,10 @@ footer {
         </div>
       </div>
       {% elif not show_sr_field %}
-      <!-- 出生チャート公開後・星読み/3分野は近日公開 -->
-      <div class="report-card" style="grid-column: span 2; background:rgba(184,152,88,.06); border:2px dashed var(--gold); padding:2.5rem 2rem; text-align:center;">
-        <div class="report-info">
-          <h3 style="color:var(--gold-d);">✨ 2026年 星読み・3分野レポートは近日公開</h3>
-          <p style="margin-top:1rem;font-size:0.95rem;color:var(--text-m);line-height:1.9;">
-            ただいま最終仕上げ中です。<br>
-            まずは「出生チャート」をお楽しみください。
-          </p>
-        </div>
-      </div>
+      <!-- 出生チャート公開後・星読み/3分野は近日公開（1行・控えめ） -->
+      <p style="grid-column: 1 / -1; text-align:center; font-size:0.82rem; color:var(--text-l); letter-spacing:0.06em; margin:0.5rem 0 0;">
+        ✨ 2026年 星読み・仕事/お金/恋愛 3分野レポートは近日公開
+      </p>
       {% endif %}
 
     </div>
