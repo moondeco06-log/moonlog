@@ -1918,6 +1918,7 @@ User-agent: Claude-Web
 Disallow: /
 
 User-agent: Googlebot
+Disallow: /tuner
 Disallow: /generate
 Disallow: /preview
 Disallow: /solar_return
@@ -1927,6 +1928,7 @@ Disallow: /hayate_reading
 Disallow: /fuuki_reading
 
 User-agent: *
+Disallow: /tuner
 Disallow: /generate
 Disallow: /preview
 Disallow: /solar_return
@@ -1936,6 +1938,12 @@ Disallow: /hayate_reading
 Disallow: /fuuki_reading
 """
     return Response(content, mimetype="text/plain")
+
+
+@app.route("/tuner")
+def tuner():
+    # 夏紀さん専用の楽器チューナー（非公開ツール・noindex）
+    return send_file("static/tuner/index.html")
 
 
 @app.route("/")
