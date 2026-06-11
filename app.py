@@ -629,6 +629,21 @@ select option { background: var(--white); color: var(--text-d); }
 .btn-indigo:hover { background: #4A4890; border-color: #4A4890; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn:active:not(:disabled) { transform: scale(0.99); }
+/* ─── 新スタイル：無料=白抜き・有料=塗り（料金カードと同じ言語） ─── */
+.btn-free-main, .btn-free-sub {
+  background: #fff; border: 1.5px solid #2C3E6B; color: #2C3E6B;
+  border-radius: 999px; font-weight: 500;
+}
+.btn-free-main:hover, .btn-free-sub:hover { background: #F2F4F9; }
+.pill-free-inline {
+  display: inline-block; font-size: 0.72rem; border: 1px solid currentColor;
+  border-radius: 999px; padding: 1px 10px; margin-left: 10px; vertical-align: middle;
+}
+.tag-osusume {
+  display: inline-block; font-size: 0.68rem; background: var(--gold);
+  color: #fff; border-radius: 999px; padding: 2px 10px; margin-right: 10px;
+  letter-spacing: 0.08em; vertical-align: middle;
+}
 /* ─── フォーム内 無料/有料ラベル区切り ─── */
 .form-plan-divider {
   display: flex; align-items: center; gap: 0.9rem;
@@ -680,13 +695,15 @@ select option { background: var(--white); color: var(--text-d); }
 .btn-note a:hover { text-decoration-color: var(--gold-d); }
 /* ─── 出生チャート（有料）ボタン ─── */
 .btn-natal {
-  background: var(--gold-d);
-  border-color: var(--gold-d);
+  background: #2C3E6B;
+  border-color: #2C3E6B;
   color: #fff;
+  border-radius: 999px;
+  font-weight: 500;
 }
 .btn-natal:hover:not(:disabled) {
-  background: var(--gold);
-  border-color: var(--gold);
+  background: #1A2740;
+  border-color: #1A2740;
 }
 #status {
   text-align: center;
@@ -1295,16 +1312,14 @@ footer {
             <div class="form-plan-divider">
               <span>まず無料でためす</span>
             </div>
-            <button class="btn" type="submit"
-                    formaction="/type/result" id="btn-type"
-                    style="background:#1a2740 !important;color:#ffffff !important;border:1px solid #1a2740;font-weight:700;font-size:0.95rem;">
-              🌙&nbsp;<span style="background:#bd9a48;color:#1a2740;padding:3px 10px;border-radius:10px;font-size:0.72rem;margin-right:8px;font-weight:700;letter-spacing:0.05em;display:inline-block;">おすすめ</span><span style="color:#ffffff;font-weight:700;">月タイプ診断（動物でわかる）</span>&nbsp;<span style="background:#bd9a48;color:#1a2740;font-weight:700;padding:3px 10px;border-radius:10px;font-size:0.78rem;display:inline-block;">無料</span>
+            <button class="btn btn-free-main" type="submit"
+                    formaction="/type/result" id="btn-type">
+              <span class="tag-osusume">おすすめ</span>月タイプ診断（動物でわかる）<span class="pill-free-inline">無料</span>
             </button>
             <p class="btn-note">月星座から、あなたのタイプをひと目で／登録不要</p>
-            <button class="btn" type="submit"
-                    formaction="/preview" formtarget="_blank" id="btn-html"
-                    style="background:#fff8e7;color:#1a2740;border:1.5px solid #bd9a48;font-weight:600;font-size:0.95rem;">
-              ✦&nbsp;<span style="color:#1a2740;font-weight:600;">出生チャート 無料体験版を見る</span>&nbsp;<span style="background:#bd9a48;color:#1a2740;font-weight:700;padding:3px 10px;border-radius:10px;font-size:0.78rem;display:inline-block;">無料</span>
+            <button class="btn btn-free-sub" type="submit"
+                    formaction="/preview" formtarget="_blank" id="btn-html">
+              出生チャート 無料体験版を見る<span class="pill-free-inline">無料</span>
             </button>
             <p class="btn-note">太陽・月の2天体のみ／登録不要</p>
 
@@ -1314,9 +1329,9 @@ footer {
               <span>有料レポート（各¥980）</span>
             </div>
 
-            <div class="email-field" style="margin:14px 0 18px;padding:14px 16px;background:#fffbf3;border:1px solid #e7d4a5;border-radius:8px;">
-              <label for="paid_email" style="display:block;font-size:0.85rem;color:#5A3818;font-weight:600;margin-bottom:6px;">
-                📧 PDF送付先メールアドレス <span style="color:#bd9a48;font-size:0.78rem;font-weight:500;">（有料レポート購入時のみ必須）</span>
+            <div class="email-field" style="margin:14px 0 18px;padding:14px 16px;background:#fff;border:1px solid var(--border);border-radius:10px;">
+              <label for="paid_email" style="display:block;font-size:0.85rem;color:var(--text-d);font-weight:500;margin-bottom:6px;">
+                PDF送付先メールアドレス <span style="color:var(--text-l);font-size:0.78rem;font-weight:400;">（購入時のみ必須）</span>
               </label>
               <input type="email" name="email" id="paid_email" inputmode="email" autocomplete="email"
                      placeholder="your-name@example.com"
@@ -1328,9 +1343,9 @@ footer {
             <button class="btn btn-natal" type="submit"
                     formaction="/checkout/natal" id="btn-natal"
                     title="Stripeで決済 → ご購入後にレポート表示">
-              🌟 &nbsp;出生チャート（フル版）　<span class="btn-price">¥980</span>
+              出生チャート（フル版）　<span class="btn-price">¥980</span>
             </button>
-            <p class="btn-note">7惑星すべて＋総合まとめ／<a href="/sample/natal" target="_blank">サンプルを見る</a></p>
+            <p class="btn-note">7つの星すべて＋総合まとめ／<a href="/sample/natal" target="_blank">サンプルを見る</a></p>
 
             {% if show_sr_field %}
             <div class="sr-row">
