@@ -45,10 +45,12 @@
     box-shadow:0 10px 36px rgba(13,58,92,.16);
   }
   .doremi{text-align:center;line-height:1;}
-  .doremi .big{font-size:92px;font-weight:700;color:#0d3a5c;letter-spacing:.02em;}
-  .doremi .big.small-kana{font-size:72px;}
-  .doremi .alpha{font-size:24px;color:#4a85ad;margin-left:8px;font-weight:600;}
-  .doremi .sub{margin-top:12px;font-size:14px;color:#4a85ad;font-variant-numeric:tabular-nums;}
+  .note-row{height:108px;display:flex;align-items:center;justify-content:center;}
+  .doremi .big{font-size:72px;font-weight:700;color:#0d3a5c;letter-spacing:.02em;
+    width:216px;text-align:center;display:inline-block;white-space:nowrap;}
+  .doremi .alpha{font-size:24px;color:#4a85ad;font-weight:600;
+    width:58px;text-align:left;display:inline-block;font-variant-numeric:tabular-nums;}
+  .doremi .sub{height:22px;font-size:14px;color:#4a85ad;font-variant-numeric:tabular-nums;}
   .doremi .sub b{color:#0d3a5c;font-weight:600;}
 
   .meter{position:relative;height:92px;margin:26px 6px 0;}
@@ -101,7 +103,7 @@
 
   <div class="card">
     <div class="doremi">
-      <span class="big" id="big">&ndash;</span><span class="alpha" id="alpha"></span>
+      <div class="note-row"><span class="big" id="big">&ndash;</span><span class="alpha" id="alpha"></span></div>
       <div class="sub" id="sub">マイクをオンにして、音をひとつのばしてみて</div>
     </div>
     <div class="meter">
@@ -164,6 +166,7 @@ el.count.textContent='きょうのぴったり '+hits+'回';
 
 let audioCtx,analyser,buf,rafId,stream,running=false;
 let okFrames=0,counted=false,praiseTimer=null;
+let emaExact=null,curMidi=null,switchFrames=0,silentFrames=0;
 
 async function start(){
   try{
@@ -188,6 +191,7 @@ function stop(){
   running=false;cancelAnimationFrame(rafId);
   if(stream)stream.getTracks().forEach(t=>t.stop());
   if(audioCtx)audioCtx.close();
+  emaExact=null;curMidi=null;switchFrames=0;silentFrames=0;
   el.status.textContent='とまっています';
   el.toggle.textContent='はじめる';el.toggle.classList.remove('stop');
   el.big.textContent='–';el.alpha.textContent='';
@@ -229,11 +233,23 @@ function update(){
   analyser.getFloatTimeDomainData(buf);
   const freq=autoCorrelate(buf,audioCtx.sampleRate);
   if(freq!==-1&&freq>40&&freq<2000){
+    silentFrames=0;
     const refA=parseFloat(el.refA.value);
     const tp=parseInt(el.transpose.value);
     const exact=12*Math.log2(freq/refA)+69;
-    const midi=Math.round(exact);
-    const cents=Math.round((exact-midi)*100);
+    // なめらかにする（1フレームごとの揺れを吸収）
+    emaExact=(emaExact===null)?exact:emaExact*0.6+exact*0.4;
+    // 音名は「となりの音に十分入った状態が続いたとき」だけ切り替える
+    if(curMidi===null){
+      curMidi=Math.round(emaExact);switchFrames=0;
+    }else if(Math.abs(emaExact-curMidi)>0.65){
+      switchFrames++;
+      if(switchFrames>=5){curMidi=Math.round(emaExact);switchFrames=0;}
+    }else{
+      switchFrames=0;
+    }
+    const midi=curMidi;
+    const cents=Math.round((emaExact-midi)*100);
     const w=midi+tp;                       // 記譜（アルトサックスの音）
     const wName=DOREMI[((w%12)+12)%12];
     const wAlpha=ALPHA[((w%12)+12)%12];
@@ -241,7 +257,6 @@ function update(){
     const cName=ALPHA[((midi%12)+12)%12];  // 実音
     const cOct=Math.floor(midi/12)-1;
     el.big.textContent=wName;
-    el.big.classList.toggle('small-kana',wName.length>=2);
     el.alpha.textContent=wAlpha+wOct;
     el.sub.innerHTML='実音 <b>'+cName+cOct+'</b>　'+freq.toFixed(1)+' Hz';
     const pos=50+Math.max(-50,Math.min(50,cents));
@@ -262,6 +277,10 @@ function update(){
     }else{
       okFrames=0;counted=false;
     }
+  }else{
+    // 無音が続いたら追従をリセット（次の音の出だしで素早くロック）
+    silentFrames++;
+    if(silentFrames>20){emaExact=null;curMidi=null;switchFrames=0;}
   }
   rafId=requestAnimationFrame(update);
 }
