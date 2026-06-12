@@ -154,6 +154,16 @@
     </select>
     <button class="tonebtn" id="tone">♪ 鳴らす</button>
     <button class="gobtn" id="toggle">はじめる</button>
+    <button class="tonebtn" id="chartBtn" style="grid-column:1/3;">実音 ⇔ サックス 早見表</button>
+    <div id="chart" style="display:none;grid-column:1/3;background:rgba(255,255,255,.82);border-radius:14px;padding:14px 12px;box-shadow:0 4px 14px rgba(13,58,92,.10);">
+      <div style="font-size:12px;color:#4a85ad;text-align:center;margin-bottom:10px;">実音 → サックスで吹く音</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px 6px;text-align:center;font-size:14px;color:#0d3a5c;">
+        <div><b>C</b> → ラ</div><div><b>D♭</b> → シ♭</div><div><b>D</b> → シ</div>
+        <div><b>E♭</b> → ド</div><div><b>E</b> → ド♯</div><div><b>F</b> → レ</div>
+        <div><b>F♯</b> → ミ♭</div><div><b>G</b> → ミ</div><div><b>A♭</b> → ファ</div>
+        <div><b>A</b> → ファ♯</div><div><b>B♭</b> → ソ</div><div><b>B</b> → ソ♯</div>
+      </div>
+    </div>
     <div class="hint">マーカーが真ん中で金色に光ったらぴったり<br>大きい文字はアルトサックスの音名（実音は下に表示）<br>B♭に合わせるときはソ、Aに合わせるときはファ♯を吹く</div>
   </div>
 
@@ -346,6 +356,15 @@ toneBtn.addEventListener('click',()=>tonePlaying?stopTone():startTone());
 function retune(){if(tonePlaying){stopTone();setTimeout(startTone,220);}}
 toneNote.addEventListener('change',retune);
 el.refA.addEventListener('change',retune);
+
+// 実音⇔サックスの早見表
+const chartBtn=document.getElementById('chartBtn');
+const chart=document.getElementById('chart');
+chartBtn.addEventListener('click',()=>{
+  const open=chart.style.display!=='none';
+  chart.style.display=open?'none':'block';
+  chartBtn.textContent=open?'実音 ⇔ サックス 早見表':'早見表をとじる';
+});
 </script>
 </body>
 </html>
