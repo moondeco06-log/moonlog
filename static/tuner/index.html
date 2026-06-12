@@ -85,7 +85,7 @@
     -webkit-appearance:none;appearance:none;font-family:inherit;
     box-shadow:0 4px 14px rgba(13,58,92,.10);
   }
-  .tonebtn{border:none;border-radius:14px;padding:13px 6px;font-size:13px;
+  .tonebtn{border:none;border-radius:14px;padding:13px 6px;font-size:15px;
     font-weight:600;font-family:inherit;color:#0d3a5c;background:rgba(255,255,255,.82);
     box-shadow:0 4px 14px rgba(13,58,92,.10);}
   .tonebtn:active{transform:scale(.98);}
@@ -138,8 +138,11 @@
       <option value="442" selected>A = 442</option>
       <option value="443">A = 443</option>
     </select>
-    <button class="tonebtn" id="toneBb">♪ シ♭（トランペットのド）</button>
-    <button class="tonebtn" id="toneA">♪ ラ（オーボエのA）</button>
+    <select id="toneNote">
+      <option value="1" selected>シ♭</option>
+      <option value="0">ラ</option>
+    </select>
+    <button class="tonebtn" id="tone">♪ 鳴らす</button>
     <button class="gobtn" id="toggle">はじめる</button>
     <div class="hint">マーカーが真ん中で金色に光ったらぴったり<br>大きい文字はアルトサックスの音名（実音は下に表示）<br>シ♭に合わせるときはソ、ラに合わせるときはファ♯を吹く</div>
   </div>
@@ -295,16 +298,14 @@ function update(){
 
 el.toggle.addEventListener('click',()=>running?stop():start());
 
-// 基準音を鳴らす（シ♭＝トランペットのド／ラ＝オーボエのA）
-const TONES=[
-  {btn:document.getElementById('toneBb'),off:1,label:'♪ シ♭（トランペットのド）'},
-  {btn:document.getElementById('toneA'),off:0,label:'♪ ラ（オーボエのA）'}
-];
-let toneCtx=null,toneOscs=[],toneGain=null,playingOff=null;
-function startTone(t){
+// 基準音を鳴らす（音はメニューで選択・既定はシ♭）
+const toneBtn=document.getElementById('tone');
+const toneNote=document.getElementById('toneNote');
+let toneCtx=null,toneOscs=[],toneGain=null,tonePlaying=false;
+function startTone(){
   toneCtx=new (window.AudioContext||window.webkitAudioContext)();
   if(toneCtx.state==='suspended')toneCtx.resume();
-  const f=parseFloat(el.refA.value)*Math.pow(2,t.off/12);
+  const f=parseFloat(el.refA.value)*Math.pow(2,parseInt(toneNote.value)/12);
   toneGain=toneCtx.createGain();
   toneGain.gain.setValueAtTime(0,toneCtx.currentTime);
   toneGain.gain.linearRampToValueAtTime(0.22,toneCtx.currentTime+0.08);
@@ -315,9 +316,9 @@ function startTone(t){
     o.type='sine';o.frequency.value=f*h;og.gain.value=g;
     o.connect(og);og.connect(toneGain);o.start();toneOscs.push(o);
   });
-  playingOff=t.off;
-  t.btn.textContent='♪ '+f.toFixed(1)+' Hz（とめる）';
-  t.btn.classList.add('playing');
+  tonePlaying=true;
+  toneBtn.textContent='♪ とめる';
+  toneBtn.classList.add('playing');
 }
 function stopTone(){
   const ctx=toneCtx,oscs=toneOscs;
@@ -326,23 +327,15 @@ function stopTone(){
     toneGain.gain.linearRampToValueAtTime(0,ctx.currentTime+0.12);
   }
   setTimeout(()=>{oscs.forEach(o=>{try{o.stop()}catch(e){}});if(ctx)ctx.close();},200);
-  toneCtx=null;toneOscs=[];toneGain=null;playingOff=null;
-  TONES.forEach(t=>{t.btn.textContent=t.label;t.btn.classList.remove('playing');});
+  toneCtx=null;toneOscs=[];toneGain=null;tonePlaying=false;
+  toneBtn.textContent='♪ 鳴らす';
+  toneBtn.classList.remove('playing');
 }
-TONES.forEach(t=>{
-  t.btn.addEventListener('click',()=>{
-    if(playingOff===t.off){stopTone();return;}
-    const wasPlaying=playingOff!==null;
-    stopTone();
-    setTimeout(()=>startTone(t),wasPlaying?220:0);
-  });
-});
-el.refA.addEventListener('change',()=>{
-  if(playingOff!==null){
-    const t=TONES.find(x=>x.off===playingOff);
-    stopTone();setTimeout(()=>startTone(t),220);
-  }
-});
+toneBtn.addEventListener('click',()=>tonePlaying?stopTone():startTone());
+// 鳴らしている最中に音や基準ピッチを変えたら、新しい音で鳴らし直す
+function retune(){if(tonePlaying){stopTone();setTimeout(startTone,220);}}
+toneNote.addEventListener('change',retune);
+el.refA.addEventListener('change',retune);
 </script>
 </body>
 </html>
