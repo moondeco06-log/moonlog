@@ -85,6 +85,12 @@
     -webkit-appearance:none;appearance:none;font-family:inherit;
     box-shadow:0 4px 14px rgba(13,58,92,.10);
   }
+  .tonebtn{grid-column:1/3;border:none;border-radius:14px;padding:13px;font-size:15px;
+    font-weight:600;font-family:inherit;color:#0d3a5c;background:rgba(255,255,255,.82);
+    box-shadow:0 4px 14px rgba(13,58,92,.10);}
+  .tonebtn:active{transform:scale(.98);}
+  .tonebtn.playing{background:#ffd34d;color:#5c4400;
+    box-shadow:0 0 18px 4px rgba(255,211,77,.55);}
   .gobtn{grid-column:1/3;border:none;border-radius:16px;padding:16px;font-size:17px;
     font-weight:700;font-family:inherit;color:#fff;background:#0d6eb8;
     box-shadow:0 6px 20px rgba(13,58,92,.3);}
@@ -132,6 +138,7 @@
       <option value="442" selected>A = 442</option>
       <option value="443">A = 443</option>
     </select>
+    <button class="tonebtn" id="tone">♪ ラ（A）の音を鳴らす</button>
     <button class="gobtn" id="toggle">はじめる</button>
     <div class="hint">マーカーが真ん中で金色に光ったらぴったり<br>大きい文字はアルトサックスの音名（実音は下に表示）</div>
   </div>
@@ -286,6 +293,41 @@ function update(){
 }
 
 el.toggle.addEventListener('click',()=>running?stop():start());
+
+// 基準音（ラ＝A）を鳴らす
+const toneBtn=document.getElementById('tone');
+let toneCtx=null,toneOscs=[],toneGain=null,tonePlaying=false;
+function startTone(){
+  toneCtx=new (window.AudioContext||window.webkitAudioContext)();
+  if(toneCtx.state==='suspended')toneCtx.resume();
+  const f=parseFloat(el.refA.value);
+  toneGain=toneCtx.createGain();
+  toneGain.gain.setValueAtTime(0,toneCtx.currentTime);
+  toneGain.gain.linearRampToValueAtTime(0.22,toneCtx.currentTime+0.08);
+  toneGain.connect(toneCtx.destination);
+  // 純音だと耳に刺さるので、倍音を少し足してやわらかい音にする
+  [[1,1],[2,0.18],[3,0.06]].forEach(([h,g])=>{
+    const o=toneCtx.createOscillator(),og=toneCtx.createGain();
+    o.type='sine';o.frequency.value=f*h;og.gain.value=g;
+    o.connect(og);og.connect(toneGain);o.start();toneOscs.push(o);
+  });
+  tonePlaying=true;
+  toneBtn.textContent='♪ '+f+' Hz で鳴っています（とめる）';
+  toneBtn.classList.add('playing');
+}
+function stopTone(){
+  const ctx=toneCtx,oscs=toneOscs;
+  if(toneGain){
+    toneGain.gain.setValueAtTime(toneGain.gain.value,ctx.currentTime);
+    toneGain.gain.linearRampToValueAtTime(0,ctx.currentTime+0.12);
+  }
+  setTimeout(()=>{oscs.forEach(o=>{try{o.stop()}catch(e){}});if(ctx)ctx.close();},200);
+  toneCtx=null;toneOscs=[];toneGain=null;tonePlaying=false;
+  toneBtn.textContent='♪ ラ（A）の音を鳴らす';
+  toneBtn.classList.remove('playing');
+}
+toneBtn.addEventListener('click',()=>tonePlaying?stopTone():startTone());
+el.refA.addEventListener('change',()=>{if(tonePlaying){stopTone();setTimeout(startTone,220);}});
 </script>
 </body>
 </html>
