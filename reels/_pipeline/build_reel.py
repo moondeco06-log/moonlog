@@ -65,13 +65,24 @@ def make_scrim():
     """どの背景でも文字が読めるよう、タイトル帯と本文帯にだけ薄暗いヴェールを敷く。
     背景全体は暗くせず、文字位置だけ柔らかく落とす（背景の雰囲気は保つ）。"""
     from PIL import Image, ImageDraw, ImageFilter
-    sc = Image.new("RGBA", (1080, 1920), (0, 0, 0, 0))
-    d = ImageDraw.Draw(sc)
-    # タイトル帯（上部 y~180-430）
-    d.rounded_rectangle([90, 150, 990, 470], radius=200, fill=(10, 14, 30, 120))
-    # 本文帯（中央やや下 y~800-1230／CY=1010中心）
-    d.rounded_rectangle([40, 770, 1040, 1260], radius=260, fill=(10, 14, 30, 135))
-    sc = sc.filter(ImageFilter.GaussianBlur(70))
+    # 全幅の縦グラデーションのヴェール（左右の輪郭が出ないので夕焼け等でも自然に溶ける）。
+    # 文字ゾーン(y~620-1320)をなだらかに暗くし、上下は透明へフェード。楕円モヤを廃止。
+    import numpy as np
+    H_, W_ = 1920, 1080
+    NAVY = (10, 14, 30)
+    MAX_A = 150  # 文字ゾーン中心の最大不透明度
+    col = np.zeros((H_, 4), dtype=np.float32)
+    def ramp(y, top, peak0, peak1, bot):
+        if y < top or y > bot: return 0.0
+        if y < peak0: return (y - top) / (peak0 - top)        # 上の立ち上がり
+        if y > peak1: return (bot - y) / (bot - peak1)        # 下の収束
+        return 1.0                                            # 中央フラット
+    for y in range(H_):
+        a = ramp(y, 560, 720, 1240, 1380) * MAX_A             # 本文ゾーン
+        a = max(a, ramp(y, 60, 110, 230, 300) * 70)           # 最上部タイトル（薄く）
+        col[y] = (*NAVY, a)
+    arr = np.repeat(col[:, None, :], W_, axis=1).astype(np.uint8)
+    sc = Image.fromarray(arr, "RGBA").filter(ImageFilter.GaussianBlur(30))
     sc.save(f"{FR}/scrim.png")
 
 
