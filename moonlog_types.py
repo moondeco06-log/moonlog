@@ -186,6 +186,15 @@ body{background:#ece6d8;color:var(--ink);
      border-radius:30px;padding:15px;font-size:14.5px;letter-spacing:.04em;
      text-decoration:none;margin-top:18px;}
 .cta small{display:block;font-size:11px;opacity:.85;letter-spacing:0;margin-top:2px;}
+.share-box{text-align:center;background:#fffdf7;border:1px solid #e3dcc6;
+           border-radius:16px;padding:22px 20px 24px;margin-bottom:30px;}
+.share-prev{width:172px;border-radius:10px;
+            box-shadow:0 6px 18px rgba(40,40,60,.16);}
+.share-note{font-size:12.5px;color:var(--soft);margin:14px 0 0;line-height:1.7;}
+.share-btn{display:block;width:100%;background:var(--gold);color:#fff;border:0;
+           border-radius:30px;padding:14px;font-size:14.5px;letter-spacing:.04em;
+           margin-top:16px;cursor:pointer;font-family:inherit;}
+.share-btn:active{opacity:.85;}
 .again{text-align:center;margin-top:20px;}
 .again a{color:var(--soft);font-size:12px;text-decoration:none;}
 .errbox{background:#fff4f0;border:1px solid #e7c3b3;border-radius:12px;
@@ -337,6 +346,35 @@ def render_result_page(moon_key, sun_key, birth_data=None):
     <div class="h-label">― あなたへの一言 ―</div>
     <p>{_esc(t['hitokoto'])}</p>
   </div>
+
+  <div class="divider">― シェアする ―</div>
+  <div class="share-box">
+    <img class="share-prev" src="/static/images/types/share/{_esc(moon_key)}.png"
+         alt="{_esc(t['name'])}のシェア画像">
+    <p class="share-note">ストーリーズに貼って、<br>友だちの月タイプも診断してみて🌙</p>
+    <button class="share-btn" type="button"
+       data-img="/static/images/types/share/{_esc(moon_key)}.png"
+       data-text="わたしの月タイプは「{_esc(t['name'])}」🌙 あなたは？ moonlog.jp で無料診断"
+       onclick="moonlogShare(this)">画像を保存・シェアする</button>
+  </div>
+  <script>
+  async function moonlogShare(btn){{
+    var url=btn.getAttribute('data-img');
+    var text=btn.getAttribute('data-text');
+    try{{
+      var res=await fetch(url);
+      var blob=await res.blob();
+      var file=new File([blob],'moonlog_type.png',{{type:'image/png'}});
+      if(navigator.canShare&&navigator.canShare({{files:[file]}})){{
+        await navigator.share({{files:[file],text:text}});
+        return;
+      }}
+    }}catch(e){{}}
+    var a=document.createElement('a');
+    a.href=url;a.download='moonlog_type.png';
+    document.body.appendChild(a);a.click();a.remove();
+  }}
+  </script>
 
   <div class="divider">― 「{_esc(t['name'])}」を、もっと深く ―</div>
   <div class="type-deep">{TYPE_DEEP.get(moon_key, '')}</div>
