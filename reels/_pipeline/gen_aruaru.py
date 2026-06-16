@@ -269,6 +269,62 @@ def pick_bg():
     return os.path.join(ROOT, "reels/backgrounds_aruaru_pop.mp4")
 
 
+# ── グリッド/フィード用カバー画像（Instagramに cover_url で指定）──
+# 月星座という言葉は表紙に出さない（一般向け）。ラベルは共通「ついやっちゃう あるある」。
+COVER_LABEL = "ついやっちゃう あるある"
+COVER_DIR = os.path.join(ROOT, "reels", "_covers")   # ビルド用。igpostが static/images/reel_covers/ へコピー
+F_GOTHIC = "/System/Library/Fonts/ヒラギノ角ゴシック W3.ttc"
+CREAM = (250, 246, 236)
+NAVY = (34, 50, 79)
+GOLD_C = (189, 154, 72)
+GRAY_C = (123, 122, 114)
+
+
+def make_cover(data):
+    """1枚目のフックを使った専用カバーを static/images/reel_covers/aruaru_<animal>.png に保存。"""
+    os.makedirs(COVER_DIR, exist_ok=True)
+    hook = data["frames"][0][0]
+    img = Image.new("RGB", (W, H), CREAM)
+    d = ImageDraw.Draw(img)
+    cx = W // 2
+
+    def fo(p, s):
+        return ImageFont.truetype(p, s)
+
+    def ctr(y, s, f, fill):
+        b = d.textbbox((0, 0), s, font=f)
+        d.text((cx - (b[2] - b[0]) / 2 - b[0], y), s, font=f, fill=fill)
+
+    d.rectangle([36, 36, W - 36, H - 36], outline=GOLD_C, width=3)
+    # 上のラベル・ピル
+    lf = fo(F_GOTHIC, 46)
+    b = d.textbbox((0, 0), COVER_LABEL, font=lf)
+    lw = b[2] - b[0]
+    d.rounded_rectangle([cx - lw // 2 - 44, 210, cx + lw // 2 + 44, 310], radius=50, fill=NAVY)
+    ctr(232, COVER_LABEL, lf, (245, 236, 210))
+    # フック（大きく・収まるようサイズ自動調整）
+    lines = hook.split("\n")
+    size = 150
+    while size > 90:
+        hf = fo(FONT, size)
+        if max(d.textbbox((0, 0), ln, font=hf)[2] for ln in lines) <= W - 180:
+            break
+        size -= 6
+    hf = fo(FONT, size)
+    asc, desc = hf.getmetrics()
+    LH = asc + desc + 18
+    y0 = (H - LH * len(lines)) // 2 - 60
+    for i, ln in enumerate(lines):
+        ctr(y0 + i * LH, ln, hf, NAVY)
+    # 下のCTA
+    ctr(1560, "＼ あなたは何タイプ？ ／", fo(F_GOTHIC, 52), GOLD_C)
+    ctr(1640, "プロフィールから30秒で診断", fo(F_GOTHIC, 40), GRAY_C)
+
+    out = os.path.join(COVER_DIR, f"aruaru_{data['img'].replace('.png','')}.png")
+    img.save(out)
+    return out
+
+
 def build(data):
     gen_frames(data)
     bg = pick_bg()
@@ -316,8 +372,15 @@ def build(data):
     cap_path = os.path.join(ROOT, f"instagram_posts/aruaru_{data['img'].replace('.png','')}_caption.txt")
     open(cap_path, "w", encoding="utf-8").write(data["caption"])
     print(f"   キャプション: {cap_path}")
+    # グリッド/フィード用カバー（igpostが cover_url で使用）
+    cov = make_cover(data)
+    print(f"   カバー: {cov}")
 
 
 if __name__ == "__main__":
-    key = sys.argv[1] if len(sys.argv) > 1 else "gemini"
-    build(ARUARU[key])
+    arg = sys.argv[1] if len(sys.argv) > 1 else "gemini"
+    if arg == "covers":          # 全タイプのカバーだけ生成（動画は作らない）
+        for k, v in ARUARU.items():
+            print("カバー:", make_cover(v))
+    else:
+        build(ARUARU[arg])
