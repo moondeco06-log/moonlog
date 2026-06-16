@@ -214,6 +214,8 @@ el.count.textContent='きょうのぴったり '+hits+'回';
 let audioCtx,analyser,buf,rafId,stream,running=false;
 let okFrames=0,counted=false,praiseTimer=null;
 let emaExact=null,curMidi=null,switchFrames=0,silentFrames=0;
+let lastSoundTs=0;
+const AUTO_OFF_MS=90000;  // 無音が90秒つづいたら自動でとめる（マイク切り忘れ防止）
 
 async function start(){
   try{
@@ -230,9 +232,15 @@ async function start(){
   buf=new Float32Array(analyser.fftSize);
   src.connect(analyser);
   running=true;
+  lastSoundTs=performance.now();
   el.status.textContent='きいています';
   el.toggle.textContent='とめる';el.toggle.classList.add('stop');
   update();
+}
+function autoStop(){
+  stop();
+  el.status.textContent='じどうでとめました';
+  el.sub.textContent='音がしばらくなかったので、マイクをとめました';
 }
 function stop(){
   running=false;cancelAnimationFrame(rafId);
@@ -281,6 +289,7 @@ function update(){
   const freq=autoCorrelate(buf,audioCtx.sampleRate);
   if(freq!==-1&&freq>40&&freq<2000){
     silentFrames=0;
+    lastSoundTs=performance.now();
     const refA=parseFloat(el.refA.value);
     const tp=INSTR[el.transpose.value]||0;
     const exact=12*Math.log2(freq/refA)+69;
@@ -328,11 +337,20 @@ function update(){
     // 無音が続いたら追従をリセット（次の音の出だしで素早くロック）
     silentFrames++;
     if(silentFrames>20){emaExact=null;curMidi=null;switchFrames=0;}
+    // 無音が長くつづいたら自動でとめる（マイク切り忘れ防止）
+    if(performance.now()-lastSoundTs>AUTO_OFF_MS){autoStop();return;}
   }
   rafId=requestAnimationFrame(update);
 }
 
 el.toggle.addEventListener('click',()=>running?stop():start());
+
+// 画面を消したり別アプリに切り替えたら、マイクをとめる（切り忘れ防止）
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden&&running){
+    stop();el.status.textContent='とまっています';
+  }
+});
 
 // 基準音を鳴らす（音はメニューで選択・既定はシ♭）
 const toneBtn=document.getElementById('tone');
