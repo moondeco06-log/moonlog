@@ -6509,7 +6509,9 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
   .sum-pos{color:#5A5870 !important;}
   .section{box-shadow:none !important;border:1px solid #D8D0E0 !important;}
   .sec-planet,.sec-intro,.p-deg{color:#5A5870 !important;}
-  .section{page-break-inside:avoid;break-inside:avoid;}
+  /* 余白でページ膨張するのを防ぐ：セクションは自然に流し、見出しだけ本文と離さない */
+  .sec-title,.sec-planet,.sec-intro{page-break-after:avoid;break-after:avoid;}
+  .sub-section{page-break-inside:avoid;break-inside:avoid;}
   .sub-num{color:#5A4890 !important;}
   .sub-section{border-top-color:#9090C0 !important;}
 }
