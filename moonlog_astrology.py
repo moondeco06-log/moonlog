@@ -6507,7 +6507,12 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
   .sum-tag{background:#EAE8F5 !important;border-color:#9090C0 !important;}
   .sum-planet{color:#3A2870 !important;}
   .sum-pos{color:#5A5870 !important;}
-  .section{box-shadow:none !important;border:1px solid #D8D0E0 !important;}
+  /* 章の区切りをはっきり：金の上ライン＋見出し帯（改ページなしでも始まりが分かる） */
+  .section{box-shadow:none !important;border:1px solid #D8D0E0 !important;
+           border-top:3px solid #B89858 !important;margin-bottom:34px !important;}
+  .sec-head{background:#F4EFE3 !important;border-bottom:1px solid #E5DCC6 !important;}
+  .overall-section{border-top:3px solid #8A78C0 !important;}
+  .overall-section .sec-head{background:#EEEAF5 !important;}
   .sec-planet,.sec-intro,.p-deg{color:#5A5870 !important;}
   /* 余白でページ膨張するのを防ぐ：セクションは自然に流し、見出しだけ本文と離さない */
   .sec-title,.sec-planet,.sec-intro{page-break-after:avoid;break-after:avoid;}
