@@ -46,6 +46,22 @@
     display:grid;grid-template-columns:1fr 1fr;gap:10px;}
   .settings label{font-size:12px;color:#4a85ad;display:flex;flex-direction:column;gap:6px;}
   .settings select{box-shadow:none;border:1px solid #cfe6f4;background:#fff;}
+  .fwrap{grid-column:1/3;background:rgba(255,255,255,.82);border-radius:14px;
+    padding:14px 12px;box-shadow:0 4px 14px rgba(13,58,92,.10);}
+  .fname{text-align:center;font-size:19px;color:#0d3a5c;font-weight:600;}
+  .fdiagram{display:flex;justify-content:center;margin:10px 0 4px;}
+  .key{fill:#fff;stroke:#9cc9e6;stroke-width:2.5;}
+  .key.on{fill:#0d6eb8;stroke:#0d6eb8;}
+  .klabel{fill:#7aa6c2;font-size:11px;font-family:inherit;}
+  .fchips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 4px 0;}
+  .chip{background:#e3f2fb;color:#0d3a5c;border-radius:99px;padding:4px 11px;font-size:12px;}
+  .chipnone{color:#7aa6c2;font-size:12px;}
+  .falt{text-align:center;font-size:11px;color:#7aa6c2;margin-top:8px;line-height:1.6;}
+  .seclabel{font-size:11px;color:#4a85ad;margin:12px 2px 5px;}
+  .frow{display:flex;flex-wrap:wrap;gap:5px;}
+  .fnote{border:1px solid #cfe6f4;background:#fff;color:#0d3a5c;border-radius:9px;
+    padding:7px 0;width:40px;font-size:13px;font-family:inherit;text-align:center;}
+  .fnote.sel{background:#0d6eb8;color:#fff;border-color:#0d6eb8;}
 
   .card{
     width:100%;max-width:440px;z-index:1;
@@ -178,6 +194,37 @@
     <div id="chart" style="display:none;grid-column:1/3;background:rgba(255,255,255,.82);border-radius:14px;padding:14px 12px;box-shadow:0 4px 14px rgba(13,58,92,.10);">
       <div style="font-size:12px;color:#4a85ad;text-align:center;margin-bottom:10px;">実音 → 吹く音</div>
       <div id="chartGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px 6px;text-align:center;font-size:14px;color:#0d3a5c;"></div>
+    </div>
+    <button class="tonebtn" id="fingerBtn" style="grid-column:1/3;">サックスの運指表</button>
+    <div class="fwrap" id="finger" style="display:none;">
+      <div class="fname" id="fname">ラ（中音）</div>
+      <div class="fdiagram">
+        <svg viewBox="0 0 150 244" width="150" height="244" role="img" aria-label="運指図">
+          <line x1="75" y1="22" x2="75" y2="120" stroke="#dceefa" stroke-width="6"/>
+          <line x1="75" y1="142" x2="75" y2="222" stroke="#dceefa" stroke-width="6"/>
+          <circle class="key" id="k_oct" cx="30" cy="58" r="11"/>
+          <text class="klabel" x="30" y="36" text-anchor="middle">オク</text>
+          <circle class="key" id="k_l1" cx="75" cy="36" r="15"/>
+          <circle class="key" id="k_bis" cx="103" cy="50" r="7"/>
+          <text class="klabel" x="114" y="40">bis</text>
+          <circle class="key" id="k_l2" cx="75" cy="78" r="15"/>
+          <circle class="key" id="k_l3" cx="75" cy="120" r="15"/>
+          <circle class="key" id="k_r1" cx="75" cy="158" r="15"/>
+          <circle class="key" id="k_r2" cx="75" cy="190" r="15"/>
+          <circle class="key" id="k_r3" cx="75" cy="222" r="15"/>
+          <text class="klabel" x="48" y="40" text-anchor="end">左1</text>
+          <text class="klabel" x="48" y="82" text-anchor="end">左2</text>
+          <text class="klabel" x="48" y="124" text-anchor="end">左3</text>
+          <text class="klabel" x="48" y="162" text-anchor="end">右1</text>
+          <text class="klabel" x="48" y="194" text-anchor="end">右2</text>
+          <text class="klabel" x="48" y="226" text-anchor="end">右3</text>
+        </svg>
+      </div>
+      <div class="fchips" id="fchips"></div>
+      <div class="falt" id="falt"></div>
+      <div class="seclabel">低音域</div><div class="frow" id="rowLow"></div>
+      <div class="seclabel">中音域</div><div class="frow" id="rowMid"></div>
+      <div class="seclabel">高音域（パームキー）</div><div class="frow" id="rowHigh"></div>
     </div>
     <div class="hint">マーカーが真ん中で金色に光ったらぴったり<br>大きい文字はいまの楽器での音名（実音は下に表示）</div>
   </div>
@@ -403,7 +450,7 @@ const savedRefA=localStorage.getItem('umituner_refA');
 if(savedRefA)el.refA.value=savedRefA;
 el.transpose.addEventListener('change',()=>{
   localStorage.setItem('umituner_inst',el.transpose.value);
-  buildChart();
+  updateInstrUI();
 });
 el.refA.addEventListener('change',()=>localStorage.setItem('umituner_refA',el.refA.value));
 
@@ -423,12 +470,106 @@ function buildChart(){
   chartGrid.innerHTML=CONCERT.map(([nm,pc])=>
     '<div><b>'+nm+'</b> → '+DOREMI[(pc+tp)%12]+'</div>').join('');
 }
-buildChart();
 chartBtn.addEventListener('click',()=>{
   const open=chart.style.display!=='none';
   chart.style.display=open?'none':'block';
   chartBtn.textContent=open?'実音の早見表':'早見表をとじる';
 });
+
+// アルトサックスの運指表（記譜音・押さえるキーが光る）
+// キー：oct=オクターブ／l1l2l3=左手1〜3／r1r2r3=右手1〜3／bis＝バイスシ♭
+//       gs=ソ♯小指 lcs=低ド♯ lb=低シ lbb=低シ♭ eb=低ミ♭小指 c=低ド小指
+//       sBb/sC/sE=サイドキー pD/pEb/pF=パームキー hfs=高ファ♯
+const FING={
+  low:[
+    ['シ♭',['l1','l2','l3','r1','r2','r3','lbb']],
+    ['シ',['l1','l2','l3','r1','r2','r3','lb']],
+    ['ド',['l1','l2','l3','r1','r2','r3','c']],
+    ['ド♯',['l1','l2','l3','r1','r2','r3','lcs']],
+    ['レ',['l1','l2','l3','r1','r2','r3']],
+    ['ミ♭',['l1','l2','l3','r1','r2','r3','eb']],
+    ['ミ',['l1','l2','l3','r1','r2']],
+    ['ファ',['l1','l2','l3','r1']],
+    ['ファ♯',['l1','l2','l3','r2'],'別運指：左1・2・3＋サイドのファ♯でも出せます'],
+    ['ソ',['l1','l2','l3']],
+    ['ソ♯',['l1','l2','l3','gs']],
+    ['ラ',['l1','l2']],
+    ['シ♭',['l1','bis'],'別運指：左1・2＋サイドのシ♭でも出せます'],
+    ['シ',['l1']],
+    ['ド',['l2'],'左手の中指だけ'],
+    ['ド♯',[],'指は全部はなす（オクターブもなし）']
+  ],
+  mid:[
+    ['レ',['oct','l1','l2','l3','r1','r2','r3']],
+    ['ミ♭',['oct','l1','l2','l3','r1','r2','r3','eb']],
+    ['ミ',['oct','l1','l2','l3','r1','r2']],
+    ['ファ',['oct','l1','l2','l3','r1']],
+    ['ファ♯',['oct','l1','l2','l3','r2']],
+    ['ソ',['oct','l1','l2','l3']],
+    ['ソ♯',['oct','l1','l2','l3','gs']],
+    ['ラ',['oct','l1','l2']],
+    ['シ♭',['oct','l1','bis']],
+    ['シ',['oct','l1']],
+    ['ド',['oct','l2']],
+    ['ド♯',['oct'],'オクターブキーだけ（指は全部はなす）']
+  ],
+  high:[
+    ['レ',['oct','pD']],
+    ['ミ♭',['oct','pD','pEb']],
+    ['ミ',['oct','pD','pEb','sE']],
+    ['ファ',['oct','pD','pEb','pF','sE']],
+    ['ファ♯',['oct','pD','pEb','pF','sE','hfs']]
+  ]
+};
+const AUX={
+  gs:'ソ♯（左小指）',lcs:'低ド♯（左小指）',lb:'低シ（左小指）',lbb:'低シ♭（左小指）',
+  eb:'低ミ♭（右小指）',c:'低ド（右小指）',
+  sBb:'サイド シ♭',sC:'サイド ド',sE:'サイド 高ミ',hfs:'高ファ♯キー',
+  pD:'パーム レ',pEb:'パーム ミ♭',pF:'パーム ファ'
+};
+const DIAG=['oct','l1','l2','l3','r1','r2','r3','bis'];
+const AUXORDER=['pD','pEb','pF','sE','hfs','sBb','sC','gs','lcs','lb','lbb','eb','c'];
+const SECLABEL={low:'低音',mid:'中音',high:'高音'};
+const fingerBtn=document.getElementById('fingerBtn');
+const finger=document.getElementById('finger');
+const fname=document.getElementById('fname');
+const fchips=document.getElementById('fchips');
+const falt=document.getElementById('falt');
+function renderF(sec,i){
+  const it=FING[sec][i],set=new Set(it[1]);
+  fname.textContent=it[0]+'（'+SECLABEL[sec]+'）';
+  DIAG.forEach(id=>document.getElementById('k_'+id).classList.toggle('on',set.has(id)));
+  const chips=AUXORDER.filter(id=>set.has(id)).map(id=>'<span class="chip">'+AUX[id]+'</span>').join('');
+  fchips.innerHTML=chips||'<span class="chipnone">補助キーなし</span>';
+  falt.textContent=it[2]||'';
+  document.querySelectorAll('.fnote').forEach(b=>b.classList.remove('sel'));
+  const btn=document.querySelector('.fnote[data-k="'+sec+i+'"]');
+  if(btn)btn.classList.add('sel');
+}
+['low','mid','high'].forEach(sec=>{
+  const row=document.getElementById('row'+sec.charAt(0).toUpperCase()+sec.slice(1));
+  row.innerHTML=FING[sec].map((it,i)=>'<button class="fnote" data-k="'+sec+i+'">'+it[0]+'</button>').join('');
+});
+finger.addEventListener('click',e=>{
+  const b=e.target.closest('.fnote');if(!b)return;
+  const m=b.dataset.k.match(/^([a-z]+)(\d+)$/);
+  renderF(m[1],parseInt(m[2]));
+});
+renderF('mid',7);  // 既定：中音のラ
+fingerBtn.addEventListener('click',()=>{
+  const open=finger.style.display!=='none';
+  finger.style.display=open?'none':'block';
+  fingerBtn.textContent=open?'サックスの運指表':'運指表をとじる';
+});
+
+// 楽器に応じて早見表・運指表の出し分け（運指表はアルトサックスのみ）
+function updateInstrUI(){
+  buildChart();
+  const isAlto=el.transpose.value==='alto';
+  fingerBtn.style.display=isAlto?'':'none';
+  if(!isAlto){finger.style.display='none';fingerBtn.textContent='サックスの運指表';}
+}
+updateInstrUI();
 </script>
 </body>
 </html>
