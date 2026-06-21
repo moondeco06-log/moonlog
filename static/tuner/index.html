@@ -199,25 +199,37 @@
     <div class="fwrap" id="finger" style="display:none;">
       <div class="fname" id="fname">ラ（中音）</div>
       <div class="fdiagram">
-        <svg viewBox="0 0 150 244" width="150" height="244" role="img" aria-label="運指図">
-          <line x1="75" y1="22" x2="75" y2="120" stroke="#dceefa" stroke-width="6"/>
-          <line x1="75" y1="142" x2="75" y2="222" stroke="#dceefa" stroke-width="6"/>
-          <circle class="key" id="k_oct" cx="30" cy="58" r="11"/>
-          <text class="klabel" x="30" y="36" text-anchor="middle">オク</text>
-          <circle class="key" id="k_l1" cx="75" cy="36" r="15"/>
-          <circle class="key" id="k_bis" cx="103" cy="50" r="7"/>
-          <text class="klabel" x="114" y="40">bis</text>
-          <circle class="key" id="k_l2" cx="75" cy="78" r="15"/>
-          <circle class="key" id="k_l3" cx="75" cy="120" r="15"/>
-          <circle class="key" id="k_r1" cx="75" cy="158" r="15"/>
-          <circle class="key" id="k_r2" cx="75" cy="190" r="15"/>
-          <circle class="key" id="k_r3" cx="75" cy="222" r="15"/>
-          <text class="klabel" x="48" y="40" text-anchor="end">左1</text>
-          <text class="klabel" x="48" y="82" text-anchor="end">左2</text>
-          <text class="klabel" x="48" y="124" text-anchor="end">左3</text>
-          <text class="klabel" x="48" y="162" text-anchor="end">右1</text>
-          <text class="klabel" x="48" y="194" text-anchor="end">右2</text>
-          <text class="klabel" x="48" y="226" text-anchor="end">右3</text>
+        <svg viewBox="0 0 210 244" width="200" height="232" role="img" aria-label="運指図">
+          <line x1="100" y1="20" x2="100" y2="118" stroke="#dceefa" stroke-width="6"/>
+          <line x1="100" y1="144" x2="100" y2="224" stroke="#dceefa" stroke-width="6"/>
+          <text class="klabel" x="30" y="22" text-anchor="middle">パーム</text>
+          <circle class="key" id="k_pD" cx="30" cy="40" r="8"/>
+          <circle class="key" id="k_pEb" cx="30" cy="64" r="8"/>
+          <circle class="key" id="k_pF" cx="30" cy="88" r="8"/>
+          <circle class="key" id="k_oct" cx="30" cy="170" r="11"/>
+          <text class="klabel" x="30" y="194" text-anchor="middle">オク</text>
+          <circle class="key" id="k_l1" cx="100" cy="34" r="15"/>
+          <circle class="key" id="k_bis" cx="126" cy="48" r="7"/>
+          <text class="klabel" x="137" y="52">bis</text>
+          <circle class="key" id="k_l2" cx="100" cy="76" r="15"/>
+          <circle class="key" id="k_l3" cx="100" cy="118" r="15"/>
+          <circle class="key" id="k_r1" cx="100" cy="160" r="15"/>
+          <circle class="key" id="k_r2" cx="100" cy="192" r="15"/>
+          <circle class="key" id="k_r3" cx="100" cy="224" r="15"/>
+          <text class="klabel" x="78" y="38" text-anchor="end">左1</text>
+          <text class="klabel" x="78" y="80" text-anchor="end">左2</text>
+          <text class="klabel" x="78" y="122" text-anchor="end">左3</text>
+          <text class="klabel" x="78" y="164" text-anchor="end">右1</text>
+          <text class="klabel" x="78" y="196" text-anchor="end">右2</text>
+          <text class="klabel" x="78" y="228" text-anchor="end">右3</text>
+          <circle class="key" id="k_sE" cx="152" cy="150" r="8"/>
+          <text class="klabel" x="164" y="154">高ミ</text>
+          <circle class="key" id="k_sC" cx="152" cy="174" r="8"/>
+          <text class="klabel" x="164" y="178">ド</text>
+          <circle class="key" id="k_sBb" cx="152" cy="198" r="8"/>
+          <text class="klabel" x="164" y="202">♭シ</text>
+          <circle class="key" id="k_hfs" cx="152" cy="224" r="8"/>
+          <text class="klabel" x="164" y="228">高F♯</text>
         </svg>
       </div>
       <div class="fchips" id="fchips"></div>
@@ -494,7 +506,7 @@ const FING={
     ['ソ',['l1','l2','l3']],
     ['ソ♯',['l1','l2','l3','gs']],
     ['ラ',['l1','l2']],
-    ['シ♭',['l1','bis'],'別運指：左1・2＋サイドのシ♭でも出せます'],
+    ['シ♭',['l1','sBb'],'別運指：左手1＋bis（バイス）でも出せます'],
     ['シ',['l1']],
     ['ド',['l2'],'左手の中指だけ'],
     ['ド♯',[],'指は全部はなす（オクターブもなし）']
@@ -508,7 +520,7 @@ const FING={
     ['ソ',['oct','l1','l2','l3']],
     ['ソ♯',['oct','l1','l2','l3','gs']],
     ['ラ',['oct','l1','l2']],
-    ['シ♭',['oct','l1','bis']],
+    ['シ♭',['oct','l1','sBb'],'別運指：オクターブ＋左手1＋bis（バイス）でも出せます'],
     ['シ',['oct','l1']],
     ['ド',['oct','l2']],
     ['ド♯',['oct'],'オクターブキーだけ（指は全部はなす）']
@@ -527,8 +539,8 @@ const AUX={
   sBb:'サイド シ♭',sC:'サイド ド',sE:'サイド 高ミ',hfs:'高ファ♯キー',
   pD:'パーム レ',pEb:'パーム ミ♭',pF:'パーム ファ'
 };
-const DIAG=['oct','l1','l2','l3','r1','r2','r3','bis'];
-const AUXORDER=['pD','pEb','pF','sE','hfs','sBb','sC','gs','lcs','lb','lbb','eb','c'];
+const DIAG=['oct','l1','l2','l3','r1','r2','r3','bis','pD','pEb','pF','sE','sC','sBb','hfs'];
+const AUXORDER=['gs','lcs','lb','lbb','eb','c'];  // 図にないキー（小指）だけチップ表示
 const SECLABEL={low:'低音',mid:'中音',high:'高音'};
 const fingerBtn=document.getElementById('fingerBtn');
 const finger=document.getElementById('finger');
