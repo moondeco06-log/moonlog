@@ -52,6 +52,7 @@
   .fdiagram{display:flex;justify-content:center;margin:10px 0 4px;}
   .key{fill:#fff;stroke:#9cc9e6;stroke-width:2.5;}
   .key.on{fill:#0d6eb8;stroke:#0d6eb8;}
+  .key.alt{fill:#ffd34d;stroke:#e0a800;}
   .klabel{fill:#7aa6c2;font-size:11px;font-family:inherit;}
   .fchips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 4px 0;}
   .chip{background:#e3f2fb;color:#0d3a5c;border-radius:99px;padding:4px 11px;font-size:12px;}
@@ -506,7 +507,7 @@ const FING={
     ['ソ',['l1','l2','l3']],
     ['ソ♯',['l1','l2','l3','gs']],
     ['ラ',['l1','l2']],
-    ['シ♭',['l1','sBb'],'別運指：左手1＋bis（バイス）でも出せます'],
+    ['シ♭',['l1'],['sBb','bis'],'金色のキーは どちらか1つを押せばOK（サイドのシ♭か bis）'],
     ['シ',['l1']],
     ['ド',['l2'],'左手の中指だけ'],
     ['ド♯',[],'指は全部はなす（オクターブもなし）']
@@ -520,7 +521,7 @@ const FING={
     ['ソ',['oct','l1','l2','l3']],
     ['ソ♯',['oct','l1','l2','l3','gs']],
     ['ラ',['oct','l1','l2']],
-    ['シ♭',['oct','l1','sBb'],'別運指：オクターブ＋左手1＋bis（バイス）でも出せます'],
+    ['シ♭',['oct','l1'],['sBb','bis'],'金色のキーは どちらか1つを押せばOK（サイドのシ♭か bis）'],
     ['シ',['oct','l1']],
     ['ド',['oct','l2']],
     ['ド♯',['oct'],'オクターブキーだけ（指は全部はなす）']
@@ -548,12 +549,21 @@ const fname=document.getElementById('fname');
 const fchips=document.getElementById('fchips');
 const falt=document.getElementById('falt');
 function renderF(sec,i){
-  const it=FING[sec][i],set=new Set(it[1]);
+  const it=FING[sec][i];
+  const main=new Set(it[1]);
+  let alt=new Set(),note='';
+  if(Array.isArray(it[2])){alt=new Set(it[2]);note=it[3]||'';}
+  else if(typeof it[2]==='string'){note=it[2];}
   fname.textContent=it[0]+'（'+SECLABEL[sec]+'）';
-  DIAG.forEach(id=>document.getElementById('k_'+id).classList.toggle('on',set.has(id)));
-  const chips=AUXORDER.filter(id=>set.has(id)).map(id=>'<span class="chip">'+AUX[id]+'</span>').join('');
-  fchips.innerHTML=chips||'<span class="chipnone">補助キーなし</span>';
-  falt.textContent=it[2]||'';
+  DIAG.forEach(id=>{
+    const el=document.getElementById('k_'+id);
+    el.classList.remove('on','alt');
+    if(main.has(id))el.classList.add('on');
+    else if(alt.has(id))el.classList.add('alt');
+  });
+  const chips=AUXORDER.filter(id=>main.has(id)||alt.has(id)).map(id=>'<span class="chip">'+AUX[id]+'</span>').join('');
+  fchips.innerHTML=chips||(alt.size?'':'<span class="chipnone">補助キーなし</span>');
+  falt.textContent=note;
   document.querySelectorAll('.fnote').forEach(b=>b.classList.remove('sel'));
   const btn=document.querySelector('.fnote[data-k="'+sec+i+'"]');
   if(btn)btn.classList.add('sel');
