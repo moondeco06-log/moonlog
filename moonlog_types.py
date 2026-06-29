@@ -221,6 +221,8 @@ def _page(title, body):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{_esc(title)}</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
 <style>{_CSS}</style>
 </head>
 <body>
