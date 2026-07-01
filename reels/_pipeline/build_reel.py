@@ -14,7 +14,7 @@ BGM:
 """
 import os, sys, glob, subprocess, datetime
 
-ROOT = "/Users/mitsuinatsuki/Documents/code_yousai"
+ROOT = "/Users/mitsuinatsuki/Documents/AI_uranai"
 FF = "/Users/mitsuinatsuki/Library/Python/3.9/lib/python/site-packages/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1"
 FR = "/tmp/daily_star_frames"
 BG_DIR = os.path.join(ROOT, "reels", "backgrounds")

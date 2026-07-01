@@ -7,7 +7,7 @@ import os, sys, glob, subprocess
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-ROOT = "/Users/mitsuinatsuki/Documents/code_yousai"
+ROOT = "/Users/mitsuinatsuki/Documents/AI_uranai"
 FF = "/Users/mitsuinatsuki/Library/Python/3.9/lib/python/site-packages/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1"
 FONT = "/Users/mitsuinatsuki/Library/Fonts/花とちょうちょ.ttf"
 FR = "/tmp/aruaru_frames"

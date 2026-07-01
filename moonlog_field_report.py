@@ -342,7 +342,7 @@ if __name__ == "__main__":
         "夏紀", 1972, 6, 10, 22, 0, "新潟県十日町市",
         lat=37.13, lng=138.77,
     )
-    out = os.path.expanduser("~/Documents/code_yousai/drafts/preview/夏紀さん_field_report_html.html")
+    out = os.path.expanduser("~/Documents/AI_uranai/drafts/preview/夏紀さん_field_report_html.html")
     with open(out, "w") as f:
         f.write(html)
     print(f"OK → {out}")

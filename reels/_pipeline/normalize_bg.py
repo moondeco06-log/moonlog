@@ -4,7 +4,7 @@
 短い素材はスロー、長い素材は良い区間をトリム。出力は backgrounds/ 直下（build_reelのglobが拾う）。"""
 import os, re, subprocess
 
-BG = "/Users/mitsuinatsuki/Documents/code_yousai/reels/backgrounds"
+BG = "/Users/mitsuinatsuki/Documents/AI_uranai/reels/backgrounds"
 FF = "/Users/mitsuinatsuki/Library/Python/3.9/lib/python/site-packages/imageio_ffmpeg/binaries/ffmpeg-macos-aarch64-v7.1"
 DUR_T = 21.0  # 正規化尺（build側DUR<これ。余裕を持たせる）
 

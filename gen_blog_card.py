@@ -4,7 +4,7 @@ yagi-2026.png（旧版）の背景＝グラデ＋月＋星をそのまま再利�
 from PIL import Image, ImageDraw, ImageFont
 
 FONT = "/Users/mitsuinatsuki/Library/Fonts/花とちょうちょ.ttf"
-BASE = "/Users/mitsuinatsuki/Documents/code_yousai/static/images/blog"
+BASE = "/Users/mitsuinatsuki/Documents/AI_uranai/static/images/blog"
 W, H = 1200, 630
 
 NAVY = (23, 55, 100)
