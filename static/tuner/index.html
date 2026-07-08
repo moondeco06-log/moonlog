@@ -54,6 +54,9 @@
   .key.on{fill:#0d6eb8;stroke:#0d6eb8;}
   .key.alt{fill:#ffd34d;stroke:#e0a800;}
   .klabel{fill:#7aa6c2;font-size:11px;font-family:inherit;}
+  .klabel2{fill:#4a85ad;font-size:10px;font-family:inherit;pointer-events:none;}
+  .klabel2.lon{fill:#fff;}
+  .klabel2.lalt{fill:#5c4400;}
   .fchips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:8px 4px 0;}
   .chip{background:#e3f2fb;color:#0d3a5c;border-radius:99px;padding:4px 11px;font-size:12px;}
   .chipnone{color:#7aa6c2;font-size:12px;}
@@ -217,37 +220,55 @@
     <div class="fwrap" id="finger" style="display:none;">
       <div class="fname" id="fname">ラ（中音）</div>
       <div class="fdiagram">
-        <svg viewBox="0 0 210 244" width="200" height="232" role="img" aria-label="運指図">
-          <line x1="100" y1="20" x2="100" y2="118" stroke="#dceefa" stroke-width="6"/>
-          <line x1="100" y1="144" x2="100" y2="224" stroke="#dceefa" stroke-width="6"/>
-          <text class="klabel" x="30" y="22" text-anchor="middle">パーム</text>
-          <circle class="key" id="k_pD" cx="30" cy="40" r="8"/>
-          <circle class="key" id="k_pEb" cx="30" cy="64" r="8"/>
-          <circle class="key" id="k_pF" cx="30" cy="88" r="8"/>
-          <circle class="key" id="k_oct" cx="30" cy="170" r="11"/>
-          <text class="klabel" x="30" y="194" text-anchor="middle">オク</text>
-          <circle class="key" id="k_l1" cx="100" cy="34" r="15"/>
-          <circle class="key" id="k_bis" cx="126" cy="48" r="7"/>
-          <text class="klabel" x="137" y="52">bis</text>
-          <circle class="key" id="k_l2" cx="100" cy="76" r="15"/>
-          <circle class="key" id="k_l3" cx="100" cy="118" r="15"/>
-          <circle class="key" id="k_r1" cx="100" cy="160" r="15"/>
-          <circle class="key" id="k_r2" cx="100" cy="192" r="15"/>
-          <circle class="key" id="k_r3" cx="100" cy="224" r="15"/>
-          <text class="klabel" x="78" y="38" text-anchor="end">左1</text>
-          <text class="klabel" x="78" y="80" text-anchor="end">左2</text>
-          <text class="klabel" x="78" y="122" text-anchor="end">左3</text>
-          <text class="klabel" x="78" y="164" text-anchor="end">右1</text>
-          <text class="klabel" x="78" y="196" text-anchor="end">右2</text>
-          <text class="klabel" x="78" y="228" text-anchor="end">右3</text>
-          <circle class="key" id="k_sE" cx="152" cy="150" r="8"/>
-          <text class="klabel" x="164" y="154">高ミ</text>
-          <circle class="key" id="k_sC" cx="152" cy="174" r="8"/>
-          <text class="klabel" x="164" y="178">ド</text>
-          <circle class="key" id="k_sBb" cx="152" cy="198" r="8"/>
-          <text class="klabel" x="164" y="202">♭シ</text>
-          <circle class="key" id="k_hfs" cx="152" cy="224" r="8"/>
-          <text class="klabel" x="164" y="228">高F♯</text>
+        <svg viewBox="0 0 232 276" width="222" height="264" role="img" aria-label="運指図">
+          <line x1="112" y1="18" x2="112" y2="130" stroke="#dceefa" stroke-width="6"/>
+          <line x1="112" y1="142" x2="112" y2="256" stroke="#dceefa" stroke-width="6"/>
+          <circle class="key" id="k_oct" cx="36" cy="44" r="12"/>
+          <text class="klabel" x="36" y="70" text-anchor="middle">オク</text>
+          <text class="klabel" x="182" y="14" text-anchor="middle">パーム</text>
+          <ellipse class="key" id="k_pD" cx="176" cy="34" rx="8" ry="11"/>
+          <text class="klabel" x="190" y="38">レ</text>
+          <ellipse class="key" id="k_pEb" cx="176" cy="62" rx="8" ry="11"/>
+          <text class="klabel" x="190" y="66">ミ♭</text>
+          <ellipse class="key" id="k_pF" cx="176" cy="90" rx="8" ry="11"/>
+          <text class="klabel" x="190" y="94">ファ</text>
+          <circle class="key" id="k_l1" cx="112" cy="34" r="15"/>
+          <text class="klabel" x="91" y="38" text-anchor="end">①</text>
+          <circle class="key" id="k_bis" cx="137" cy="54" r="7"/>
+          <text class="klabel" x="148" y="58">bis</text>
+          <circle class="key" id="k_l2" cx="112" cy="74" r="15"/>
+          <text class="klabel" x="91" y="78" text-anchor="end">②</text>
+          <circle class="key" id="k_l3" cx="112" cy="114" r="15"/>
+          <text class="klabel" x="91" y="118" text-anchor="end">③</text>
+          <circle class="key" id="k_r1" cx="112" cy="160" r="15"/>
+          <text class="klabel" x="91" y="164" text-anchor="end">④</text>
+          <circle class="key" id="k_r2" cx="112" cy="200" r="15"/>
+          <text class="klabel" x="91" y="204" text-anchor="end">⑤</text>
+          <circle class="key" id="k_r3" cx="112" cy="240" r="15"/>
+          <text class="klabel" x="91" y="244" text-anchor="end">⑥</text>
+          <text class="klabel" x="37" y="104" text-anchor="middle">左小指</text>
+          <rect class="key" id="k_gs" x="14" y="112" width="46" height="18" rx="9"/>
+          <text class="klabel2" id="t_gs" x="37" y="125" text-anchor="middle">ソ♯</text>
+          <rect class="key" id="k_lcs" x="14" y="134" width="46" height="18" rx="9"/>
+          <text class="klabel2" id="t_lcs" x="37" y="147" text-anchor="middle">低ド♯</text>
+          <rect class="key" id="k_lb" x="14" y="156" width="46" height="18" rx="9"/>
+          <text class="klabel2" id="t_lb" x="37" y="169" text-anchor="middle">低シ</text>
+          <rect class="key" id="k_lbb" x="14" y="178" width="46" height="18" rx="9"/>
+          <text class="klabel2" id="t_lbb" x="37" y="191" text-anchor="middle">低シ♭</text>
+          <text class="klabel" x="192" y="122" text-anchor="middle">サイド</text>
+          <rect class="key" id="k_sE" x="170" y="128" width="44" height="18" rx="9"/>
+          <text class="klabel2" id="t_sE" x="192" y="141" text-anchor="middle">高ミ</text>
+          <rect class="key" id="k_sC" x="170" y="150" width="44" height="18" rx="9"/>
+          <text class="klabel2" id="t_sC" x="192" y="163" text-anchor="middle">ド</text>
+          <rect class="key" id="k_sBb" x="170" y="172" width="44" height="18" rx="9"/>
+          <text class="klabel2" id="t_sBb" x="192" y="185" text-anchor="middle">シ♭</text>
+          <rect class="key" id="k_hfs" x="170" y="194" width="44" height="18" rx="9"/>
+          <text class="klabel2" id="t_hfs" x="192" y="207" text-anchor="middle">高F♯</text>
+          <text class="klabel" x="192" y="228" text-anchor="middle">右小指</text>
+          <rect class="key" id="k_eb" x="170" y="234" width="44" height="18" rx="9"/>
+          <text class="klabel2" id="t_eb" x="192" y="247" text-anchor="middle">低ミ♭</text>
+          <rect class="key" id="k_c" x="170" y="256" width="44" height="18" rx="9"/>
+          <text class="klabel2" id="t_c" x="192" y="269" text-anchor="middle">低ド</text>
         </svg>
       </div>
       <div class="fchips" id="fchips"></div>
@@ -269,6 +290,7 @@
           <option value="4" selected>4拍子</option>
           <option value="3">3拍子</option>
           <option value="2">2拍子</option>
+          <option value="5">5拍子</option>
           <option value="6">6拍子</option>
           <option value="1">アクセントなし</option>
         </select>
@@ -571,14 +593,14 @@ const FING={
     ['ファ♯',['oct','pD','pEb','pF','sE','hfs']]
   ]
 };
-const AUX={
-  gs:'ソ♯（左小指）',lcs:'低ド♯（左小指）',lb:'低シ（左小指）',lbb:'低シ♭（左小指）',
-  eb:'低ミ♭（右小指）',c:'低ド（右小指）',
-  sBb:'サイド シ♭',sC:'サイド ド',sE:'サイド 高ミ',hfs:'高ファ♯キー',
-  pD:'パーム レ',pEb:'パーム ミ♭',pF:'パーム ファ'
-};
-const DIAG=['oct','l1','l2','l3','r1','r2','r3','bis','pD','pEb','pF','sE','sC','sBb','hfs'];
-const AUXORDER=['gs','lcs','lb','lbb','eb','c'];  // 図にないキー（小指）だけチップ表示
+const DIAG=['oct','l1','l2','l3','r1','r2','r3','bis','pD','pEb','pF','sE','sC','sBb','hfs','gs','lcs','lb','lbb','eb','c'];
+const LABELED=['gs','lcs','lb','lbb','sE','sC','sBb','hfs','eb','c'];  // キーの中に文字があるもの
+const NUMKEYS=['l1','l2','l3','r1','r2','r3'];
+const KEYNAME={oct:'オクターブ',l1:'①',l2:'②',l3:'③',r1:'④',r2:'⑤',r3:'⑥',bis:'bis',
+  gs:'ソ♯',lcs:'低ド♯',lb:'低シ',lbb:'低シ♭',eb:'低ミ♭',c:'低ド',
+  sE:'サイド高ミ',sC:'サイドド',sBb:'サイドシ♭',hfs:'高F♯',
+  pD:'パームレ',pEb:'パームミ♭',pF:'パームファ'};
+const KEYORDER=['oct','bis','sE','sC','sBb','hfs','pD','pEb','pF','gs','lcs','lb','lbb','eb','c'];
 const SECLABEL={low:'低音',mid:'中音',high:'高音'};
 const fingerBtn=document.getElementById('fingerBtn');
 const finger=document.getElementById('finger');
@@ -598,8 +620,19 @@ function renderF(sec,i){
     if(main.has(id))el.classList.add('on');
     else if(alt.has(id))el.classList.add('alt');
   });
-  const chips=AUXORDER.filter(id=>main.has(id)||alt.has(id)).map(id=>'<span class="chip">'+AUX[id]+'</span>').join('');
-  fchips.innerHTML=chips||(alt.size?'':'<span class="chipnone">補助キーなし</span>');
+  LABELED.forEach(id=>{
+    const t=document.getElementById('t_'+id);
+    t.classList.remove('lon','lalt');
+    if(main.has(id))t.classList.add('lon');
+    else if(alt.has(id))t.classList.add('lalt');
+  });
+  // 使用キーを参考運指表の形式で表示（例：①②③④⑤⑥・低ド）
+  const nums=NUMKEYS.filter(id=>main.has(id)).map(id=>KEYNAME[id]).join('');
+  const others=KEYORDER.filter(id=>main.has(id)).map(id=>KEYNAME[id]);
+  const parts=[];if(nums)parts.push(nums);parts.push(...others);
+  let use='使用キー：'+(parts.length?parts.join('・'):'なし（全部はなす）');
+  if(alt.size)use+='　＋金色どちらか1つ';
+  fchips.innerHTML='<span class="chip">'+use+'</span>';
   falt.textContent=note;
   document.querySelectorAll('.fnote').forEach(b=>b.classList.remove('sel'));
   const btn=document.querySelector('.fnote[data-k="'+sec+i+'"]');
