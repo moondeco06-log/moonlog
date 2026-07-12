@@ -214,13 +214,17 @@ body{background:#ece6d8;color:var(--ink);
 """
 
 
-def _page(title, body):
+def _page(title, body, description=None, canonical=None):
+    desc_tag = f'<meta name="description" content="{_esc(description)}">' if description else ""
+    canon_tag = f'<link rel="canonical" href="{_esc(canonical)}">' if canonical else ""
     return f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{_esc(title)}</title>
+{desc_tag}
+{canon_tag}
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-KT19PT0DDG"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments);}}gtag('js',new Date());gtag('config','G-KT19PT0DDG');</script>
 <style>{_CSS}</style>
@@ -261,7 +265,12 @@ def render_input_page():
   </form>
   <div class="again"><a href="/">← moonlog トップへ戻る</a></div>
 """
-    return _page("月タイプ診断 ｜ moonlog", body)
+    return _page(
+        "月星座診断（無料・登録不要・30秒）｜生まれた瞬間の月でわかる12タイプ | moonlog",
+        body,
+        description="生年月日から月星座を無料診断。登録不要・30秒。雑誌の星占い（太陽星座）ではわからない「素の自分」を、動物の12タイプでやさしく読み解きます。",
+        canonical="https://moonlog.jp/type",
+    )
 
 
 def _err_page(msg):
@@ -395,9 +404,10 @@ def render_result_page(moon_key, sun_key, birth_data=None):
       <li>土星 ― 魂の課題と学び</li>
       <li>アセンダント ― まわりから見えるあなた</li>
     </ul>
-    <a class="cta" href="/#form-section">出生チャート（フル版）を読む<small>あなたという地図、ぜんぶ ／ ¥980</small></a>
+    <a class="cta" href="/#form-section" onclick="gtag&&gtag('event','purchase_cta_click',{{'from':'type_result'}});">出生チャート（フル版）を読む<small>あなたという地図、ぜんぶ ／ ¥980</small></a>
   </div>
 
   <div class="again"><a href="/type">← もう一度、別の生年月日で調べる</a></div>
+<script>gtag&&gtag('event','type_result_view',{{'moon_type':'{_esc(moon_key)}'}});</script>
 """
     return _page(f"あなたは「{t['name']}」｜ moonlog 月タイプ診断", body)

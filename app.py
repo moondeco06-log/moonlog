@@ -18,6 +18,8 @@ import moonlog_types
 from moonlog_field_report import generate_field_report_html
 
 app = Flask(__name__)
+app.url_map.strict_slashes = False  # 末尾スラッシュ付きURLを301で正規化
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 2592000  # 静的ファイル30日キャッシュ
 
 def _check_birth_date(year, month, day, hour=12, minute=0):
     """実在する生年月日かを検証（2/30等は ValueError を送出して各ルートの except に拾わせる）"""
@@ -67,11 +69,14 @@ HTML = """<!DOCTYPE html>
   <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
-  <meta property="og:image" content="/static/ogp.png">
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
-  <meta name="googlebot" content="noindex, nofollow, noarchive">
-  <meta name="CCBot" content="noindex">
-  <meta name="GPTBot" content="noindex">
+  <meta name="description" content="moonlogは、占星術を「自己理解の地図」として使うサービスです。無料の月タイプ診断（登録不要・30秒）と出生チャートレポートで、あなたの素の傾向をやさしい言葉で読み解きます。">
+  <link rel="canonical" href="https://moonlog.jp/">
+  <meta property="og:title" content="MOONLOG — 自分を知るための、静かな航海日誌">
+  <meta property="og:description" content="無料の月タイプ診断（登録不要・30秒）と出生チャートレポート。占星術を自己理解の地図として。">
+  <meta property="og:image" content="https://moonlog.jp/static/ogp.png">
+  <meta property="og:url" content="https://moonlog.jp/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Shippori+Mincho:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -961,6 +966,7 @@ footer {
   <a class="nav-logo" href="#hero">MOONLOG</a>
   <button class="nav-toggle" aria-label="メニュー" onclick="this.closest('nav').classList.toggle('nav-open')">☰</button>
   <ul class="nav-links" onclick="this.closest('nav').classList.remove('nav-open')">
+    <li><a href="/type">月タイプ診断（無料30秒）</a></li>
     <li><a href="#about">このサービスについて</a></li>
     <li><a href="#profile">運営者について</a></li>
     <li><a href="/blog">ブログ</a></li>
@@ -985,8 +991,8 @@ footer {
     そんなときに、自分という地図を確かめるためのツールです。
   </p>
   <p class="hero-planets">☉ &nbsp; ☽ &nbsp; ☿ &nbsp; ♀ &nbsp; ♂ &nbsp; ♃ &nbsp; ♄</p>
-  <a href="#form-section" class="cta-btn">無料で星読みをはじめる</a>
-  <a href="#reports" class="cta-sub">▸ レポートについて詳しく</a>
+  <a href="/type" class="cta-btn">無料30秒・月タイプ診断をはじめる</a>
+  <a href="#form-section" class="cta-sub">▸ 文章でじっくり読むレポートはこちら</a>
 
   <div class="scroll-cue">
     <span>scroll</span>
@@ -1654,6 +1660,7 @@ footer {
     本サービスのレポートは、生まれた瞬間の星の配置を計算し、占星術データベースに基づいて自動生成されるものです。プロ占星術師による個別鑑定ではありません。
   </p>
   <div class="footer-links">
+    <a href="/type">月タイプ診断</a>
     <a href="/blog">ブログ</a>
     <a href="/glossary">用語解説</a>
     <a href="/faq">よくある質問</a>
@@ -2874,6 +2881,7 @@ _LEGAL_HEADER = """
 
 _LEGAL_FOOTER = """
 <footer class="legal-footer">
+  <a href="/type" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">月タイプ診断（無料）</a>
   <a href="/blog" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">ブログ</a>
   <a href="/glossary" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">用語解説</a>
   <a href="/faq" style="color:var(--text-l);margin:0 0.8rem;text-decoration:none;">よくある質問</a>
@@ -3086,7 +3094,9 @@ def blog_article(slug):
         body_md = "\n".join(_filtered_lines)
 
     import markdown as _md
+    import json as _json
     body_html = _md.markdown(body_md, extensions=["extra"])
+    body_html = body_html.replace("<img ", '<img loading="lazy" ')
     title = a.get("title", "") or "記事"
     catkey = a.get("category", "")
     catlabel = _CAT_LABEL.get(catkey, "")
@@ -3098,6 +3108,15 @@ def blog_article(slug):
 <title>{_esc(title)} | moonlog</title>
 <meta name="description" content="{_esc(a.get('description',''))}">
 <link rel="canonical" href="https://moonlog.jp/blog/{_esc(safe)}">
+<meta property="og:type" content="article">
+<meta property="og:title" content="{_esc(title)}">
+<meta property="og:description" content="{_esc(a.get('description',''))}">
+<meta property="og:image" content="https://moonlog.jp{_esc(a.get('thumbnail') or '/static/ogp.png')}">
+<meta property="og:url" content="https://moonlog.jp/blog/{_esc(safe)}">
+<meta property="og:site_name" content="moonlog">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{{"@context":"https://schema.org","@type":"Article","headline":{_json.dumps(title, ensure_ascii=False)},"description":{_json.dumps(a.get('description',''), ensure_ascii=False)},"image":"https://moonlog.jp{_esc(a.get('thumbnail') or '/static/ogp.png')}","datePublished":"{_esc(a.get('date',''))}","author":{{"@type":"Organization","name":"moonlog"}},"publisher":{{"@type":"Organization","name":"moonlog","logo":{{"@type":"ImageObject","url":"https://moonlog.jp/static/ogp.png"}}}},"mainEntityOfPage":"https://moonlog.jp/blog/{_esc(safe)}"}}</script>
+<script type="application/ld+json">{{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{{"@type":"ListItem","position":1,"name":"ホーム","item":"https://moonlog.jp/"}},{{"@type":"ListItem","position":2,"name":"ブログ","item":"https://moonlog.jp/blog"}},{{"@type":"ListItem","position":3,"name":{_json.dumps(title, ensure_ascii=False)}}}]}}</script>
 {_LEGAL_CSS}
 {_BLOG_CSS_EXTRA}
 </head><body>
@@ -3107,8 +3126,9 @@ def blog_article(slug):
   <div class="blog-meta">{cat_meta}{_esc(a.get("date",""))}　｜　<a href="/blog{qs}" style="color:var(--text-l);">ブログ一覧</a></div>
   {body_html}
   <div class="blog-cta">
-    <p>moonlogでは、あなたの星の配置から「自分という地図」を読み解くレポートを無料でお試しいただけます。</p>
-    <a href="/#form-section">出生チャート 無料体験版をためす</a>
+    <p>あなたの月星座は、どのタイプでしょうか。<br>生年月日だけ・登録不要・30秒でわかります。</p>
+    <a href="/type" onclick="gtag&&gtag('event','type_cta_click',{{'from':'blog'}});">月タイプ診断をためす（無料）</a>
+    <p style="margin-top:0.8rem;font-size:0.85rem;"><a href="/#form-section" style="color:var(--text-l);">文章でじっくり読む「出生チャート 無料体験版」はこちら</a></p>
   </div>
 </div>
 {_LEGAL_FOOTER}
@@ -3118,14 +3138,15 @@ def blog_article(slug):
 def sitemap_xml():
     from flask import Response
     base = "https://moonlog.jp"
-    urls = ["/", "/blog", "/glossary", "/faq",
-            "/legal/tokushoho", "/legal/privacy", "/legal/terms"]
+    urls = [("/", None), ("/type", None), ("/blog", None), ("/glossary", None), ("/faq", None),
+            ("/legal/tokushoho", None), ("/legal/privacy", None), ("/legal/terms", None)]
     for a in _load_articles():
-        urls.append(f"/blog/{a['slug']}")
+        urls.append((f"/blog/{a['slug']}", a.get("date") or None))
     body = '<?xml version="1.0" encoding="UTF-8"?>\n'
     body += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-    for u in urls:
-        body += f"  <url><loc>{base}{u}</loc></url>\n"
+    for u, lastmod in urls:
+        lm = f"<lastmod>{lastmod}</lastmod>" if lastmod else ""
+        body += f"  <url><loc>{base}{u}</loc>{lm}</url>\n"
     body += '</urlset>\n'
     return Response(body, mimetype="application/xml")
 
