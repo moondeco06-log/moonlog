@@ -411,5 +411,19 @@
     "published": true,
     "published_at": "2026-07-14T05:47:59.491591",
     "post_id": "17895217044549596"
+  },
+  "reel:aruaru_virgo.mp4": {
+    "container_id": "18127816585610286",
+    "video_url": "https://moonlog.jp/static/videos/reels/aruaru_virgo.mp4",
+    "published": true,
+    "published_at": "2026-07-14T05:59:21.052438",
+    "post_id": "17890447890570448"
+  },
+  "reel:daily_2026-07-15.mp4": {
+    "container_id": "18127963156610286",
+    "video_url": "https://moonlog.jp/static/videos/reels/daily_2026-07-15.mp4",
+    "published": true,
+    "published_at": "2026-07-15T08:32:18.548742",
+    "post_id": "17949226527215314"
   }
 }
