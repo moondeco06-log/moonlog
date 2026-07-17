@@ -446,5 +446,12 @@
     "published": true,
     "published_at": "2026-07-17T07:01:21.025994",
     "post_id": "17969752346928599"
+  },
+  "reel:daily_2026-07-18.mp4": {
+    "container_id": "18128361223610286",
+    "video_url": "https://moonlog.jp/static/videos/reels/daily_2026-07-18.mp4",
+    "published": true,
+    "published_at": "2026-07-18T07:52:02.760646",
+    "post_id": "17990202284821902"
   }
 }
