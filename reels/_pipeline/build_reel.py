@@ -21,15 +21,15 @@ BG_DIR = os.path.join(ROOT, "reels", "backgrounds")
 BG_FALLBACK = os.path.join(ROOT, "reels", "リール元画像canva.mp4")
 BOOM = "/tmp/bg_boomerang.mp4"
 
-# BGM候補（夏紀さん Slow Hours・インスト・夜に合う順）
+# BGM候補（夏紀さん Slow Hours・インスト。2026-07-25刷新＝朝の空気に合う vol6上高地/vol7福岡 中心）
 BGM_POOL = [
-    "slow_hours/vol4_okinawa_sunset/08_twilight_ballad_rhodes.mp3",
-    "slow_hours/vol4_okinawa_sunset/09_lighthouse_glow_rhodes.mp3",
-    "slow_hours/vol5_kamakura_beach/V5_08 Quiet Cove Rhodes.mp3",
-    "slow_hours/vol4_okinawa_sunset/07_tide_pool_wurli.mp3",
-    "slow_hours/vol5_kamakura_beach/V5_07 Open Window Wurlitzer.mp3",
-    "slow_hours/vol4_okinawa_sunset/06_golden_hour_wurlitzer.mp3",
-    "slow_hours/vol5_kamakura_beach/V5_06 Harbor Light Wurlitzer.mp3",
+    "slow_hours/vol6_kamikochi/V6_01 Azusa Morning Rhodes.mp3",
+    "slow_hours/vol6_kamikochi/V6_03 Riverside Muted Guitar.mp3",
+    "slow_hours/vol6_kamikochi/V6_05 Misty Morning Bossa.mp3",
+    "slow_hours/vol6_kamikochi/V6_07 Still Air Keys.mp3",
+    "slow_hours/vol6_kamikochi/V6_10 Forest Path Acoustic.mp3",
+    "slow_hours/vol7_fukuoka_yatai/V7_03 Yatai Warmth Wurlitzer.mp3",
+    "slow_hours/vol7_fukuoka_yatai/V7_08 Last Lantern Piano.mp3",
 ]
 ONGAKU = os.path.expanduser("~/Documents/ongaku")
 
@@ -143,6 +143,7 @@ def main():
         "2026-06-29": "13.mp4",  # 揺れる庭(11)→雲海（火星双子・行動の風に合う）
         "2026-07-13": "13.mp4",  # 嵐空の畑→雲海（蟹座IN・いたわり。02は前日使用のため回避）
         "2026-07-22": "13.mp4",  # 嵐空の畑(08)→雲海（見えないだけでなくなってない・02は前日使用のため回避）
+        "2026-07-25": "24.mp4",  # 夏紀さん新背景・空と山と湖（遠くを見ると悩みは小さくうつる、に合わせ）
     }
     bgs = sorted(glob.glob(os.path.join(BG_DIR, "*.mp4")))
     ov = BG_OVERRIDE.get(ds)
