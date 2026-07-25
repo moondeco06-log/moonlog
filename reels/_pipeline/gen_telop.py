@@ -10,6 +10,44 @@ os.makedirs(OUT, exist_ok=True)
 WHITE = (252, 252, 250, 255)
 SHADOW = (8, 10, 24)  # 濃紺の影
 
+def draw_list(img, header, lines, size=46):
+    """12星座一覧フレーム（mirisa式・1枚目でスクショを誘う）。
+    左揃えの一覧＋うしろに専用の薄いヴェール（本文scrimより縦に長いので自前で敷く）。"""
+    font = ImageFont.truetype(FONT, size)
+    hfont = ImageFont.truetype(FONT, int(size * 1.15))
+    lh = int(size * 1.62)
+    total = lh * len(lines)
+    header_h = int(size * 2.3)
+    y0 = (H - (total + header_h)) // 2 + 40  # 全体をほんの少し下へ（最上部タイトルと離す）
+    # 専用ヴェール（縦長・上下フェード）
+    import numpy as np
+    NAVY = (10, 14, 30)
+    top, bot = y0 - 130, y0 + header_h + total + 110
+    col = np.zeros((H, 4), dtype=np.float32)
+    for y in range(H):
+        if top <= y <= bot:
+            edge = min(y - top, bot - y)
+            a = min(1.0, edge / 140.0) * 135  # 一覧の帯も軽め（7/25FB）
+            col[y] = (*NAVY, a)
+    arr = np.repeat(col[:, None, :], W, axis=1).astype(np.uint8)
+    veil = Image.fromarray(arr, "RGBA").filter(ImageFilter.GaussianBlur(24))
+    img.alpha_composite(veil)
+    d = ImageDraw.Draw(img)
+    # 見出し（中央）
+    bbox = d.textbbox((0, 0), header, font=hfont)
+    d.text(((W - (bbox[2] - bbox[0])) // 2 - bbox[0], y0), header,
+           font=hfont, fill=WHITE)
+    # 一覧（ブロックごと中央寄せ・行は左揃え）
+    maxw = max(d.textbbox((0, 0), ln, font=font)[2] for ln in lines)
+    x0 = (W - maxw) // 2
+    y = y0 + header_h
+    for ln in lines:
+        d.text((x0 + 2, y + 3), ln, font=font, fill=(*SHADOW, 170))
+        d.text((x0, y), ln, font=font, fill=WHITE)
+        y += lh
+    return img
+
+
 def draw_text(img, text, size, cy, fill=WHITE):
     """白文字＋やわらかい影。複数行対応。cy=行ブロックの中心Y"""
     font = ImageFont.truetype(FONT, size)
@@ -61,11 +99,44 @@ title_text = "星のメッセージ" if today.isoformat() in TITLE_STAR else "�
 # タイトルは控えめに：1行で「moonlog ・ 月のメッセージ ・ 6/15」を画面最上部に小さく置く
 # （主役は1枚目の共感フック。タイトルが主役を食わないよう小さく）
 title = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-draw_text(title, f"{title_text}  ・  {today.month}/{today.day}", 44, 150)
+# 2026-07-25 夏紀さんFB「フォントが小さい」→ 44→62に拡大
+draw_text(title, f"{title_text}  ・  {today.month}/{today.day}", 62, 150)
 title.save(f"{OUT}/title.png")
 
 # 日替わりテロップ（主役＝その夜22時東京の月の星座）。固定：5枚目=キャプション誘導／7-9=訴求・CTA・締め
+# ── 12星座一覧（リール内に組み込み・2026-07-26実験開始）──
+# 1枚目に一覧＝mirisa式。自分の星座を探して止める→スクショ/保存を誘う。
+# 中身は「身近な小さい行動」基準（feedback_copy_small_actions）
+SIGN_LISTS = {
+    "2026-07-26": ("きょうの12星座  ・  小さなひとこと", [
+        "牡羊座　気になってた店に 入ってみる",
+        "牡牛座　季節の果物を ひとつ買う",
+        "双子座　本屋で 気になる棚だけ見る",
+        "蟹座　　窓辺で お茶をひとくち",
+        "獅子座　好きな服で 近所へ出かける",
+        "乙女座　カバンの中だけ 整える",
+        "天秤座　夕焼けを 見に出る",
+        "蠍座　　湯船に ゆっくりつかる",
+        "射手座　来月の楽しみを ひとつ決める",
+        "山羊座　予定のない時間を 少しつくる",
+        "水瓶座　いつもと違う道で 帰ってみる",
+        "魚座　　好きな音楽で ぼんやりする",
+    ]),
+}
+
 SCENES = {
+    # 7/26 ★一覧型実験・第1回（一覧は最後・7/25FBで先頭→末尾に変更）。月＝射手座のおわり（夜に山羊座へ）。日曜
+    # ★言葉は夏紀さんの生の答えが種（2026-07-25の質問5つ）：
+    #   「終わっちゃうなぁ、というさみしい気持ち」「よかったな、全部だよ」「やらなかったのは家事」
+    #   「月曜は普通だし楽しみ」「あと1時間あったら何もしない（瞑想・ヨガ）」
+    "2026-07-26": [
+        ("日曜の夜って\n終わっちゃうなぁって\nさみしくなる", 76),    # 共感フック＝夏紀さんの言葉そのまま
+        ("今夜で月は射手座のさいご\n自由だった3日間が\nひと区切り", 70),  # 星＝免罪符
+        ("家事は明日でいい\n10分だけ 何もしない\n座ってるだけでいい", 74),  # 小さい行動
+        ("終わっちゃうけど\n全部 よかったな", 96),                 # 余韻の一行
+        ("__LIST__", 0),                                        # 12星座一覧（最後・スクショ誘発）
+        ("moonlog", 140),
+    ],
     # 6/8 月＝魚座のおわり（感じきる・手放す・区切り）。月曜＝力を抜いて始める
     "2026-06-08": [
         ("手放すと\n軽くなる日", 116),
@@ -519,12 +590,25 @@ for f in _g.glob(f"{OUT}/scene*.png"):
 CY_HOOK = 840    # フックの中心Y（やや上）
 CY_BODY = 980    # 本文の中心Y（中央やや上）
 HOOK_SCALE = 1.30  # フックだけ拡大（小さい画面・1秒で読ませる）
+has_list = False
 for i, (t, s) in enumerate(scenes):
     img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    if i == 0:
+    if t == "__LIST__":
+        header, lines = SIGN_LISTS[today.isoformat()]
+        draw_list(img, header, lines)
+        has_list = True
+    elif i == 0:
         draw_text(img, t, int(s * HOOK_SCALE), CY_HOOK)
     else:
         draw_text(img, t, s, CY_BODY)
     img.save(f"{OUT}/scene{i}.png")
 
-print("date:", date_jp, "| frames:", len(scenes), "+ title")
+# 一覧入りはbuild_reel側で専用レイアウト（1枚目長め）を使う合図を残す
+hint = f"{OUT}/layout.txt"
+if has_list:
+    with open(hint, "w") as f:
+        f.write("list6")
+elif os.path.exists(hint):
+    os.remove(hint)
+
+print("date:", date_jp, "| frames:", len(scenes), "+ title", "| list:", has_list)

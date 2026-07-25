@@ -21,15 +21,16 @@ BG_DIR = os.path.join(ROOT, "reels", "backgrounds")
 BG_FALLBACK = os.path.join(ROOT, "reels", "リール元画像canva.mp4")
 BOOM = "/tmp/bg_boomerang.mp4"
 
-# BGM候補（夏紀さん Slow Hours・インスト。2026-07-25刷新＝朝の空気に合う vol6上高地/vol7福岡 中心）
+# BGM候補（2026-07-25 夏紀さん決定＝Arigato Daily 明るいライン・vol19「高原の朝」系で日替わり）
+# 基準曲＝vol19/08 Lightly Into the Day（候補C採用）。同じ空気の朝曲でローテ
 BGM_POOL = [
-    "slow_hours/vol6_kamikochi/V6_01 Azusa Morning Rhodes.mp3",
-    "slow_hours/vol6_kamikochi/V6_03 Riverside Muted Guitar.mp3",
-    "slow_hours/vol6_kamikochi/V6_05 Misty Morning Bossa.mp3",
-    "slow_hours/vol6_kamikochi/V6_07 Still Air Keys.mp3",
-    "slow_hours/vol6_kamikochi/V6_10 Forest Path Acoustic.mp3",
-    "slow_hours/vol7_fukuoka_yatai/V7_03 Yatai Warmth Wurlitzer.mp3",
-    "slow_hours/vol7_fukuoka_yatai/V7_08 Last Lantern Piano.mp3",
+    "releases/vol19/08 Lightly Into the Day.mp3",
+    "releases/vol19/02 Green and Cool.mp3",
+    "releases/vol19/03 Dew on the Grass.mp3",
+    "releases/vol19/06 Morning Tea Outside.mp3",
+    "releases/vol21/02 Open the Window.mp3",
+    "releases/vol21/07 Walking with a Smile.mp3",
+    "releases/vol22/01 A Slow Sunrise.mp3",
 ]
 ONGAKU = os.path.expanduser("~/Documents/ongaku")
 
@@ -42,6 +43,9 @@ SCENE_LAYOUTS = {
                (14.3,17.2),(17.2,20.3)]),
     6: (17.8, [(0.0,3.0),(3.0,6.2),(6.2,9.8),(9.8,12.8),(12.8,15.2),
                (15.2,17.8)]),
+    # 一覧型（2026-07-26〜実験）：12星座一覧は最後に長め（スクショ/一時停止を想定・7/25FBで末尾に）
+    "list6": (22.0, [(0.0,2.8),(2.8,6.0),(6.0,9.6),(9.6,12.8),(12.8,19.6),
+                     (19.6,22.0)]),
 }
 DUR = 20.3       # main()でシーン数に合わせて上書き
 windows = SCENE_LAYOUTS[7][1]
@@ -70,7 +74,7 @@ def make_scrim():
     import numpy as np
     H_, W_ = 1920, 1080
     NAVY = (10, 14, 30)
-    MAX_A = 150  # 文字ゾーン中心の最大不透明度
+    MAX_A = 112  # 文字ゾーン中心の最大不透明度（7/25FB「帯がグレーすぎて背景が見えない」→150から軽く）
     col = np.zeros((H_, 4), dtype=np.float32)
     def ramp(y, top, peak0, peak1, bot):
         if y < top or y > bot: return 0.0
@@ -132,10 +136,16 @@ def main():
     ds = date.isoformat()
     # シーン枚数（gen_telopの出力）でレイアウト自動選択
     n = len(glob.glob(os.path.join(FR, "scene*.png")))
-    if n not in SCENE_LAYOUTS:
-        print(f"sceneが{n}枚：対応レイアウトがありません（6か7枚で）"); sys.exit(1)
-    DUR, windows = SCENE_LAYOUTS[n]
-    print(f"構成: {n}枚 / {DUR}秒")
+    hint = os.path.join(FR, "layout.txt")
+    key = n
+    if os.path.exists(hint):
+        key = open(hint).read().strip()  # 例: "list6"（一覧型・gen_telopが出力）
+    if key not in SCENE_LAYOUTS:
+        print(f"scene {n}枚 / layout '{key}'：対応レイアウトがありません"); sys.exit(1)
+    DUR, windows = SCENE_LAYOUTS[key]
+    if len(windows) != n:
+        print(f"layout '{key}' は{len(windows)}枚用ですが scene が{n}枚あります"); sys.exit(1)
+    print(f"構成: {n}枚 / {DUR}秒 / layout={key}")
     # 背景選択（日付指定オーバーライドがあれば優先。揺れる11.mp4を避けて安定背景を割当）
     BG_OVERRIDE = {
         "2026-06-13": "02.mp4",  # 揺れる庭(11)→夕暮れの海（落ち着き・整えに合う）
@@ -144,6 +154,7 @@ def main():
         "2026-07-13": "13.mp4",  # 嵐空の畑→雲海（蟹座IN・いたわり。02は前日使用のため回避）
         "2026-07-22": "13.mp4",  # 嵐空の畑(08)→雲海（見えないだけでなくなってない・02は前日使用のため回避）
         "2026-07-25": "24.mp4",  # 夏紀さん新背景・空と山と湖（遠くを見ると悩みは小さくうつる、に合わせ）
+        "2026-07-26": "hikouki2.mp4",  # 海の中/光の海ともボツ（7/25FB）→機窓の翼と雲（射手座のさいご＝遠くへ に合う）
     }
     bgs = sorted(glob.glob(os.path.join(BG_DIR, "*.mp4")))
     ov = BG_OVERRIDE.get(ds)
