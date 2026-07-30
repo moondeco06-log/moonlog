@@ -1045,14 +1045,6 @@ footer {
     <div class="sec-rule"></div>
     <p class="sec-lead">ふだんの星占いで見ているのは、太陽星座。<br>moonlog はそこに <strong>月</strong> を足して、「素の自分」まで読みます。</p>
 
-    {% if show_paid %}
-    <div style="margin:0 0 2.5rem;background:var(--white);border:1px solid var(--gold);border-radius:14px;padding:1.6rem 1.8rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:.6rem 1.4rem;text-align:center;">
-      <span style="font-size:1.15rem;font-weight:700;color:var(--gold-d);">🌹 オープン記念 ¥500 OFF</span>
-      <span style="font-size:1rem;color:var(--text-d);">無料体験の感想を送ると 出生チャート <s style="color:var(--text-l);">¥980</s> → <strong style="color:var(--gold-d);">¥480</strong></span>
-      <a href="{{ feedback_url }}" target="_blank" rel="noopener" style="display:inline-block;background:var(--gold);color:var(--white);font-weight:600;text-decoration:none;padding:.6rem 1.5rem;border-radius:999px;white-space:nowrap;">感想を送ってコードを受け取る</a>
-      <span style="flex-basis:100%;font-size:.8rem;color:var(--text-m);">※ コードは感想を送っていただいた方へお渡しします（{{ coupon_range }}）</span>
-    </div>
-    {% endif %}
 
     <div class="report-grid">
 
@@ -1111,14 +1103,13 @@ footer {
       <!-- 出生チャート（有料）-->
       <div class="report-card natal" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
         <div class="report-accent"></div>
-        <div class="promo-ribbon">オープン記念</div>
         <div class="report-info">
           <p class="report-step">無料体験版の、その先へ</p>
           <h3>出生チャート（フル版）</h3>
           <p class="report-sub">あなたが何者かを知る</p>
           <div class="price-row">
             <span class="pill-paid">¥980</span>
-            <span class="price-note">オープン記念価格・A4換算 約20ページ</span>
+            <span class="price-note">A4換算 約20ページ</span>
           </div>
           <p class="report-desc">
             7つの星と、第一印象の星（アセンダント）をぜんぶ読み解く一冊。普段当たり前にやっていること、繰り返し起こるパターン——その「なぜ」が、生まれた瞬間の星の配置から見えてきます。
@@ -1139,7 +1130,6 @@ footer {
       <!-- ソーラーリターン（有料）-->
       <div class="report-card sr" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
         <div class="report-accent"></div>
-        <div class="promo-ribbon">オープン記念</div>
         <div class="report-info">
           <h3>2026年 星読み</h3>
           <p class="report-sub">今年のあなたを知る</p>
@@ -1149,7 +1139,6 @@ footer {
           </div>
           <div class="price-box">
             <div class="price-main">¥980</div>
-            <div class="price-sub">オープン記念価格 / リリース後 価格改定予定</div>
           </div>
           <p class="report-desc">
             毎年変わる星の配置。2026年のあなたのテーマ、チャレンジに向く時期、休むべき時期——1年の流れを知れば、毎日の選択がぐっと楽になります。
@@ -1174,7 +1163,6 @@ footer {
       <!-- 3分野レポート（仕事・お金・恋愛） -->
       <div class="report-card lifecycle" onclick="document.getElementById('form-section').scrollIntoView({behavior:'smooth'})">
         <div class="report-accent"></div>
-        <div class="promo-ribbon">オープン記念</div>
         <div class="report-info">
           <h3>仕事・お金・恋愛</h3>
           <p class="report-sub">あなたの3つの分野レポート</p>
@@ -1184,7 +1172,6 @@ footer {
           </div>
           <div class="price-box">
             <div class="price-main">¥980</div>
-            <div class="price-sub">オープン記念価格 / リリース後 価格改定予定</div>
           </div>
           <p class="report-desc">
             仕事には仕事を司る星、お金にはお金を司る星、愛には愛を司る星があります。同じ「あなた」の中でも、分野ごとに使われている星が違う——その3つを一冊にまとめた読みもの。
@@ -1227,7 +1214,7 @@ footer {
     </div>
 
     <p style="text-align:center;margin-top:3rem;font-size:0.78rem;color:var(--text-l);letter-spacing:0.08em;">
-      ※ オープン記念価格は予告なく変更となる場合があります。価格は順次改定予定です。
+      ※ 価格は予告なく変更となる場合があります。
     </p>
   </div>
 </section>
@@ -2370,16 +2357,9 @@ def _free_cta_footer(name, year, month, day, hour, minute, city, lat, lng):
         </a>
       </p>
       <p style="text-align:center;color:#6B607A;font-size:.85rem;margin:8px 0 0;">
-        フィードバックをくれた方には、<br>
-        <strong style="color:#5A3818;font-size:1.05rem;">¥500 OFF クーポン</strong> をお届けします<br>
-        <small>（出生チャート ¥980 → ¥480）</small><br>
-        <small style="color:#9A8870;">※ クーポンコードは、フォーム送信後の完了画面に表示されます。</small>
+        <small>お名前は書かなくて大丈夫です。ひとことでも、とても励みになります。</small>
       </p>
     </div>
-
-    <p style="text-align:center;color:#9A8870;font-size:.82rem;line-height:1.7;margin:0;">
-      ※ クーポンは{COUPON_RANGE}の期間限定です。
-    </p>
   </div>
 </div>
 """
@@ -3739,8 +3719,7 @@ def faq_page():
   <div class="faq-item">
     <div class="faq-q">どうしてこんなに安いの？（¥980）</div>
     <div class="faq-a">
-      <strong>必要なときに気軽に使ってほしい</strong>からです。占星術の鑑定は数千〜数万円のものが多く、月額課金サービスもありますが、moonlogは「迷ったときに開ける、手頃な地図」を目指しています。<br>
-      ※ オープン記念価格です。順次改定予定です。
+      <strong>必要なときに気軽に使ってほしい</strong>からです。占星術の鑑定は数千〜数万円のものが多く、月額課金サービスもありますが、moonlogは「迷ったときに開ける、手頃な地図」を目指しています。
     </div>
   </div>
 

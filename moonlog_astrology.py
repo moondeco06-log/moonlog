@@ -4637,7 +4637,6 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
         7惑星すべて＋総合まとめ＋ネイタルチャートを<br>あなた自身のデータで詳細に
       </div>
       <div style="font-size:2rem;color:var(--gold-d);font-weight:500;letter-spacing:.05em;margin-bottom:4px;">¥980</div>
-      <div style="font-size:.72rem;color:var(--text-l);margin-bottom:18px;">オープン記念価格 / リリース後 価格改定予定</div>
       <a href="/" class="upgrade-cta">トップに戻って自分のレポートを生成</a>
     </div>
   </div>
@@ -4692,7 +4691,6 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
       <div style="font-family:var(--en);font-style:italic;font-size:.72rem;letter-spacing:.3em;color:var(--gold-d);margin-bottom:6px;">Birth Chart Reading</div>
       <div style="font-family:var(--serif);font-size:1.1rem;color:var(--text-d);margin-bottom:4px;">出生チャート（フル版）</div>
       <div style="font-size:1.6rem;color:var(--gold-d);font-weight:500;letter-spacing:.05em;margin-bottom:4px;">¥980</div>
-      <div style="font-size:.72rem;color:var(--text-l);margin-bottom:14px;">オープン記念価格 / リリース後 価格改定予定</div>
       {_upgrade_cta_html}
     </div>
   </div>
@@ -7078,7 +7076,6 @@ body{font-family:var(--serif);background:var(--bg);color:var(--text-d);line-heig
         8項目すべて＋総合まとめを<br>あなた自身のデータで詳細に
       </div>
       <div style="font-size:2rem;color:var(--gold-d);font-weight:500;letter-spacing:.05em;margin-bottom:4px;">¥980</div>
-      <div style="font-size:.72rem;color:var(--text-l);margin-bottom:18px;">オープン記念価格 / リリース後 価格改定予定</div>
       <a href="/" class="upgrade-cta">トップに戻って自分のレポートを生成</a>
     </div>
   </div>
@@ -8504,7 +8501,6 @@ def generate_lifecycle_html(name, year, month, day, city, lat=None, lng=None, sa
         生まれてから100歳までの全フェーズ・転機を<br>あなたの誕生日で詳細に
       </div>
       <div style="font-size:2rem;color:var(--gold-d);font-weight:500;letter-spacing:.05em;margin-bottom:4px;">¥980</div>
-      <div style="font-size:.72rem;color:var(--cream3);margin-bottom:18px;">オープン記念価格 / リリース後 価格改定予定</div>
       <a href="/" style="display:inline-block;padding:14px 36px;background:var(--gold-d);color:#fff;text-decoration:none;border-radius:4px;font-family:'Noto Serif JP',serif;font-size:.92rem;letter-spacing:.15em;">トップに戻って自分のレポートを生成</a>
     </div>
   </div>
