@@ -161,6 +161,7 @@
     <label>楽器
       <select id="transpose">
         <option value="alto" selected>アルトサックス</option>
+        <option value="tenor">テナーサックス</option>
         <option value="flute">フルート</option>
         <option value="trumpet">トランペット</option>
         <option value="ukulele">ウクレレ</option>
@@ -316,7 +317,8 @@ for(let i=-50;i<=50;i+=5){
 }
 
 const DOREMI=['ド','ド♯','レ','レ♯','ミ','ファ','ファ♯','ソ','ソ♯','ラ','ラ♯','シ'];
-const INSTR={alto:9,flute:0,trumpet:2,ukulele:0};  // 実音→記譜の移調（半音）
+const INSTR={alto:9,tenor:14,flute:0,trumpet:2,ukulele:0};  // 実音→記譜の移調（半音）
+const SAX=['alto','tenor'];  // 運指表を出す楽器（アルトとテナーは運指が同じ）
 const ALPHA=['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'];
 const PRAISE=['いい音','のびてる、そのまま','澄んでる','まっすぐ届いてる','海までとどきそう','今日の音、きれい'];
 
@@ -425,7 +427,7 @@ function update(){
     }
     const midi=curMidi;
     const cents=Math.round((emaExact-midi)*100);
-    const w=midi+tp;                       // 記譜（アルトサックスの音）
+    const w=midi+tp;                       // 記譜（選んだ楽器で吹く音）
     const wName=(el.transpose.value==='ukulele')?ALPHA[((w%12)+12)%12]:DOREMI[((w%12)+12)%12];
     const wAlpha=ALPHA[((w%12)+12)%12];
     const wOct=Math.floor(w/12)-1;
@@ -548,7 +550,7 @@ chartBtn.addEventListener('click',()=>{
   chartBtn.textContent=open?'実音の早見表':'早見表をとじる';
 });
 
-// アルトサックスの運指表（記譜音・押さえるキーが光る）
+// サックスの運指表（記譜音・押さえるキーが光る／アルトもテナーも運指は共通）
 // キー：oct=オクターブ／l1l2l3=左手1〜3／r1r2r3=右手1〜3／bis＝バイスシ♭
 //       gs=ソ♯小指 lcs=低ド♯ lb=低シ lbb=低シ♭ eb=低ミ♭小指 c=低ド小指
 //       sBb/sC/sE=サイドキー pD/pEb/pF=パームキー hfs=高ファ♯
@@ -654,12 +656,12 @@ fingerBtn.addEventListener('click',()=>{
   fingerBtn.textContent=open?'サックスの運指表':'運指表をとじる';
 });
 
-// 楽器に応じて早見表・運指表の出し分け（運指表はアルトサックスのみ）
+// 楽器に応じて早見表・運指表の出し分け（運指表はサックス＝アルト／テナーのみ）
 function updateInstrUI(){
   buildChart();
-  const isAlto=el.transpose.value==='alto';
-  fingerBtn.style.display=isAlto?'':'none';
-  if(!isAlto){finger.style.display='none';fingerBtn.textContent='サックスの運指表';}
+  const isSax=SAX.includes(el.transpose.value);
+  fingerBtn.style.display=isSax?'':'none';
+  if(!isSax){finger.style.display='none';fingerBtn.textContent='サックスの運指表';}
 }
 updateInstrUI();
 
