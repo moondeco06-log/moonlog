@@ -4,6 +4,14 @@
 
 # 内部ツール・作業ファイル
 instagram_posts/
+
+# リールの作業用動画（公開用は static/videos/reels/ に置いて git add -f する）
+# ※2026-08-05：ここを無視していなかったため作業用mp4 202件・4.42GBがコミットに入り、
+#   GitHubの2GB上限に当たって push が拒否＝当日のリールが投稿できなかった
+reels/*.mp4
+reels/**/*.mp4
+reels/backgrounds/
+reels/_pipeline/**/*.mp4
 drafts/preview/
 review_pdfs/
 content_review_findings.md
@@ -36,3 +44,4 @@ pattern_*.pdf
 # 内部スクリプト
 igpost.py
 scripts/
+natsuki_report.html
