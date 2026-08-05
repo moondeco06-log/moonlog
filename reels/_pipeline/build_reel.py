@@ -34,6 +34,13 @@ BGM_POOL = [
 ]
 ONGAKU = os.path.expanduser("~/Documents/ongaku")
 
+# 日付ごとのBGM指定（テロップの空気に合わないときだけ手で当てる）。
+# 朝の明るいラインが軽すぎる日は Slow Hours（ゆったりジャズ系）から選ぶ。
+BGM_OVERRIDE = {
+    # 8/6 夕暮れの海＋下弦の月＝朝の軽い曲だと合わない（夏紀さん「音楽が軽い。ゆったり系に」）
+    "2026-08-06": "slow_hours/vol4_okinawa_sunset/08_twilight_ballad_rhodes.mp3",
+}
+
 FADE = 0.22
 # シーン数に応じた尺と窓割り。/tmp のscene枚数で自動選択
 # 7枚=旧型（フック/星/行動/許可/後押し/誘導/moonlog）
@@ -160,6 +167,10 @@ def main():
         "2026-07-29": "hakone2.mp4",  # 箱根湿生花園の木道（「ちがう道」「風向きが変わる」の画・夏紀さんお気に入り）
         "2026-07-30": "21.mp4",  # 明るい並木道（自分の足で選んで歩く=「こっちがいい」の画）
         "2026-07-31": "02.mp4",  # 夕暮れの海（金曜の夕方投稿・「ほどける」魚座INの画）
+        "2026-08-01": "_miyako_honne.mp4",  # 宮古島の白い砂と海＝夏紀さんの「去年は宮古島に行ったなぁ」がそのまま種
+        "2026-08-02": "zamami_shizuka.mp4",  # 静かな海（日曜の夜・力をぬく・欠けていく月の空気）
+        "2026-08-03": "24.mp4",  # 空と山と湖・朝の広い光（月牡羊IN＝動き出す月曜の画）
+        "2026-08-06": "02.mp4",  # 夕暮れの海（下弦の月・「子どもの頃に見た夕焼けと同じ空」の画）
     }
     bgs = sorted(glob.glob(os.path.join(BG_DIR, "*.mp4")))
     ov = BG_OVERRIDE.get(ds)
@@ -175,7 +186,7 @@ def main():
     silent = os.path.join(ROOT, "reels", f"daily_{ds}.mp4")
     final = os.path.join(ROOT, "reels", f"daily_{ds}_BGM.mp4")
     build_silent(silent)
-    bgm_rel = pick_by_date(BGM_POOL, date)
+    bgm_rel = BGM_OVERRIDE.get(ds) or pick_by_date(BGM_POOL, date)
     bgm = os.path.join(ONGAKU, bgm_rel)
     print(f"BGM: {os.path.basename(bgm)}")
     bake_bgm(silent, bgm, final)

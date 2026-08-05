@@ -5,6 +5,10 @@
 # 内部ツール・作業ファイル
 instagram_posts/
 
+# リール公開用の受け渡しディレクトリ。igpost.py が `git add -f` で入れるので
+# 運用は壊れない。直近ぶんだけ push されていればよく、履歴に貯める必要はない
+static/videos/reels/
+
 # リールの作業用動画（公開用は static/videos/reels/ に置いて git add -f する）
 # ※2026-08-05：ここを無視していなかったため作業用mp4 202件・4.42GBがコミットに入り、
 #   GitHubの2GB上限に当たって push が拒否＝当日のリールが投稿できなかった
