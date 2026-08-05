@@ -144,6 +144,11 @@
   .gobtn:active{transform:scale(.98);}
   .gobtn.stop{background:rgba(255,255,255,.85);color:#0d3a5c;}
   .hint{grid-column:1/3;text-align:center;font-size:12px;color:#e8f6ff;line-height:1.7;}
+  /* 実音の早見表（楽器ごとに列を分ける） */
+  #chartGrid .ch{font-size:11px;color:#4a85ad;padding-bottom:4px;border-bottom:1px solid rgba(13,110,184,.18);}
+  #chartGrid .ch.sel{color:#0d6eb8;font-weight:700;}
+  #chartGrid .cn{font-weight:700;color:#0d3a5c;}
+  #chartGrid .dim{color:#7fa8c4;}
 </style>
 </head>
 <body>
@@ -215,7 +220,7 @@
     <button class="tonebtn" id="chartBtn" style="grid-column:1/3;">実音の早見表</button>
     <div id="chart" style="display:none;grid-column:1/3;background:rgba(255,255,255,.82);border-radius:14px;padding:14px 12px;box-shadow:0 4px 14px rgba(13,58,92,.10);">
       <div style="font-size:12px;color:#4a85ad;text-align:center;margin-bottom:10px;">実音 → 吹く音</div>
-      <div id="chartGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px 6px;text-align:center;font-size:14px;color:#0d3a5c;"></div>
+      <div id="chartGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px 6px;text-align:center;font-size:14px;color:#0d3a5c;"></div>
     </div>
     <button class="tonebtn" id="fingerBtn" style="grid-column:1/3;">サックスの運指表</button>
     <div class="fwrap" id="finger" style="display:none;">
@@ -533,16 +538,26 @@ const chartBtn=document.getElementById('chartBtn');
 const chart=document.getElementById('chart');
 const chartGrid=document.getElementById('chartGrid');
 const CONCERT=[['C',0],['D♭',1],['D',2],['E♭',3],['E',4],['F',5],['F♯',6],['G',7],['A♭',8],['A',9],['B♭',10],['B',11]];
+const INSTNAME={alto:'アルト',tenor:'テナー',trumpet:'トランペット'};
 function buildChart(){
-  const tp=INSTR[el.transpose.value]||0;
+  const inst=el.transpose.value;
+  const tp=INSTR[inst]||0;
   if(tp===0){
     chartBtn.style.display='none';chart.style.display='none';
     chartBtn.textContent='実音の早見表';
     return;
   }
   chartBtn.style.display='';
-  chartGrid.innerHTML=CONCERT.map(([nm,pc])=>
-    '<div><b>'+nm+'</b> → '+DOREMI[(pc+tp)%12]+'</div>').join('');
+  // サックスのときはアルトとテナーを並べて出す（持ちかえても切り替えずに読める）
+  const cols=SAX.includes(inst)?['alto','tenor']:[inst];
+  chartGrid.style.gridTemplateColumns='repeat('+(cols.length+1)+',1fr)';
+  const head='<div class="ch">実音</div>'+
+    cols.map(c=>'<div class="ch'+(c===inst?' sel':'')+'">'+INSTNAME[c]+'</div>').join('');
+  const rows=CONCERT.map(([nm,pc])=>
+    '<div class="cn">'+nm+'</div>'+
+    cols.map(c=>'<div'+(c===inst?'':' class="dim"')+'>'+DOREMI[(pc+INSTR[c])%12]+'</div>').join('')
+  ).join('');
+  chartGrid.innerHTML=head+rows;
 }
 chartBtn.addEventListener('click',()=>{
   const open=chart.style.display!=='none';
