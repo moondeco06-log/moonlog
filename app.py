@@ -8,7 +8,7 @@ import os, io, tempfile, warnings, threading
 from dotenv import load_dotenv
 load_dotenv()
 
-CONTACT_EMAIL = os.environ.get("MOONLOG_EMAIL", "info@moonlog.jp")
+CONTACT_EMAIL = os.environ.get("MOONLOG_EMAIL", "moonlog.jp@gmail.com")
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
 warnings.filterwarnings("ignore")
 
@@ -2078,7 +2078,7 @@ SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
 SMTP_USER = os.environ.get("SMTP_USER", "")
 SMTP_PASS = os.environ.get("SMTP_PASS", "")
-SMTP_FROM = os.environ.get("SMTP_FROM", "info@moonlog.jp")
+SMTP_FROM = os.environ.get("SMTP_FROM", "moonlog.jp@gmail.com")
 SMTP_FROM_NAME = os.environ.get("SMTP_FROM_NAME", "moonlog")
 
 
@@ -2123,7 +2123,7 @@ def _log_inquiry(name, email, category, body):
 
 
 def send_inquiry_email(name, email, category, body):
-    """お問い合わせフォームの内容を運営アドレス(info@moonlog.jp)に送信"""
+    """お問い合わせフォームの内容を運営アドレス(CONTACT_EMAIL)に送信"""
     _log_inquiry(name, email, category, body)
     if not (SMTP_USER and SMTP_PASS):
         print("[send_inquiry_email] SMTP未設定 — ログ記録のみ")
@@ -2269,7 +2269,7 @@ def checkout_success():
         lng    = float(m.get("lng", 139.6503))
     except Exception as e:
         import traceback; traceback.print_exc()
-        return "<p style='color:red'>購入情報の取得に失敗しました。お手数ですが info@moonlog.jp までお問い合わせください。</p>", 500
+        return f"<p style='color:red'>購入情報の取得に失敗しました。お手数ですが {CONTACT_EMAIL} までお問い合わせください。</p>", 500
 
     try:
         # 有料フル版（light=False）
@@ -2279,7 +2279,7 @@ def checkout_success():
         )
     except Exception as e:
         import traceback; traceback.print_exc()
-        return "<p style='color:red'>レポートの生成中にエラーが発生しました。お手数ですが info@moonlog.jp までお問い合わせください。</p>", 500
+        return f"<p style='color:red'>レポートの生成中にエラーが発生しました。お手数ですが {CONTACT_EMAIL} までお問い合わせください。</p>", 500
 
     # メール送信（非同期・1回限り）
     # PDF送付先は metadata["paid_email"]（moonlogフォームで入力されたもの）を優先

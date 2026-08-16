@@ -1,6 +1,7 @@
 # 機密
 .env
 .env.local
+.env.*
 
 # 内部ツール・作業ファイル
 instagram_posts/

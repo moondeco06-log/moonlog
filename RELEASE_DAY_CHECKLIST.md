@@ -13,7 +13,7 @@
       - クーポン EARLYBIRD500 で出生チャートが ¥480 になる案内が出ているか
 
 ## ② 事前登録者へクーポンメールを送る（BCC）
-- [ ] 送信元：**info@moonlog.jp**
+- [ ] 送信元：**moonlog.jp@gmail.com**（2026-08-16にinfo@moonlog.jpから移行・GWS解約のため）
 - [ ] Google Form 回答者のアドレスを **BCC** に入れる（TO/CCはNG＝アドレス漏れ防止）
 - [ ] 下書き：`instagram_posts/release_coupon_email.txt` をコピペ
       - 件名：【moonlog】本日リリースしました🌙 ¥500OFFクーポンをお送りします
