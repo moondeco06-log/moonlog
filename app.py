@@ -2076,8 +2076,12 @@ COUPON_RANGE     = os.environ.get("COUPON_RANGE",     "6/1〜7/31")         # �
 # ============================================================
 SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
-SMTP_USER = os.environ.get("SMTP_USER", "")
-SMTP_PASS = os.environ.get("SMTP_PASS", "")
+SMTP_USER = os.environ.get("SMTP_USER", "").strip()
+# Googleのアプリパスワードは画面上 "abcd efgh ijkl mnop" と4文字区切りで表示され、
+# その区切りがノーブレークスペース(\xa0)のことがある。コピペでそのまま環境変数に入ると
+# smtplib の login() が 'ascii' codec can't encode character '\xa0' で落ちる（2026-08-16に実際に発生）。
+# 空白類（半角・全角・\xa0）をすべて除去して吸収する。Gmailのアプリパスワードに空白は含まれない。
+SMTP_PASS = "".join(os.environ.get("SMTP_PASS", "").split())
 SMTP_FROM = os.environ.get("SMTP_FROM", "moonlog.jp@gmail.com")
 SMTP_FROM_NAME = os.environ.get("SMTP_FROM_NAME", "moonlog")
 
