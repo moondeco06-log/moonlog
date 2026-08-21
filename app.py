@@ -3292,6 +3292,21 @@ def contact():
         category = request.form.get("category", "一般のお問い合わせ").strip()
         body = request.form.get("message", "").strip()
         import re as _re
+        # --- スパム弾き（2026-08-20 追加。連日の海外ボット対策）---
+        # ボットはフォームを開かず /contact に直接POSTしてくるので、
+        # ①種類が選択肢以外 ②本文に日本語が1文字もない ③URLが2つ以上 のいずれかで捨てる。
+        # 捨てた場合も画面は通常の完了と同じにして、ボットに失敗を気づかせない。
+        _valid_cats = ["一般のお問い合わせ", "購入・お支払いについて",
+                       "レポートが届かない・不具合", "その他"]
+        _has_ja = bool(_re.search(r"[ぁ-んァ-ヴー一-龥]", body))
+        _n_urls = len(_re.findall(r"https?://", body))
+        if (category not in _valid_cats) or (not _has_ja) or _n_urls >= 2:
+            try:
+                app.logger.info("contact spam blocked: cat=%r ja=%s urls=%d",
+                                category[:40], _has_ja, _n_urls)
+            except Exception:
+                pass
+            return redirect("/contact?sent=1")
         if not email or not _re.match(r"^[^\s@]+@[^\s@]+\.[^\s@]+$", email):
             error = "返信先のメールアドレスを正しくご入力ください。"
         elif not body:
